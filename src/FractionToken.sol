@@ -51,6 +51,15 @@ contract FractionToken is ERC20, Ownable {
 		emit VaultSet(_vault);
 	}
 
+	/// @notice Allows the Vault to whitelist an approved counterparty (e.g., the Streamer).
+	/// @dev This is required for staking, since users transfer fractions to the Streamer.
+	function vaultWhitelist(address _wallet) external {
+		require(msg.sender == vault, "Only the Vault can vaultWhitelist");
+		require(_wallet != address(0), "Zero address not allowed");
+		whitelisted[_wallet] = true;
+		emit WalletWhitelisted(_wallet);
+	}
+
 	function setWhitelistEnabled(bool _enabled) external onlyOwner {
 		whitelistEnabled = _enabled;
 		emit WhitelistEnabledChanged(_enabled);

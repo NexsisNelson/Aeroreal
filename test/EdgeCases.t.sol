@@ -82,14 +82,19 @@ contract EdgeCasesTest is Test {
         );
 
         FractionalizerVault vault = FractionalizerVault(vaultAddress);
+        FractionToken fractionToken = vault.fractionToken();
 
         vm.startPrank(alice);
         nft.approve(vaultAddress, 1);
         vault.fractionalize();
         vm.stopPrank();
 
+        // Whitelist Bob so Alice can transfer fractions to him.
+        vm.prank(vaultAddress);
+        fractionToken.vaultWhitelist(bob);
+
         vm.startPrank(alice);
-        vault.fractionToken().transfer(bob, TOTAL_FRACTIONS / 2);
+        fractionToken.transfer(bob, TOTAL_FRACTIONS / 2);
         vm.stopPrank();
 
         vm.prank(bob);
@@ -132,27 +137,38 @@ contract EdgeCasesTest is Test {
             address(nft), 1, TOTAL_FRACTIONS, "fMAPE", "fMAPE"
         );
         FractionalizerVault vault = FractionalizerVault(vaultAddress);
+        FractionToken fractionToken = vault.fractionToken();
 
         vm.startPrank(alice);
         nft.approve(vaultAddress, 1);
         vault.fractionalize();
-        vault.fractionToken().transfer(bob, 2_500);
         vm.stopPrank();
 
+        // Whitelist Bob BEFORE transferring to him.
+        vm.prank(vaultAddress);
+        fractionToken.vaultWhitelist(bob);
+
+        vm.prank(alice);
+        fractionToken.transfer(bob, 2_500);
+
         MicroYieldStreamer streamer = new MicroYieldStreamer(
-            address(vault.fractionToken()),
+            address(fractionToken),
             address(sprinkleToken)
         );
         sprinkleToken.setStreamer(address(streamer));
         streamer.setRewardRate(1e18);
 
+        // Whitelist Streamer for staking.
+        vm.prank(vaultAddress);
+        fractionToken.vaultWhitelist(address(streamer));
+
         vm.startPrank(alice);
-        vault.fractionToken().approve(address(streamer), 7_500);
+        fractionToken.approve(address(streamer), 7_500);
         streamer.stake(7_500);
         vm.stopPrank();
 
         vm.startPrank(bob);
-        vault.fractionToken().approve(address(streamer), 2_500);
+        fractionToken.approve(address(streamer), 2_500);
         streamer.stake(2_500);
         vm.stopPrank();
 

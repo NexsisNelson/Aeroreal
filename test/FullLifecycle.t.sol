@@ -110,6 +110,10 @@ contract FullLifecycleTest is Test {
         // =====================================================
         // STEP 4: Alice stakes her fractions.
         // =====================================================
+        // Whitelist the Streamer so Alice can stake.
+        vm.prank(vaultAddress);
+        fractionToken.vaultWhitelist(address(streamer));
+
         vm.startPrank(alice);
         fractionToken.approve(address(streamer), TOTAL_FRACTIONS);
         streamer.stake(TOTAL_FRACTIONS);
