@@ -1,0 +1,24 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+optimizer = true
+optimizer_runs = 200
+solc_version = "0.8.24"
+evm_version = "cancun"
+
+[rpc_endpoints]
+monad_testnet = "https://testnet-rpc.monad.xyz"
+
+[lint]
+severity = ["high", "med"]
+exclude_lints = [
+    "unaliased-plain-import",
+    "multi-contract-file",
+    "literal-instead-of-constant",
+    "unused-return",
+    "unsafe-oz-erc721-mint"
+]
+
+[etherscan]
+monad_testnet = { key = "NIGSDDWCAWU6AE87FKBTIMUDMPWMYI1F42", chain = 10143, url = "https://testnet.monadscan.com/api" }
