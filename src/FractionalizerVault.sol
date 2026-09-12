@@ -103,6 +103,11 @@ contract FractionalizerVault is ERC721Holder, ReentrancyGuard {
 	 * @notice If a user collects 100% of the FractionTokens, they can redeem the NFT.
 	 * @dev This burns ALL the fractions held by the caller and returns the NFT.
 	 */
+	function whitelistStreamer(address _streamer) external onlyOwner {
+		require(_streamer != address(0), "Zero address not allowed");
+		fractionToken.vaultWhitelist(_streamer);
+	}
+
 	function redeem() external nonReentrant {
 		require(!isRedeemed, "Already redeemed");
 
