@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'services/wallet_service.dart';
 import 'services/contract_service.dart';
 import 'services/privy_service.dart';
+import 'services/notification_service.dart';
 import 'config/routes.dart';
 import 'screens/main_shell.dart';
 import 'screens/wallet_onboarding_screen.dart';
@@ -15,6 +16,7 @@ import 'screens/wallet_onboarding_screen.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: '.env');
+  await NotificationService().initialize();
 
   final privyService = PrivyService(
     appId: dotenv.env['PRIVY_APP_ID'],

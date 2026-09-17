@@ -7,6 +7,7 @@ import 'package:wallet/wallet.dart';
 import '../config/abis.dart';
 import '../config/constants.dart';
 import 'privy_service.dart';
+import 'notification_service.dart';
 import 'tx_history_service.dart';
 
 /// ContractService reads from and writes to the deployed Monad contracts.
@@ -41,35 +42,49 @@ class ContractService {
     final hexData =
         '0x${encoded.map((b) => b.toRadixString(16).padLeft(2, '0')).join()}';
 
-    final hash = await privyService.signAndSendTransaction(
-      to: contractAddress,
-      data: hexData,
-      value: '0x0',
-    );
+    try {
+      final hash = await privyService.signAndSendTransaction(
+        to: contractAddress,
+        data: hexData,
+        value: '0x0',
+      );
 
-    if (hash == null) {
-      final walletAddress = privyService.walletAddress;
-      if (walletAddress != null) {
-        final balance = await client.getBalance(
-          EthereumAddress.fromHex(walletAddress),
-        );
+      if (hash == null) {
+        final walletAddress = privyService.walletAddress;
+        if (walletAddress != null) {
+          final balance = await client.getBalance(
+            EthereumAddress.fromHex(walletAddress),
+          );
+          throw Exception(
+            'Privy signing failed. Wallet balance: ${balance.getInWei} wei. '
+            'Ensure the wallet has MON for gas.',
+          );
+        }
         throw Exception(
-          'Privy signing failed. Wallet balance: ${balance.getInWei} wei. '
-          'Ensure the wallet has MON for gas.',
+          'Privy signing failed. Ensure the wallet has MON for gas.',
         );
       }
-      throw Exception(
-        'Privy signing failed. Ensure the wallet has MON for gas.',
-      );
-    }
 
-    await _txHistory.log(
-      hash: hash,
-      action: functionName,
-      details: 'Contract: ${contractAddress.substring(0, 10)}...',
-    );
-    await _waitForReceipt(hash);
-    return hash;
+      await _txHistory.log(
+        hash: hash,
+        action: functionName,
+        details: 'Contract: ${contractAddress.substring(0, 10)}...',
+      );
+      await NotificationService().notify(
+        type: NotificationType.transactionSuccess,
+        title: 'Transaction Submitted',
+        body: '$functionName submitted on Monad Testnet',
+      );
+      await _waitForReceipt(hash);
+      return hash;
+    } catch (error) {
+      await NotificationService().notify(
+        type: NotificationType.transactionFailed,
+        title: 'Transaction Failed',
+        body: '$functionName: $error',
+      );
+      rethrow;
+    }
   }
 
   /// Poll for a transaction receipt.

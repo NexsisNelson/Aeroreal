@@ -5,8 +5,10 @@ import 'package:provider/provider.dart';
 
 import '../config/routes.dart';
 import '../services/privy_service.dart';
+import '../services/notification_service.dart';
 import '../services/wallet_service.dart';
 import 'kyc_screen.dart';
+import 'notifications_screen.dart';
 import 'tx_history_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -70,6 +72,8 @@ class SettingsScreen extends StatelessWidget {
             },
           ),
           const Divider(height: 1),
+          const _NotificationTile(),
+          const Divider(height: 1),
           ListTile(
             leading: const Icon(Icons.history, color: Color(0xFF836EF9)),
             title: const Text('Transaction History'),
@@ -96,6 +100,57 @@ class SettingsScreen extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class _NotificationTile extends StatefulWidget {
+  const _NotificationTile();
+
+  @override
+  State<_NotificationTile> createState() => _NotificationTileState();
+}
+
+class _NotificationTileState extends State<_NotificationTile> {
+  int _unread = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCount();
+  }
+
+  Future<void> _loadCount() async {
+    final count = await NotificationService().getUnreadCount();
+    if (!mounted) return;
+    setState(() => _unread = count);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: const Icon(
+        Icons.notifications_outlined,
+        color: Color(0xFF836EF9),
+      ),
+      title: const Text('Notifications'),
+      subtitle: Text(_unread > 0 ? '$_unread unread' : 'No new notifications'),
+      trailing: _unread > 0
+          ? Container(
+              padding: const EdgeInsets.all(6),
+              decoration: const BoxDecoration(
+                color: Colors.redAccent,
+                shape: BoxShape.circle,
+              ),
+              child: Text('$_unread', style: const TextStyle(fontSize: 10)),
+            )
+          : const Icon(Icons.chevron_right),
+      onTap: () async {
+        await Navigator.of(
+          context,
+        ).push(MaterialPageRoute(builder: (_) => const NotificationsScreen()));
+        _loadCount();
+      },
     );
   }
 }
