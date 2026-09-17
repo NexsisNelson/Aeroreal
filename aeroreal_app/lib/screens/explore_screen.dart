@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../services/contract_service.dart';
 import '../services/rwa_service.dart';
+import 'nft_discovery_screen.dart';
 import 'rwa_detail_screen.dart';
 import '../widgets/ipfs_link.dart';
 import '../widgets/risk_disclosure.dart';
@@ -159,6 +160,16 @@ class _ExploreScreenState extends State<ExploreScreen> {
       body: Column(
         children: [
           // Search bar.
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+            child: ElevatedButton.icon(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: (_) => const NftDiscoveryScreen()),
+              ),
+              icon: const Icon(Icons.collections_outlined),
+              label: const Text('Browse Any NFT Collection'),
+            ),
+          ),
           Padding(
             padding: const EdgeInsets.all(16),
             child: TextField(

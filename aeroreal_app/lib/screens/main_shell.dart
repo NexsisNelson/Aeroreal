@@ -8,6 +8,7 @@ import 'fractionalize_screen.dart';
 import 'home_screen.dart';
 import 'nft_marketplace_screen.dart';
 import 'settings_screen.dart';
+import 'watchlist_screen.dart';
 import 'yield_screen.dart';
 
 class MainShell extends StatefulWidget {
@@ -24,6 +25,7 @@ class _MainShellState extends State<MainShell> {
     HomeScreen(),
     ExploreScreen(),
     NftMarketplaceScreen(),
+    WatchlistScreen(),
     FractionalizeScreen(),
     YieldScreen(),
     AgentApiScreen(),
@@ -55,6 +57,11 @@ class _MainShellState extends State<MainShell> {
             icon: Icon(Icons.storefront_outlined),
             selectedIcon: Icon(Icons.storefront, color: Color(0xFF836EF9)),
             label: 'Market',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.star_outline),
+            selectedIcon: Icon(Icons.star, color: Color(0xFFFFD700)),
+            label: 'Watch',
           ),
           NavigationDestination(
             icon: Icon(Icons.add_circle_outline),

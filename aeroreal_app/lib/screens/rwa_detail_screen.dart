@@ -2,6 +2,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 import '../services/rwa_service.dart';
+import '../services/watchlist_service.dart';
 
 class RwaDetailScreen extends StatefulWidget {
   final Map<String, dynamic> asset;
@@ -14,15 +15,31 @@ class RwaDetailScreen extends StatefulWidget {
 
 class _RwaDetailScreenState extends State<RwaDetailScreen> {
   final _service = RwaService();
+  final _watchlist = WatchlistService();
   Map<String, dynamic>? _quote;
   List<Map<String, dynamic>> _candles = [];
   bool _loading = true;
+  bool _isWatched = false;
   String? _error;
 
   @override
   void initState() {
     super.initState();
     _load();
+    _checkWatchlist();
+  }
+
+  Future<void> _checkWatchlist() async {
+    final assetId = widget.asset['id'] as String?;
+    if (assetId == null) return;
+    final watched = await _watchlist.isWatched(assetId);
+    if (!mounted) return;
+    setState(() => _isWatched = watched);
+  }
+
+  Future<void> _toggleWatchlist() async {
+    await _watchlist.toggleWatchlist(_quote ?? widget.asset);
+    await _checkWatchlist();
   }
 
   Future<void> _load() async {
@@ -61,7 +78,7 @@ class _RwaDetailScreenState extends State<RwaDetailScreen> {
     }
     if (_error != null) {
       return Scaffold(
-        appBar: AppBar(title: Text(widget.asset['name'] ?? 'RWA Asset')),
+        appBar: _buildAppBar(),
         body: Center(child: Text(_error!)),
       );
     }
@@ -71,7 +88,7 @@ class _RwaDetailScreenState extends State<RwaDetailScreen> {
     final isPositive = change >= 0;
 
     return Scaffold(
-      appBar: AppBar(title: Text(widget.asset['name'] ?? 'RWA Asset')),
+      appBar: _buildAppBar(),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -152,6 +169,22 @@ class _RwaDetailScreenState extends State<RwaDetailScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      title: Text(widget.asset['name'] ?? 'RWA Asset'),
+      actions: [
+        IconButton(
+          onPressed: _toggleWatchlist,
+          tooltip: _isWatched ? 'Remove from watchlist' : 'Add to watchlist',
+          icon: Icon(
+            _isWatched ? Icons.star : Icons.star_border,
+            color: _isWatched ? const Color(0xFFFFD700) : Colors.white,
+          ),
+        ),
+      ],
     );
   }
 

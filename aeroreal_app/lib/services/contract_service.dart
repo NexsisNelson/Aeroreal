@@ -7,12 +7,14 @@ import 'package:wallet/wallet.dart';
 import '../config/abis.dart';
 import '../config/constants.dart';
 import 'privy_service.dart';
+import 'tx_history_service.dart';
 
 /// ContractService reads from and writes to the deployed Monad contracts.
 class ContractService {
   final PrivyService privyService;
   late final Web3Client client;
   late final Web3Client mainnetClient;
+  final _txHistory = TxHistoryService();
 
   ContractService(this.privyService) {
     client = Web3Client(AppConstants.monadRpcUrl, http.Client());
@@ -61,6 +63,11 @@ class ContractService {
       );
     }
 
+    await _txHistory.log(
+      hash: hash,
+      action: functionName,
+      details: 'Contract: ${contractAddress.substring(0, 10)}...',
+    );
     await _waitForReceipt(hash);
     return hash;
   }
@@ -304,6 +311,81 @@ class ContractService {
       await Future<void>.delayed(const Duration(milliseconds: 200));
     }
     return owned;
+  }
+
+  Future<String> getCollectionName(String contractAddress) async {
+    final contract = _contract(contractAddress, AppABIs.erc721);
+    final result = await client.call(
+      contract: contract,
+      function: contract.function('name'),
+      params: [],
+    );
+    return result[0] as String;
+  }
+
+  Future<String> getCollectionSymbol(String contractAddress) async {
+    final contract = _contract(contractAddress, AppABIs.erc721);
+    final result = await client.call(
+      contract: contract,
+      function: contract.function('symbol'),
+      params: [],
+    );
+    return result[0] as String;
+  }
+
+  Future<BigInt> getCollectionBalance(
+    String contractAddress,
+    String walletAddress,
+  ) async {
+    final contract = _contract(contractAddress, AppABIs.erc721);
+    final result = await client.call(
+      contract: contract,
+      function: contract.function('balanceOf'),
+      params: [EthereumAddress.fromHex(walletAddress)],
+    );
+    return result[0] as BigInt;
+  }
+
+  Future<List<BigInt>> getNFTsOfCollectionOwnedBy(
+    String contractAddress,
+    String walletAddress,
+  ) async {
+    final balance = await getCollectionBalance(contractAddress, walletAddress);
+    final owned = <BigInt>[];
+    final contract = _contract(contractAddress, AppABIs.erc721);
+    try {
+      final function = contract.function('tokenOfOwnerByIndex');
+      for (var index = BigInt.zero; index < balance; index += BigInt.one) {
+        final result = await client.call(
+          contract: contract,
+          function: function,
+          params: [EthereumAddress.fromHex(walletAddress), index],
+        );
+        owned.add(result[0] as BigInt);
+      }
+      return owned;
+    } catch (_) {
+      for (
+        var tokenId = BigInt.one;
+        tokenId <= BigInt.from(100);
+        tokenId += BigInt.one
+      ) {
+        try {
+          final result = await client.call(
+            contract: contract,
+            function: contract.function('ownerOf'),
+            params: [tokenId],
+          );
+          final owner = (result[0] as EthereumAddress).with0x;
+          if (owner.toLowerCase() == walletAddress.toLowerCase()) {
+            owned.add(tokenId);
+          }
+        } catch (_) {
+          break;
+        }
+      }
+      return owned;
+    }
   }
 
   Future<String> approveNFT(BigInt tokenId, String vaultAddress) async {

@@ -7,6 +7,7 @@ import '../config/routes.dart';
 import '../services/privy_service.dart';
 import '../services/wallet_service.dart';
 import 'kyc_screen.dart';
+import 'tx_history_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -67,6 +68,16 @@ class SettingsScreen extends StatelessWidget {
                 context,
               ).push(MaterialPageRoute(builder: (_) => const KycScreen()));
             },
+          ),
+          const Divider(height: 1),
+          ListTile(
+            leading: const Icon(Icons.history, color: Color(0xFF836EF9)),
+            title: const Text('Transaction History'),
+            subtitle: const Text('See your on-chain actions'),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => Navigator.of(
+              context,
+            ).push(MaterialPageRoute(builder: (_) => const TxHistoryScreen())),
           ),
           const Divider(height: 1),
           const ListTile(
