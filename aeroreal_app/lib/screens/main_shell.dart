@@ -6,6 +6,7 @@ import 'explore_screen.dart';
 import 'home_screen.dart';
 import 'more_screen.dart';
 import 'nft_marketplace_screen.dart';
+import 'portfolio_screen.dart';
 import 'watchlist_screen.dart';
 
 class MainShell extends StatefulWidget {
@@ -20,6 +21,7 @@ class _MainShellState extends State<MainShell> {
 
   final List<Widget> _screens = const [
     HomeScreen(),
+    PortfolioScreen(),
     ExploreScreen(),
     NftMarketplaceScreen(),
     WatchlistScreen(),
@@ -41,6 +43,14 @@ class _MainShellState extends State<MainShell> {
             icon: Icon(Icons.home_outlined),
             selectedIcon: Icon(Icons.home, color: Color(0xFF836EF9)),
             label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.account_balance_wallet_outlined),
+            selectedIcon: Icon(
+              Icons.account_balance_wallet,
+              color: Color(0xFF836EF9),
+            ),
+            label: 'Portfolio',
           ),
           NavigationDestination(
             icon: Icon(Icons.search_outlined),

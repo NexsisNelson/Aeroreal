@@ -144,6 +144,25 @@ class ContractService {
     return result[0] as BigInt;
   }
 
+  Future<BigInt> getGoldFractionBalance(String address) async {
+    final vault = _contract(AppConstants.goldVault, AppABIs.vault);
+    final tokenResult = await client.call(
+      contract: vault,
+      function: vault.function('fractionToken'),
+      params: [],
+    );
+    final token = _contract(
+      (tokenResult[0] as EthereumAddress).with0x,
+      AppABIs.erc20,
+    );
+    final result = await client.call(
+      contract: token,
+      function: token.function('balanceOf'),
+      params: [EthereumAddress.fromHex(address)],
+    );
+    return result[0] as BigInt;
+  }
+
   Future<BigInt> getEarnedYield(String address) async {
     final contract = _contract(AppConstants.streamer, AppABIs.streamer);
     final fn = contract.function('earned');

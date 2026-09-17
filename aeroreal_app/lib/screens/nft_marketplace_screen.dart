@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../config/constants.dart';
 import '../services/contract_service.dart';
 import '../services/privy_service.dart';
+import '../services/portfolio_service.dart';
 
 class NftMarketplaceScreen extends StatefulWidget {
   const NftMarketplaceScreen({super.key});
@@ -161,6 +162,13 @@ class _NftMarketplaceScreenState extends State<NftMarketplaceScreen>
       if (!mounted) return;
       setState(() => _status = 'Buying NFT...');
       await contracts.buyNft(BigInt.from(listingId));
+      await PortfolioService().recordPurchase(
+        assetId: 'demo-nft-$listingId',
+        symbol: 'NFT',
+        name: 'Demo NFT #$listingId',
+        amount: 1,
+        priceUsd: (listing['price'] as BigInt).toDouble() / 1e18,
+      );
       if (!mounted) return;
       setState(() {
         _processing = false;
