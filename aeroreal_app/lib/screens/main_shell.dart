@@ -2,14 +2,11 @@
 
 import 'package:flutter/material.dart';
 
-import 'agent_api_screen.dart';
 import 'explore_screen.dart';
-import 'fractionalize_screen.dart';
 import 'home_screen.dart';
+import 'more_screen.dart';
 import 'nft_marketplace_screen.dart';
-import 'settings_screen.dart';
 import 'watchlist_screen.dart';
-import 'yield_screen.dart';
 
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
@@ -26,10 +23,7 @@ class _MainShellState extends State<MainShell> {
     ExploreScreen(),
     NftMarketplaceScreen(),
     WatchlistScreen(),
-    FractionalizeScreen(),
-    YieldScreen(),
-    AgentApiScreen(),
-    SettingsScreen(),
+    MoreScreen(),
   ];
 
   @override
@@ -64,24 +58,9 @@ class _MainShellState extends State<MainShell> {
             label: 'Watch',
           ),
           NavigationDestination(
-            icon: Icon(Icons.add_circle_outline),
-            selectedIcon: Icon(Icons.add_circle, color: Color(0xFF836EF9)),
-            label: 'Create',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.water_drop_outlined),
-            selectedIcon: Icon(Icons.water_drop, color: Color(0xFF836EF9)),
-            label: 'Yield',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.smart_toy_outlined),
-            selectedIcon: Icon(Icons.smart_toy, color: Color(0xFF836EF9)),
-            label: 'Agent',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings, color: Color(0xFF836EF9)),
-            label: 'Settings',
+            icon: Icon(Icons.more_horiz),
+            selectedIcon: Icon(Icons.more_horiz, color: Color(0xFF836EF9)),
+            label: 'More',
           ),
         ],
       ),
