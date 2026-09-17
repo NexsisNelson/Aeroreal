@@ -124,17 +124,25 @@ async function readVaultById(id) {
 async function cmcRequest(url) {
   if (!CMC_API_KEY) return { error: 'CMC_API_KEY not configured' };
 
-  const response = await fetch(url, {
-    headers: { 'X-CMC_PRO_API_KEY': CMC_API_KEY },
-  });
-  const body = await response.json();
-  if (!response.ok && !body.status) {
-    body.status = {
-      error_code: response.status,
-      error_message: `CMC returned ${response.status}`,
+  try {
+    const response = await fetch(url, {
+      headers: { 'X-CMC_PRO_API_KEY': CMC_API_KEY },
+      signal: AbortSignal.timeout(10000),
+    });
+    const body = await response.json();
+    if (!response.ok && !body.status) {
+      body.status = {
+        error_code: response.status,
+        error_message: `CMC returned ${response.status}`,
+      };
+    }
+    return body;
+  } catch (error) {
+    return {
+      error: `CoinMarketCap request failed: ${error.message}`,
+      retryable: true,
     };
   }
-  return body;
 }
 
 async function fetchRwaList({ search, assetType, limit = 50 } = {}) {
@@ -209,21 +217,34 @@ async function fetchRwaListWithRetry(options, maxRetries = 3) {
 async function coingeckoRequest(path, params = {}) {
   if (!COINGECKO_API_KEY) return { error: 'COINGECKO_API_KEY not configured' };
 
-  const url = new URL(`${COINGECKO_BASE}${path}`);
-  Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== null) url.searchParams.set(key, String(value));
-  });
-  const response = await fetch(url, {
-    headers: { 'x-cg-demo-api-key': COINGECKO_API_KEY },
-  });
-  const body = await response.json();
-  if (!response.ok) {
+  try {
+    const url = new URL(`${COINGECKO_BASE}${path}`);
+    Object.entries(params).forEach(([key, value]) => {
+      if (value !== undefined && value !== null) {
+        url.searchParams.set(key, String(value));
+      }
+    });
+    const response = await fetch(url, {
+      headers: { 'x-cg-demo-api-key': COINGECKO_API_KEY },
+      signal: AbortSignal.timeout(10000),
+    });
+    const body = await response.json();
+    if (!response.ok) {
+      return {
+        error:
+          body.error ||
+          body.status?.error_message ||
+          `CoinGecko returned ${response.status}`,
+        retryable: response.status >= 500 || response.status === 429,
+      };
+    }
+    return body;
+  } catch (error) {
     return {
-      error: body.error || body.status?.error_message || `CoinGecko returned ${response.status}`,
-      retryable: response.status >= 500 || response.status === 429,
+      error: `CoinGecko request failed: ${error.message}`,
+      retryable: true,
     };
   }
-  return body;
 }
 
 function normalizeMarketAsset(asset) {
@@ -342,9 +363,19 @@ async function getRwaCategories() {
 }
 
 async function withCmcFallback(primary, fallback) {
-  const result = await primary();
+  let result;
+  try {
+    result = await primary();
+  } catch (error) {
+    result = { error: error.message, retryable: true };
+  }
   if (!result.error) return result;
-  const backup = await fallback();
+  let backup;
+  try {
+    backup = await fallback();
+  } catch (error) {
+    backup = { error: error.message, retryable: true };
+  }
   if (!backup.error) return { ...backup, source: 'coinmarketcap_fallback' };
   return {
     error: result.error,
