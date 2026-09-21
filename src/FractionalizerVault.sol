@@ -17,20 +17,21 @@ contract FractionalizerVault is ERC721Holder, ReentrancyGuard {
 
 	using SafeERC20 for IERC20;
 
-	// ---- The Big Asset being locked ----
+	// The physical or collectible asset remains held by this vault while it is
+	// represented by fungible fraction tokens.
 	address public nftContract;  // The address of the NFT collection (e.g., BAYC)
 	uint256 public nftTokenId;   // The specific NFT ID (e.g., #4412)
 
-	// ---- The Tiny Pieces handed out ----
+	// Each vault owns a separate ERC-20-like token contract for its fractions.
 	FractionToken public fractionToken;
 
 	// ---- Ownership ----
 	address public owner;
 
-	// ---- Total number of tiny pieces to mint (e.g., 10,000) ----
+	// This fixed supply is the amount the owner must hold to redeem the NFT.
 	uint256 public totalFractions;
 
-	// ---- Track if the NFT has been redeemed (all pieces returned) ----
+	// Redemption is one-way: once true, the vault cannot fractionalize again.
 	bool public isRedeemed;
 
 	// ---- Events for the Flutter app ----
@@ -82,6 +83,8 @@ contract FractionalizerVault is ERC721Holder, ReentrancyGuard {
 	 * @dev The caller MUST call nft.approve(vaultAddress, tokenId) FIRST.
 	 */
 	function fractionalize() external nonReentrant {
+		// This operation is deliberately single-use. A vault represents one NFT
+		// and cannot mint a second supply after its first fractionalization.
 		require(!isRedeemed, "Already redeemed");
 		require(fractionToken.totalSupply() == 0, "Already fractionalized");
 
@@ -104,11 +107,15 @@ contract FractionalizerVault is ERC721Holder, ReentrancyGuard {
 	 * @dev This burns ALL the fractions held by the caller and returns the NFT.
 	 */
 	function whitelistStreamer(address _streamer) external onlyOwner {
+		// The streamer needs this permission to move fraction tokens during
+		// staking, but only the vault owner can grant it.
 		require(_streamer != address(0), "Zero address not allowed");
 		fractionToken.vaultWhitelist(_streamer);
 	}
 
 	function redeem() external nonReentrant {
+		// Holding every fraction is the on-chain proof that the caller controls
+		// the complete underlying asset.
 		require(!isRedeemed, "Already redeemed");
 
 		// 1. Verify the caller holds 100% of the supply.
