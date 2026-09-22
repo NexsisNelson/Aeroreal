@@ -38,6 +38,8 @@ class AppConstants {
   // ---- RWA Contracts (Monad Testnet) ----
   static const String mockStablecoin =
       '0x01eA8d5FF45f5fAaC8b5BbE1e48cc734cd104512';
+  static const String fractionMarketplace =
+      '0x301426360A0E81c62C45cCA1E308963be6926C69';
   static const String revenueOracle =
       '0x867Ca7417E20c191AAf149219B8af86f3Bb6d689';
   static const String commodityCertificate =

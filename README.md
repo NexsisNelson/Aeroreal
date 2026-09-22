@@ -67,3 +67,11 @@ The API listens on port `3000` by default.
 ## Configuration
 
 The Foundry explorer configuration reads `MONADSCAN_API_KEY` from the environment. RPC URLs and application settings should also be supplied through local environment files or shell variables. The committed `.env.example` files contain placeholders only.
+
+## Deployed Contracts
+
+The fraction marketplace is deployed on Monad Testnet:
+
+- `FractionMarketplace`: `0x301426360A0E81c62C45cCA1E308963be6926C69`
+- Payment token: `mUSD` at `0x01eA8d5FF45f5fAaC8b5BbE1e48cc734cd104512`
+- Deployment transaction: `0x8c1d81572d470ce988ebf428bdda72bd302e52d368fc1b5438c2f736a6e33393`
