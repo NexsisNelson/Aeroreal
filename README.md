@@ -1,66 +1,69 @@
-## Foundry
+# Aeroreal
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+Aeroreal is a real-world asset platform with Solidity contracts, a Flutter client, and a small Node.js agent API. The contracts target Monad Testnet and use Foundry for building, testing, and deployment.
 
-Foundry consists of:
+## Repository Layout
 
-- **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
-- **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
-- **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
-- **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+- `src/` - Solidity contracts
+- `test/` - Foundry tests
+- `script/` - deployment and interaction scripts
+- `broadcast/` - recorded deployment transactions
+- `lib/` - Foundry dependencies (`forge-std` and OpenZeppelin)
+- `aeroreal_app/` - Flutter application
+- `agent-api/` - Node.js API service
 
-## Documentation
+## Prerequisites
 
-https://book.getfoundry.sh/
+- Foundry
+- Flutter SDK (Dart SDK `^3.11.0`)
+- Node.js and npm
+- A Monad Testnet wallet and RPC access for deployments
 
-## Usage
+## Smart Contracts
 
-### Build
-
-```shell
-$ forge build
-```
-
-### Test
-
-```shell
-$ forge test
-```
-
-### Format
+From this directory:
 
 ```shell
-$ forge fmt
+forge install
+forge build
+forge test
+forge fmt --check
 ```
 
-### Gas Snapshots
+For deployment, set credentials in your shell rather than committing them:
 
 ```shell
-$ forge snapshot
+set MONADSCAN_API_KEY=your_api_key
+set PRIVATE_KEY=your_private_key
+forge script script/Deploy.s.sol:DeployScript --rpc-url https://testnet-rpc.monad.xyz --private-key %PRIVATE_KEY% --broadcast
 ```
 
-### Anvil
+Use the equivalent environment variable syntax for your shell. Never commit private keys, API keys, or `.env` files.
+
+## Flutter App
 
 ```shell
-$ anvil
+cd aeroreal_app
+copy .env.example .env
+flutter pub get
+flutter analyze
+flutter test
+flutter run
 ```
 
-### Deploy
+Update `.env` with local service settings before running the app.
+
+## Agent API
 
 ```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+cd agent-api
+copy .env.example .env
+npm install
+npm start
 ```
 
-### Cast
+The API listens on port `3000` by default.
 
-```shell
-$ cast <subcommand>
-```
+## Configuration
 
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+The Foundry explorer configuration reads `MONADSCAN_API_KEY` from the environment. RPC URLs and application settings should also be supplied through local environment files or shell variables. The committed `.env.example` files contain placeholders only.

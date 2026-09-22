@@ -2,6 +2,33 @@
 cache/
 out/
 
+# Flutter and Dart build output
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+coverage/
+
+# Android and Apple generated files
+.gradle/
+.kotlin/
+local.properties
+Pods/
+
+# Node dependencies and logs
+node_modules/
+npm-debug.log*
+
+# IDE and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local analysis output
+flutter_analyze.txt
+
 # Commonly ignored directories
 .logs/
 .ignore/

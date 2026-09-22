@@ -22,4 +22,4 @@ exclude_lints = [
 ]
 
 [etherscan]
-monad_testnet = { key = "NIGSDDWCAWU6AE87FKBTIMUDMPWMYI1F42", chain = 10143, url = "https://testnet.monadscan.com/api" }
+monad_testnet = { key = "${MONADSCAN_API_KEY}", chain = 10143, url = "https://testnet.monadscan.com/api" }
