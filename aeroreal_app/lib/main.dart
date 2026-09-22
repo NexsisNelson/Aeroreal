@@ -15,7 +15,7 @@ import 'screens/wallet_onboarding_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: '.env');
+  await dotenv.load(fileName: '.env', isOptional: true);
   await NotificationService().initialize();
 
   final privyService = PrivyService(
