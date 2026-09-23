@@ -21,10 +21,7 @@ contract YieldRewardToken is ERC20, Ownable {
      * @param _name Full name, e.g., "Micro Yield Sprinkle"
      * @param _symbol Ticker, e.g., "SPRINKLE"
      */
-    constructor(
-        string memory _name,
-        string memory _symbol
-    ) ERC20(_name, _symbol) Ownable(msg.sender) {}
+    constructor(string memory _name, string memory _symbol) ERC20(_name, _symbol) Ownable(msg.sender) {}
 
     /**
      * @notice Owner sets the address of the MicroYieldStreamer.

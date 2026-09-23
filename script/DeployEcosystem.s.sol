@@ -28,7 +28,6 @@ contract DemoNFT is ERC721 {
  * @notice Deploys a Vault + Streamer pair, mints a demo NFT, and wires it all up.
  */
 contract DeployEcosystem is Script {
-
     // Addresses deployed by Deploy.s.sol on Monad Testnet.
     address constant SPRINKLE_TOKEN = 0x52ed56213b76636CA031ec6D0fE3944ef777b914;
     address constant FRACTION_FACTORY = 0xeB4f5592d12B59910ef92584e59767A931d8Ce40;

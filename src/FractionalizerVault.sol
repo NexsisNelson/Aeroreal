@@ -14,149 +14,123 @@ import "./FractionToken.sol";
  * It locks an NFT and mints FractionTokens in exchange.
  */
 contract FractionalizerVault is ERC721Holder, ReentrancyGuard {
+    using SafeERC20 for IERC20;
 
-	using SafeERC20 for IERC20;
+    // The physical or collectible asset remains held by this vault while it is
+    // represented by fungible fraction tokens.
+    address public nftContract; // The address of the NFT collection (e.g., BAYC)
+    uint256 public nftTokenId; // The specific NFT ID (e.g., #4412)
 
-	// The physical or collectible asset remains held by this vault while it is
-	// represented by fungible fraction tokens.
-	address public nftContract;  // The address of the NFT collection (e.g., BAYC)
-	uint256 public nftTokenId;   // The specific NFT ID (e.g., #4412)
+    // Each vault owns a separate ERC-20-like token contract for its fractions.
+    FractionToken public fractionToken;
 
-	// Each vault owns a separate ERC-20-like token contract for its fractions.
-	FractionToken public fractionToken;
+    // ---- Ownership ----
+    address public owner;
 
-	// ---- Ownership ----
-	address public owner;
+    // This fixed supply is the amount the owner must hold to redeem the NFT.
+    uint256 public totalFractions;
 
-	// This fixed supply is the amount the owner must hold to redeem the NFT.
-	uint256 public totalFractions;
+    // Redemption is one-way: once true, the vault cannot fractionalize again.
+    bool public isRedeemed;
 
-	// Redemption is one-way: once true, the vault cannot fractionalize again.
-	bool public isRedeemed;
+    // ---- Events for the Flutter app ----
+    event Fractionalized(address indexed user, uint256 totalSupply);
+    event Redeemed(address indexed user, uint256 nftId);
 
-	// ---- Events for the Flutter app ----
-	event Fractionalized(address indexed user, uint256 totalSupply);
-	event Redeemed(address indexed user, uint256 nftId);
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not the owner");
+        _;
+    }
 
-	modifier onlyOwner() {
-		require(msg.sender == owner, "Not the owner");
-		_;
-	}
+    /**
+     * @notice Deploying the Vault deploys a new FractionToken alongside it.
+     * @param _nftContract The NFT collection address.
+     * @param _nftTokenId The specific NFT id being locked.
+     * @param _totalFractions How many tiny pieces to mint (e.g., 10000).
+     * @param _name Name of the fraction token, e.g., "Fractionalized Ape".
+     * @param _symbol Ticker, e.g., "fAPE".
+     */
+    constructor(
+        address _nftContract,
+        uint256 _nftTokenId,
+        uint256 _totalFractions,
+        string memory _name,
+        string memory _symbol
+    ) {
+        require(_totalFractions > 0, "Must mint at least 1 fraction");
 
-	/**
-	 * @notice Deploying the Vault deploys a new FractionToken alongside it.
-	 * @param _nftContract The NFT collection address.
-	 * @param _nftTokenId The specific NFT id being locked.
-	 * @param _totalFractions How many tiny pieces to mint (e.g., 10000).
-	 * @param _name Name of the fraction token, e.g., "Fractionalized Ape".
-	 * @param _symbol Ticker, e.g., "fAPE".
-	 */
-	constructor(
-		address _nftContract,
-		uint256 _nftTokenId,
-		uint256 _totalFractions,
-		string memory _name,
-		string memory _symbol
-	) {
-		require(_totalFractions > 0, "Must mint at least 1 fraction");
+        nftContract = _nftContract;
+        nftTokenId = _nftTokenId;
+        totalFractions = _totalFractions;
+        owner = msg.sender;
 
-		nftContract = _nftContract;
-		nftTokenId = _nftTokenId;
-		totalFractions = _totalFractions;
-		owner = msg.sender;
+        // Deploy a brand new FractionToken for this specific NFT.
+        fractionToken = new FractionToken(_name, _symbol, "NFT", "Global", "");
 
-		// Deploy a brand new FractionToken for this specific NFT.
-		fractionToken = new FractionToken(
-			_name,
-			_symbol,
-			"NFT",
-			"Global",
-			""
-		);
+        // Tell the FractionToken that ONLY THIS VAULT can mint/burn it.
+        fractionToken.setVault(address(this));
+    }
 
-		// Tell the FractionToken that ONLY THIS VAULT can mint/burn it.
-		fractionToken.setVault(address(this));
-	}
+    /**
+     * @notice Locks the NFT in the vault and mints FractionTokens to the caller.
+     * @dev The caller MUST call nft.approve(vaultAddress, tokenId) FIRST.
+     */
+    function fractionalize() external nonReentrant {
+        // This operation is deliberately single-use. A vault represents one NFT
+        // and cannot mint a second supply after its first fractionalization.
+        require(!isRedeemed, "Already redeemed");
+        require(fractionToken.totalSupply() == 0, "Already fractionalized");
 
-	/**
-	 * @notice Locks the NFT in the vault and mints FractionTokens to the caller.
-	 * @dev The caller MUST call nft.approve(vaultAddress, tokenId) FIRST.
-	 */
-	function fractionalize() external nonReentrant {
-		// This operation is deliberately single-use. A vault represents one NFT
-		// and cannot mint a second supply after its first fractionalization.
-		require(!isRedeemed, "Already redeemed");
-		require(fractionToken.totalSupply() == 0, "Already fractionalized");
+        // 1. Pull the NFT from the user into this vault.
+        IERC721(nftContract).safeTransferFrom(msg.sender, address(this), nftTokenId);
 
-		// 1. Pull the NFT from the user into this vault.
-		IERC721(nftContract).safeTransferFrom(
-			msg.sender,
-			address(this),
-			nftTokenId
-		);
+        // 2. Mint the tiny pieces to the user who deposited.
+        fractionToken.addToWhitelist(msg.sender);
+        fractionToken.mint(msg.sender, totalFractions);
 
-		// 2. Mint the tiny pieces to the user who deposited.
-		fractionToken.addToWhitelist(msg.sender);
-		fractionToken.mint(msg.sender, totalFractions);
+        emit Fractionalized(msg.sender, totalFractions);
+    }
 
-		emit Fractionalized(msg.sender, totalFractions);
-	}
+    /**
+     * @notice If a user collects 100% of the FractionTokens, they can redeem the NFT.
+     * @dev This burns ALL the fractions held by the caller and returns the NFT.
+     */
+    function whitelistStreamer(address _streamer) external onlyOwner {
+        // The streamer needs this permission to move fraction tokens during
+        // staking, but only the vault owner can grant it.
+        require(_streamer != address(0), "Zero address not allowed");
+        fractionToken.vaultWhitelist(_streamer);
+    }
 
-	/**
-	 * @notice If a user collects 100% of the FractionTokens, they can redeem the NFT.
-	 * @dev This burns ALL the fractions held by the caller and returns the NFT.
-	 */
-	function whitelistStreamer(address _streamer) external onlyOwner {
-		// The streamer needs this permission to move fraction tokens during
-		// staking, but only the vault owner can grant it.
-		require(_streamer != address(0), "Zero address not allowed");
-		fractionToken.vaultWhitelist(_streamer);
-	}
+    function redeem() external nonReentrant {
+        // Holding every fraction is the on-chain proof that the caller controls
+        // the complete underlying asset.
+        require(!isRedeemed, "Already redeemed");
 
-	function redeem() external nonReentrant {
-		// Holding every fraction is the on-chain proof that the caller controls
-		// the complete underlying asset.
-		require(!isRedeemed, "Already redeemed");
+        // 1. Verify the caller holds 100% of the supply.
+        uint256 userBalance = fractionToken.balanceOf(msg.sender);
+        require(userBalance == totalFractions, "You must hold 100% of the fractions to redeem");
 
-		// 1. Verify the caller holds 100% of the supply.
-		uint256 userBalance = fractionToken.balanceOf(msg.sender);
-		require(
-			userBalance == totalFractions,
-			"You must hold 100% of the fractions to redeem"
-		);
+        // 2. Mark as redeemed to prevent re-entrancy.
+        isRedeemed = true;
 
-		// 2. Mark as redeemed to prevent re-entrancy.
-		isRedeemed = true;
+        // 3. Burn all the tiny pieces.
+        fractionToken.burn(msg.sender, totalFractions);
 
-		// 3. Burn all the tiny pieces.
-		fractionToken.burn(msg.sender, totalFractions);
+        // 4. Send the NFT back to the user.
+        IERC721(nftContract).safeTransferFrom(address(this), msg.sender, nftTokenId);
 
-		// 4. Send the NFT back to the user.
-		IERC721(nftContract).safeTransferFrom(
-			address(this),
-			msg.sender,
-			nftTokenId
-		);
+        emit Redeemed(msg.sender, nftTokenId);
+    }
 
-		emit Redeemed(msg.sender, nftTokenId);
-	}
-
-	/**
-	 * @notice Read helper for the Flutter app.
-	 */
-	function getVaultInfo() external view returns (
-		address _nftContract,
-		uint256 _nftId,
-		address _fractionToken,
-		uint256 _totalFractions,
-		bool _isRedeemed
-	) {
-		return (
-			nftContract,
-			nftTokenId,
-			address(fractionToken),
-			totalFractions,
-			isRedeemed
-		);
-	}
+    /**
+     * @notice Read helper for the Flutter app.
+     */
+    function getVaultInfo()
+        external
+        view
+        returns (address _nftContract, uint256 _nftId, address _fractionToken, uint256 _totalFractions, bool _isRedeemed)
+    {
+        return (nftContract, nftTokenId, address(fractionToken), totalFractions, isRedeemed);
+    }
 }
