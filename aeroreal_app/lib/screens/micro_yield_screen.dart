@@ -200,7 +200,7 @@ class _MicroYieldScreenState extends State<MicroYieldScreen>
         ],
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: const Color(0xFF836EF9),
+          indicatorColor: const Color.fromARGB(255, 74, 24, 199),
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white54,
           tabs: const [
@@ -314,7 +314,7 @@ class _MicroYieldScreenState extends State<MicroYieldScreen>
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFF1A1625),
+              color: const Color.fromARGB(255, 0, 0, 0),
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Text(

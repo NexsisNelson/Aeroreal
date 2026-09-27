@@ -5,6 +5,7 @@ import "forge-std/Test.sol";
 import "../src/FractionFactory.sol";
 import "../src/MicroYieldStreamer.sol";
 import "../src/YieldRewardToken.sol";
+import "../src/FaucetFractionToken.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract MockNFT2 is ERC721 {
@@ -45,6 +46,24 @@ contract EdgeCasesTest is Test {
 
         vm.prank(bob);
         nft.mint(bob);
+    }
+
+    function testFaucetMintAllowsFreshRecipient() public {
+        FaucetFractionToken token = new FaucetFractionToken(
+            "Faucet Gold",
+            "fGOLD",
+            "Gold",
+            "US",
+            ""
+        );
+
+        address faucet = 0xf4a4C3D1e2f3A4B5c6D7e8f9A0B1C2D3e4f5A6B7;
+        token.setFaucet(faucet);
+
+        vm.prank(faucet);
+        token.faucetMint(alice, 1_000 * 1e18);
+
+        assertEq(token.balanceOf(alice), 1_000 * 1e18, "fresh wallet should receive faucet mint");
     }
 
     // =====================================================

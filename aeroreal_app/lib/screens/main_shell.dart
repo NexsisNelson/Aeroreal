@@ -35,8 +35,8 @@ class _MainShellState extends State<MainShell> {
       bottomNavigationBar: NavigationBar(
         selectedIndex: _currentIndex,
         onDestinationSelected: (i) => setState(() => _currentIndex = i),
-        backgroundColor: const Color(0xFF1A1625),
-        indicatorColor: const Color(0xFF836EF9).withAlpha(77),
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+        indicatorColor: const Color.fromARGB(255, 74, 24, 199).withAlpha(77),
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
         destinations: const [
           NavigationDestination(

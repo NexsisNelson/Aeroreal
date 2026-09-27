@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "./FractionToken.sol";
+import "./FaucetFractionToken.sol";
 
 /**
  * @title FractionalizerVault
@@ -23,7 +23,7 @@ contract FractionalizerVault is ERC721Holder, ReentrancyGuard {
 	uint256 public nftTokenId;   // The specific NFT ID (e.g., #4412)
 
 	// Each vault owns a separate ERC-20-like token contract for its fractions.
-	FractionToken public fractionToken;
+	FaucetFractionToken public fractionToken;
 
 	// ---- Ownership ----
 	address public owner;
@@ -65,8 +65,8 @@ contract FractionalizerVault is ERC721Holder, ReentrancyGuard {
 		totalFractions = _totalFractions;
 		owner = msg.sender;
 
-		// Deploy a brand new FractionToken for this specific NFT.
-		fractionToken = new FractionToken(
+		// Deploy a brand new fraction token for this specific NFT.
+		fractionToken = new FaucetFractionToken(
 			_name,
 			_symbol,
 			"NFT",
@@ -106,6 +106,10 @@ contract FractionalizerVault is ERC721Holder, ReentrancyGuard {
 	 * @notice If a user collects 100% of the FractionTokens, they can redeem the NFT.
 	 * @dev This burns ALL the fractions held by the caller and returns the NFT.
 	 */
+	function setFractionTokenFaucet(address _faucet) external onlyOwner {
+		fractionToken.setFaucet(_faucet);
+	}
+
 	function whitelistStreamer(address _streamer) external onlyOwner {
 		// The streamer needs this permission to move fraction tokens during
 		// staking, but only the vault owner can grant it.

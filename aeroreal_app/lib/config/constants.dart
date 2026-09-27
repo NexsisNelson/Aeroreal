@@ -40,6 +40,12 @@ class AppConstants {
       '0x01eA8d5FF45f5fAaC8b5BbE1e48cc734cd104512';
   static const String fractionMarketplace =
       '0x301426360A0E81c62C45cCA1E308963be6926C69';
+  static const String goldFractionToken =
+      '0xeaC33C6059Ec67423088Bfb0c7e5262C9A60f9F9';
+  static const String coffeeFractionToken =
+      '0xb6824247A5791A22A30b7f48019ab60e255868c4';
+  static const String treasuryFractionToken =
+      '0x44e1D5A9d1Aa66D056847749b889cd4fBC1da440';
   static const String revenueOracle =
       '0x867Ca7417E20c191AAf149219B8af86f3Bb6d689';
   static const String commodityCertificate =

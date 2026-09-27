@@ -109,7 +109,7 @@ class _RwaMarketplaceScreenState extends State<RwaMarketplaceScreen> {
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: _load,
-          color: const Color(0xFF836EF9),
+          color: const Color.fromARGB(255, 74, 24, 199),
           child: ListView(
             padding: const EdgeInsets.all(20),
             children: [
@@ -343,10 +343,10 @@ class _RwaMarketplaceScreenState extends State<RwaMarketplaceScreen> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1625),
+        color: const Color.fromARGB(255, 0, 0, 0),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: const Color(0xFF836EF9).withValues(alpha: 0.4),
+          color: const Color.fromARGB(255, 74, 24, 199).withValues(alpha: 0.4),
         ),
       ),
       child: Column(

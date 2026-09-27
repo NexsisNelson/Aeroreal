@@ -73,7 +73,7 @@ class _MoreTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-      leading: Icon(icon, color: const Color(0xFF836EF9)),
+      leading: Icon(icon, color: const Color.fromARGB(255, 74, 24, 199)),
       title: Text(title),
       subtitle: Text(subtitle),
       trailing: const Icon(Icons.chevron_right),

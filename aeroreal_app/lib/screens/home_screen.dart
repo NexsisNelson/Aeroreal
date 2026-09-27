@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: _refresh,
-          color: const Color(0xFF836EF9),
+          color: const Color.fromARGB(255, 74, 24, 199),
           child: ListView(
             padding: const EdgeInsets.all(20),
             children: [
@@ -216,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       value: _fractionBalance ?? '0',
                       symbol: 'fMDAPE',
                       icon: Icons.pie_chart_outline,
-                      color: const Color(0xFF836EF9),
+                      color: const Color.fromARGB(255, 74, 24, 199),
                     ),
                   ),
                   const SizedBox(width: 12),
@@ -241,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: Icons.add_circle_outline,
                 title: 'Fractionalize an NFT',
                 subtitle: 'Lock an NFT and mint fractions',
-                color: const Color(0xFF836EF9),
+                color: const Color.fromARGB(255, 74, 24, 199),
                 onTap: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
@@ -292,7 +292,7 @@ class _AssetCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1625),
+        color: const Color.fromARGB(255, 0, 0, 0),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -340,7 +340,7 @@ class _ActionTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Material(
-        color: const Color(0xFF1A1625),
+        color: const Color.fromARGB(255, 0, 0, 0),
         borderRadius: BorderRadius.circular(16),
         child: InkWell(
           onTap: onTap,

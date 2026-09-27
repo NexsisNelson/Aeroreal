@@ -20,12 +20,12 @@ contract Deploy is Script {
 
         vm.startBroadcast(deployerPrivateKey);
 
-        // 1. Deploy the YieldRewardToken (the Sprinkles).
-        YieldRewardToken sprinkle = new YieldRewardToken(
-            "Micro Sprinkle",
-            "SPR"
+        // 1. Deploy the AREAL reward token.
+        YieldRewardToken areal = new YieldRewardToken(
+            "Aeroreal Token",
+            "AREAL"
         );
-        console.log("YieldRewardToken deployed at:", address(sprinkle));
+        console.log("YieldRewardToken deployed at:", address(areal));
 
         // 2. Deploy the FractionFactory (the Vending Machine).
         FractionFactory factory = new FractionFactory();
@@ -36,7 +36,7 @@ contract Deploy is Script {
         console.log("");
         console.log("=== DEPLOYMENT COMPLETE ===");
         console.log("Save these addresses:");
-        console.log("YieldRewardToken:", address(sprinkle));
+        console.log("AREAL:", address(areal));
         console.log("FractionFactory:", address(factory));
     }
 }

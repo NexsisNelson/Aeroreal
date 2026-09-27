@@ -181,7 +181,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 filled: true,
-                fillColor: const Color(0xFF1A1625),
+                fillColor: const Color.fromARGB(255, 0, 0, 0),
               ),
             ),
           ),
@@ -225,7 +225,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                 const SizedBox(width: 8),
                 DropdownButton<String>(
                   value: _sortBy,
-                  dropdownColor: const Color(0xFF1A1625),
+                  dropdownColor: const Color.fromARGB(255, 0, 0, 0),
                   style: const TextStyle(color: Colors.white),
                   underline: const SizedBox.shrink(),
                   items: const [
@@ -263,7 +263,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
                   )
                 : RefreshIndicator(
                     onRefresh: _loadVaults,
-                    color: const Color(0xFF836EF9),
+                    color: const Color.fromARGB(255, 74, 24, 199),
                     child: ListView(
                       padding: const EdgeInsets.all(16),
                       children: [
@@ -330,7 +330,9 @@ class _FilterChip extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: selected ? const Color(0xFF836EF9) : const Color(0xFF1A1625),
+          color: selected
+              ? const Color.fromARGB(255, 74, 24, 199)
+              : const Color.fromARGB(255, 0, 0, 0),
           borderRadius: BorderRadius.circular(20),
         ),
         child: Text(
@@ -362,7 +364,7 @@ class _RwaAssetCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 8),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: const Color(0xFF1A1625),
+          color: const Color.fromARGB(255, 0, 0, 0),
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
             color: const Color(0xFF00D18A).withValues(alpha: 0.25),
@@ -434,7 +436,7 @@ class _VaultCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1625),
+        color: const Color.fromARGB(255, 0, 0, 0),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: const Color(0xFFED9B40).withValues(alpha: 0.3),
@@ -521,7 +523,7 @@ class _VaultCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1625),
+        color: const Color.fromARGB(255, 0, 0, 0),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: const Color(0xFF00D18A).withValues(alpha: 0.3),
@@ -605,7 +607,7 @@ class _VaultCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1625),
+        color: const Color.fromARGB(255, 0, 0, 0),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Text(

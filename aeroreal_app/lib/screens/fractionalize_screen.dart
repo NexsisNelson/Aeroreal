@@ -25,7 +25,7 @@ class FractionalizeScreen extends StatelessWidget {
           const SizedBox(height: 32),
           _CreationCard(
             icon: Icons.image_outlined,
-            color: const Color(0xFF836EF9),
+            color: const Color.fromARGB(255, 74, 24, 199),
             title: 'Fractionalize an NFT',
             subtitle: 'Lock an NFT and mint 10,000 tradeable fractions',
             bullets: const [
@@ -56,7 +56,7 @@ class FractionalizeScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFF1A1625),
+              color: const Color.fromARGB(255, 0, 0, 0),
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Row(
@@ -99,7 +99,7 @@ class _CreationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: const Color(0xFF1A1625),
+      color: const Color.fromARGB(255, 0, 0, 0),
       borderRadius: BorderRadius.circular(20),
       child: InkWell(
         onTap: onTap,

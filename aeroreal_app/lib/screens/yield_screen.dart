@@ -119,7 +119,7 @@ class _YieldScreenState extends State<YieldScreen>
         ],
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: const Color(0xFF836EF9),
+          indicatorColor: const Color.fromARGB(255, 74, 24, 199),
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white54,
           tabs: const [
@@ -140,7 +140,7 @@ class _YieldScreenState extends State<YieldScreen>
                   earned: _nftEarned,
                   staked: _nftStaked,
                   symbol: 'SPR',
-                  color: const Color(0xFF836EF9),
+                  color: const Color.fromARGB(255, 74, 24, 199),
                 ),
                 _buildStreamerTab(
                   title: 'Gold Revenue',

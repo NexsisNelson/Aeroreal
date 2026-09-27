@@ -8,40 +8,47 @@ Future<bool> showConfirmTransaction({
   required String description,
   required List<(String, String)> details,
   String confirmLabel = 'Confirm',
-  Color confirmColor = const Color(0xFF836EF9),
+  Color confirmColor = const Color.fromARGB(255, 74, 24, 199),
 }) async {
   final result = await showDialog<bool>(
     context: context,
     builder: (ctx) => AlertDialog(
-      backgroundColor: const Color(0xFF1A1625),
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       title: Text(title),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(description,
-              style: const TextStyle(color: Colors.white70, fontSize: 13)),
+          Text(
+            description,
+            style: const TextStyle(color: Colors.white70, fontSize: 13),
+          ),
           const SizedBox(height: 16),
-          ...details.map((d) => Padding(
-                padding: const EdgeInsets.symmetric(vertical: 4),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(d.$1,
-                        style: const TextStyle(
-                            color: Colors.white54, fontSize: 12)),
-                    Flexible(
-                      child: Text(
-                        d.$2,
-                        style: const TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.w600),
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.right,
+          ...details.map(
+            (d) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    d.$1,
+                    style: const TextStyle(color: Colors.white54, fontSize: 12),
+                  ),
+                  Flexible(
+                    child: Text(
+                      d.$2,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
                       ),
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.right,
                     ),
-                  ],
-                ),
-              )),
+                  ),
+                ],
+              ),
+            ),
+          ),
           const SizedBox(height: 16),
           Container(
             padding: const EdgeInsets.all(10),
@@ -51,8 +58,11 @@ Future<bool> showConfirmTransaction({
             ),
             child: const Row(
               children: [
-                Icon(Icons.warning_amber_rounded,
-                    color: Color(0xFFFF6B35), size: 16),
+                Icon(
+                  Icons.warning_amber_rounded,
+                  color: Color(0xFFFF6B35),
+                  size: 16,
+                ),
                 SizedBox(width: 8),
                 Expanded(
                   child: Text(

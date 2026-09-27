@@ -68,7 +68,7 @@ class _TxHistoryScreenState extends State<TxHistoryScreen> {
             )
           : RefreshIndicator(
               onRefresh: _load,
-              color: const Color(0xFF836EF9),
+              color: const Color.fromARGB(255, 74, 24, 199),
               child: ListView.builder(
                 padding: const EdgeInsets.all(16),
                 itemCount: _records.length,
@@ -81,7 +81,7 @@ class _TxHistoryScreenState extends State<TxHistoryScreen> {
                       margin: const EdgeInsets.only(bottom: 8),
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1A1625),
+                        color: const Color.fromARGB(255, 0, 0, 0),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(

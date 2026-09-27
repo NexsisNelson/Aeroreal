@@ -112,7 +112,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
               onRefresh: _load,
-              color: const Color(0xFF836EF9),
+              color: const Color.fromARGB(255, 74, 24, 199),
               child: ListView(
                 padding: const EdgeInsets.all(20),
                 children: [
@@ -202,7 +202,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                 sectionsSpace: 3,
                 centerSpaceRadius: 34,
                 sections: [
-                  _pie(values[0], const Color(0xFF836EF9)),
+                  _pie(values[0], const Color.fromARGB(255, 74, 24, 199)),
                   _pie(values[1], const Color(0xFF00D18A)),
                   _pie(values[2], const Color(0xFFED9B40)),
                 ],
@@ -279,7 +279,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1625),
+        color: const Color.fromARGB(255, 0, 0, 0),
         borderRadius: BorderRadius.circular(14),
       ),
       child: Row(
@@ -350,7 +350,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
   Widget _emptyCard(String text) => Container(
     padding: const EdgeInsets.all(16),
     decoration: BoxDecoration(
-      color: const Color(0xFF1A1625),
+      color: const Color.fromARGB(255, 0, 0, 0),
       borderRadius: BorderRadius.circular(14),
     ),
     child: Text(text, style: const TextStyle(color: Colors.white54)),

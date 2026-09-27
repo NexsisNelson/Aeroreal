@@ -111,7 +111,7 @@ contract FractionToken is ERC20, Ownable {
 		address from,
 		address to,
 		uint256 value
-	) internal override {
+	) internal virtual override {
 		if (whitelistEnabled) {
 			if (from != address(0)) {
 				require(whitelisted[from], "Sender not whitelisted");

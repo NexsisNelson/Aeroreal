@@ -154,7 +154,7 @@ class _RwaDetailScreenState extends State<RwaDetailScreen> {
             icon: const Icon(Icons.add_circle_outline),
             label: const Text('Fractionalize This Asset'),
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF836EF9),
+              backgroundColor: const Color.fromARGB(255, 74, 24, 199),
               padding: const EdgeInsets.symmetric(vertical: 16),
             ),
           ),
@@ -202,7 +202,7 @@ class _RwaDetailScreenState extends State<RwaDetailScreen> {
       height: 220,
       padding: const EdgeInsets.fromLTRB(8, 16, 16, 8),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1625),
+        color: const Color.fromARGB(255, 0, 0, 0),
         borderRadius: BorderRadius.circular(16),
       ),
       child: LineChart(
@@ -270,7 +270,7 @@ class _AssetLogo extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1625),
+        color: const Color.fromARGB(255, 0, 0, 0),
         borderRadius: BorderRadius.circular(16),
       ),
       child: const Icon(Icons.currency_bitcoin, color: Colors.white54),

@@ -67,7 +67,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   margin: const EdgeInsets.only(bottom: 8),
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1A1625),
+                    color: const Color.fromARGB(255, 0, 0, 0),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -151,7 +151,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       case NotificationType.transactionFailed:
         return Colors.redAccent;
       case NotificationType.yieldClaimable:
-        return const Color(0xFF836EF9);
+        return const Color.fromARGB(255, 74, 24, 199);
       case NotificationType.priceAlert:
         return const Color(0xFFFFD700);
       case NotificationType.invoiceMaturity:

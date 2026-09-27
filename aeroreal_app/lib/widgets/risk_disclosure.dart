@@ -23,7 +23,7 @@ class RiskDisclosure extends StatelessWidget {
       case 'Invoice':
         return const Color(0xFF00D18A);
       default:
-        return const Color(0xFF836EF9);
+        return const Color.fromARGB(255, 74, 24, 199);
     }
   }
 

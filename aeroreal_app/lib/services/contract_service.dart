@@ -563,6 +563,111 @@ class ContractService {
     );
   }
 
+  // =========================================================
+  // FRACTION MARKETPLACE
+  // =========================================================
+
+  Future<String> approveFractionToken(
+    String tokenAddress,
+    String spender,
+    BigInt amount,
+  ) async {
+    return _sendPrivyTransaction(
+      contractAddress: tokenAddress,
+      functionName: 'approve',
+      params: [EthereumAddress.fromHex(spender), amount],
+      abi: AppABIs.erc20,
+    );
+  }
+
+  Future<String> listFractions({
+    required String fractionToken,
+    required BigInt amount,
+    required BigInt price,
+  }) async {
+    return _sendPrivyTransaction(
+      contractAddress: AppConstants.fractionMarketplace,
+      functionName: 'list',
+      params: [EthereumAddress.fromHex(fractionToken), amount, price],
+      abi: AppABIs.fractionMarketplace,
+    );
+  }
+
+  Future<String> buyFractions(BigInt listingId) async {
+    final listing = await getFractionListing(listingId);
+    final price = listing['price'] as BigInt;
+
+    await _sendPrivyTransaction(
+      contractAddress: AppConstants.mockStablecoin,
+      functionName: 'approve',
+      params: [
+        EthereumAddress.fromHex(AppConstants.fractionMarketplace),
+        price,
+      ],
+      abi: AppABIs.erc20,
+    );
+
+    return _sendPrivyTransaction(
+      contractAddress: AppConstants.fractionMarketplace,
+      functionName: 'buy',
+      params: [listingId],
+      abi: AppABIs.fractionMarketplace,
+    );
+  }
+
+  Future<String> cancelFractionListing(BigInt listingId) async {
+    return _sendPrivyTransaction(
+      contractAddress: AppConstants.fractionMarketplace,
+      functionName: 'cancel',
+      params: [listingId],
+      abi: AppABIs.fractionMarketplace,
+    );
+  }
+
+  Future<Map<String, dynamic>> getFractionListing(BigInt listingId) async {
+    final contract = _contract(
+      AppConstants.fractionMarketplace,
+      AppABIs.fractionMarketplace,
+    );
+    final result = await client.call(
+      contract: contract,
+      function: contract.function('getListing'),
+      params: [listingId],
+    );
+    return {
+      'seller': (result[0] as EthereumAddress).with0x,
+      'fractionToken': (result[1] as EthereumAddress).with0x,
+      'amount': result[2] as BigInt,
+      'price': result[3] as BigInt,
+      'active': result[4] as bool,
+    };
+  }
+
+  Future<List<Map<String, dynamic>>> getActiveFractionListings() async {
+    final total = await getNextFractionListingId();
+    final listings = <Map<String, dynamic>>[];
+    for (var id = 1; id < total; id++) {
+      final listing = await getFractionListing(BigInt.from(id));
+      if (listing['active'] as bool) {
+        listings.add({...listing, 'listingId': id});
+      }
+    }
+    return listings;
+  }
+
+  Future<int> getNextFractionListingId() async {
+    final contract = _contract(
+      AppConstants.fractionMarketplace,
+      AppABIs.fractionMarketplace,
+    );
+    final result = await client.call(
+      contract: contract,
+      function: contract.function('nextListingId'),
+      params: [],
+    );
+    return (result[0] as BigInt).toInt();
+  }
+
   Future<Map<String, dynamic>> getListing(BigInt listingId) async {
     final contract = _contract(
       AppConstants.nftMarketplace,

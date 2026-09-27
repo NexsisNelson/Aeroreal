@@ -57,7 +57,11 @@ class IpfsLink extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
           child: Row(
             children: [
-              Icon(icon, size: 16, color: const Color(0xFF836EF9)),
+              Icon(
+                icon,
+                size: 16,
+                color: const Color.fromARGB(255, 74, 24, 199),
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -70,8 +74,7 @@ class IpfsLink extends StatelessWidget {
                   ),
                 ),
               ),
-              const Icon(Icons.open_in_new,
-                  size: 14, color: Color(0xFF836EF9)),
+              const Icon(Icons.open_in_new, size: 14, color: Color(0xFF836EF9)),
             ],
           ),
         ),

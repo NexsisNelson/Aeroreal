@@ -220,7 +220,7 @@ class _WalletOnboardingScreenState extends State<WalletOnboardingScreen> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1A1625),
+                    color: const Color.fromARGB(255, 0, 0, 0),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Column(
@@ -289,7 +289,7 @@ class _WalletOnboardingScreenState extends State<WalletOnboardingScreen> {
                             ? _verifyEmailCode
                             : _verifyPhoneCode),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF836EF9),
+                    backgroundColor: const Color.fromARGB(255, 74, 24, 199),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
                   child: const Text('Verify Code'),
@@ -317,7 +317,7 @@ class _WalletOnboardingScreenState extends State<WalletOnboardingScreen> {
                 ElevatedButton(
                   onPressed: _loading ? null : _sendEmailCode,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF836EF9),
+                    backgroundColor: const Color.fromARGB(255, 74, 24, 199),
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
                   child: const Text(

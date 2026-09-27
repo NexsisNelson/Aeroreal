@@ -79,6 +79,19 @@ class AppABIs {
 ]
 ''';
 
+  /// FractionMarketplace ABI.
+  static const String fractionMarketplace = '''
+[
+  {"inputs":[{"name":"_fractionToken","type":"address"},{"name":"_amount","type":"uint256"},{"name":"_price","type":"uint256"}],"name":"list","outputs":[{"name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},
+  {"inputs":[{"name":"_listingId","type":"uint256"}],"name":"buy","outputs":[],"stateMutability":"nonpayable","type":"function"},
+  {"inputs":[{"name":"_listingId","type":"uint256"}],"name":"cancel","outputs":[],"stateMutability":"nonpayable","type":"function"},
+  {"inputs":[{"name":"_listingId","type":"uint256"}],"name":"getListing","outputs":[{"name":"seller","type":"address"},{"name":"fractionToken","type":"address"},{"name":"amount","type":"uint256"},{"name":"price","type":"uint256"},{"name":"active","type":"bool"}],"stateMutability":"view","type":"function"},
+  {"inputs":[],"name":"nextListingId","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+  {"inputs":[],"name":"activeListingCount","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+  {"inputs":[],"name":"feeBps","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"}
+]
+''';
+
   /// CommodityVault ABI.
   static const String commodityVault = '''
 [

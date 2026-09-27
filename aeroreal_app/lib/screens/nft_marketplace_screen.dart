@@ -253,7 +253,7 @@ class _NftMarketplaceScreenState extends State<NftMarketplaceScreen>
                   (id) => RadioListTile<BigInt>(
                     value: id,
                     title: Text('Demo Ape #$id'),
-                    activeColor: const Color(0xFF836EF9),
+                    activeColor: const Color.fromARGB(255, 74, 24, 199),
                   ),
                 )
                 .toList(),

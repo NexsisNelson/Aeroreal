@@ -154,7 +154,7 @@ class _NftFractionalizeScreenState extends State<NftFractionalizeScreen> {
                   label: const Text('Mint a Fresh Demo NFT'),
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 14),
-                    foregroundColor: const Color(0xFF836EF9),
+                    foregroundColor: const Color.fromARGB(255, 74, 24, 199),
                     side: const BorderSide(color: Color(0xFF836EF9)),
                   ),
                 ),
@@ -164,7 +164,7 @@ class _NftFractionalizeScreenState extends State<NftFractionalizeScreen> {
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF1A1625),
+                      color: const Color.fromARGB(255, 0, 0, 0),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: const Text(
@@ -176,7 +176,7 @@ class _NftFractionalizeScreenState extends State<NftFractionalizeScreen> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF1A1625),
+                      color: const Color.fromARGB(255, 0, 0, 0),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Column(
@@ -197,7 +197,12 @@ class _NftFractionalizeScreenState extends State<NftFractionalizeScreen> {
                                   (id) => RadioListTile<BigInt>(
                                     value: id,
                                     title: Text('Demo Ape #$id'),
-                                    activeColor: const Color(0xFF836EF9),
+                                    activeColor: const Color.fromARGB(
+                                      255,
+                                      74,
+                                      24,
+                                      199,
+                                    ),
                                   ),
                                 )
                                 .toList(),
@@ -211,7 +216,7 @@ class _NftFractionalizeScreenState extends State<NftFractionalizeScreen> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1A1625),
+                    color: const Color.fromARGB(255, 0, 0, 0),
                     borderRadius: BorderRadius.circular(16),
                   ),
                   child: Column(
@@ -228,7 +233,7 @@ class _NftFractionalizeScreenState extends State<NftFractionalizeScreen> {
                         max: 100000,
                         divisions: 999,
                         label: _fractionCount.toString(),
-                        activeColor: const Color(0xFF836EF9),
+                        activeColor: const Color.fromARGB(255, 74, 24, 199),
                         onChanged: (value) =>
                             setState(() => _fractionCount = value.round()),
                       ),
@@ -300,7 +305,7 @@ class _NftFractionalizeScreenState extends State<NftFractionalizeScreen> {
                       ? null
                       : _fractionalize,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF836EF9),
+                    backgroundColor: const Color.fromARGB(255, 74, 24, 199),
                     padding: const EdgeInsets.symmetric(vertical: 18),
                   ),
                   child: _creating
