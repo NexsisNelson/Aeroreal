@@ -1,6 +1,7 @@
-import 'dart:convert';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'user_profile_service.dart';
 
 class TransactionRecord {
   final String hash;
@@ -33,15 +34,16 @@ class TransactionRecord {
 }
 
 class TxHistoryService {
-  static const _key = 'tx_history';
-
-  Future<void> log({
+  Future<void> log(
+    BuildContext context, {
     required String hash,
     required String action,
     required String details,
   }) async {
-    final prefs = await SharedPreferences.getInstance();
-    final records = await getAll();
+    final profile = context.read<UserProfileService>();
+    final records = profile.txHistory
+        .map((value) => Map<String, dynamic>.from(value as Map))
+        .toList();
     records.insert(
       0,
       TransactionRecord(
@@ -49,28 +51,23 @@ class TxHistoryService {
         action: action,
         details: details,
         timestamp: DateTime.now(),
-      ),
+      ).toJson(),
     );
-    await prefs.setStringList(
-      _key,
-      records.map((record) => jsonEncode(record.toJson())).toList(),
-    );
+    await profile.update(txHistory: records.take(100).toList());
   }
 
-  Future<List<TransactionRecord>> getAll() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getStringList(_key) ?? const <String>[];
-    return raw
+  Future<List<TransactionRecord>> getAll(BuildContext context) async {
+    final profile = context.read<UserProfileService>();
+    return profile.txHistory
         .map(
           (value) => TransactionRecord.fromJson(
-            jsonDecode(value) as Map<String, dynamic>,
+            Map<String, dynamic>.from(value as Map),
           ),
         )
         .toList();
   }
 
-  Future<void> clear() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_key);
+  Future<void> clear(BuildContext context) async {
+    await context.read<UserProfileService>().update(txHistory: []);
   }
 }

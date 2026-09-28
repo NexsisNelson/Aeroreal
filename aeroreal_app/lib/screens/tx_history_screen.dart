@@ -3,6 +3,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../services/tx_history_service.dart';
 
+// UI/UX: Controls transaction history loading, clear/refresh actions, empty
+// state presentation, record rows, and explorer navigation.
 class TxHistoryScreen extends StatefulWidget {
   const TxHistoryScreen({super.key});
 
@@ -23,7 +25,7 @@ class _TxHistoryScreenState extends State<TxHistoryScreen> {
 
   Future<void> _load() async {
     setState(() => _loading = true);
-    final records = await _service.getAll();
+    final records = await _service.getAll(context);
     if (!mounted) return;
     setState(() {
       _records = records;
@@ -39,7 +41,7 @@ class _TxHistoryScreenState extends State<TxHistoryScreen> {
   }
 
   Future<void> _clear() async {
-    await _service.clear();
+    await _service.clear(context);
     await _load();
   }
 

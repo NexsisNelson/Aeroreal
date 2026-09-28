@@ -6,6 +6,8 @@ import 'settings_screen.dart';
 import 'tx_history_screen.dart';
 import 'yield_screen.dart';
 
+// UI/UX: Controls the secondary navigation list and the destinations exposed
+// outside the primary bottom navigation tabs.
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
 

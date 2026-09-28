@@ -1,27 +1,34 @@
-import 'dart:convert';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
-import 'package:shared_preferences/shared_preferences.dart';
+import 'user_profile_service.dart';
 
 class WatchlistService {
-  static const _key = 'watchlist_assets';
-
-  Future<List<Map<String, dynamic>>> getWatchlist() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getStringList(_key) ?? const <String>[];
-    return raw
-        .map((value) => Map<String, dynamic>.from(jsonDecode(value) as Map))
+  Future<List<Map<String, dynamic>>> getWatchlist(BuildContext context) async {
+    final profile = context.read<UserProfileService>();
+    return profile.watchlist
+        .map((value) => Map<String, dynamic>.from(value as Map))
         .toList();
   }
 
-  Future<bool> isWatched(String assetId) async {
-    final assets = await getWatchlist();
+  Future<bool> isWatched(BuildContext context, String assetId) async {
+    final profile = context.read<UserProfileService>();
+    final assets = profile.watchlist
+        .map((value) => Map<String, dynamic>.from(value as Map))
+        .toList();
     return assets.any((asset) => asset['id'] == assetId);
   }
 
-  Future<void> addToWatchlist(Map<String, dynamic> asset) async {
+  Future<void> addToWatchlist(
+    BuildContext context,
+    Map<String, dynamic> asset,
+  ) async {
+    final profile = context.read<UserProfileService>();
     final id = asset['id'] as String?;
-    if (id == null || id.isEmpty || await isWatched(id)) return;
-    final assets = await getWatchlist();
+    if (id == null || id.isEmpty || await isWatched(context, id)) return;
+    final assets = profile.watchlist
+        .map((value) => Map<String, dynamic>.from(value as Map))
+        .toList();
     assets.add({
       'id': id,
       'rwa_slug': asset['rwa_slug'] ?? id,
@@ -33,30 +40,38 @@ class WatchlistService {
       'asset_type': asset['asset_type'],
       'added_at': DateTime.now().toIso8601String(),
     });
-    await _save(assets);
+    await profile.update(watchlist: assets);
   }
 
-  Future<void> removeFromWatchlist(String assetId) async {
-    final assets = await getWatchlist();
+  Future<void> removeFromWatchlist(BuildContext context, String assetId) async {
+    final profile = context.read<UserProfileService>();
+    final assets = profile.watchlist
+        .map((value) => Map<String, dynamic>.from(value as Map))
+        .toList();
     assets.removeWhere((asset) => asset['id'] == assetId);
-    await _save(assets);
+    await profile.update(watchlist: assets);
   }
 
-  Future<void> toggleWatchlist(Map<String, dynamic> asset) async {
+  Future<void> toggleWatchlist(
+    BuildContext context,
+    Map<String, dynamic> asset,
+  ) async {
+    final profile = context.read<UserProfileService>();
     final id = asset['id'] as String?;
     if (id == null) return;
-    if (await isWatched(id)) {
-      await removeFromWatchlist(id);
+    if (await isWatched(context, id)) {
+      final assets =
+          profile.watchlist
+              .map((value) => Map<String, dynamic>.from(value as Map))
+              .toList()
+            ..removeWhere((item) => item['id'] == id);
+      await profile.update(watchlist: assets);
     } else {
-      await addToWatchlist(asset);
+      final assets = profile.watchlist
+          .map((value) => Map<String, dynamic>.from(value as Map))
+          .toList();
+      assets.add(asset);
+      await profile.update(watchlist: assets);
     }
-  }
-
-  Future<void> _save(List<Map<String, dynamic>> assets) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList(
-      _key,
-      assets.map((asset) => jsonEncode(asset)).toList(),
-    );
   }
 }

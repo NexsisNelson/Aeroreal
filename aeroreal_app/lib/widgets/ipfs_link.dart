@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// UI/UX: Controls document-link text, missing-hash fallback, and external-link
+// behavior for IPFS-backed records.
 class IpfsLink extends StatelessWidget {
   final String label;
   final String ipfsHash;

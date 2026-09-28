@@ -9,6 +9,8 @@ import '../services/wallet_service.dart';
 import '../widgets/ipfs_link.dart';
 import '../widgets/risk_disclosure.dart';
 
+// UI/UX: Controls the on-chain RWA overview, certificate cards, balances,
+// document links, risk notices, refresh, and partial-error states.
 class RwaMarketplaceScreen extends StatefulWidget {
   const RwaMarketplaceScreen({super.key});
 

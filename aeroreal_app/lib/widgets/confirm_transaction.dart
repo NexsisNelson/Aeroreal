@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// UI/UX: Controls the reusable transaction-confirmation dialog, detail rows,
+// warning treatment, and cancel/confirm actions.
 /// Shows a confirmation dialog before a transaction.
 /// Returns `true` if the user confirms, `false` otherwise.
 Future<bool> showConfirmTransaction({

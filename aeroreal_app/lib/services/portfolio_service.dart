@@ -1,20 +1,24 @@
 import 'dart:convert';
 
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'user_profile_service.dart';
+
 class PortfolioService {
-  static const _costBasisKey = 'portfolio_cost_basis';
   static const _snapshotsKey = 'portfolio_snapshots';
 
-  Future<void> recordPurchase({
+  Future<void> recordPurchase(
+    BuildContext context, {
     required String assetId,
     required String symbol,
     required String name,
     required double amount,
     required double priceUsd,
   }) async {
-    final prefs = await SharedPreferences.getInstance();
-    final data = await getCostBasis();
+    final profile = context.read<UserProfileService>();
+    final data = Map<String, dynamic>.from(profile.costBasis);
     final entry = Map<String, dynamic>.from(
       data[assetId] as Map? ??
           {
@@ -30,14 +34,12 @@ class PortfolioService {
         (entry['total_cost_usd'] as num).toDouble() + amount * priceUsd;
     entry['last_purchase'] = DateTime.now().toIso8601String();
     data[assetId] = entry;
-    await prefs.setString(_costBasisKey, jsonEncode(data));
+    await profile.update(costBasis: data);
   }
 
-  Future<Map<String, dynamic>> getCostBasis() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(_costBasisKey) ?? '{}';
-    final decoded = jsonDecode(raw) as Map;
-    final data = Map<String, dynamic>.from(decoded);
+  Future<Map<String, dynamic>> getCostBasis(BuildContext context) async {
+    final profile = context.read<UserProfileService>();
+    final data = Map<String, dynamic>.from(profile.costBasis);
     for (final entry in data.entries) {
       final value = Map<String, dynamic>.from(entry.value as Map);
       final amount = (value['total_amount'] as num).toDouble();
@@ -68,9 +70,10 @@ class PortfolioService {
         .toList();
   }
 
-  Future<void> clear() async {
+  Future<void> clear(BuildContext context) async {
+    final profile = context.read<UserProfileService>();
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_costBasisKey);
+    await profile.update(costBasis: {});
     await prefs.remove(_snapshotsKey);
   }
 }

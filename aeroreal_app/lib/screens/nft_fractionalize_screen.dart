@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../services/contract_service.dart';
 import '../services/privy_service.dart';
 
+// UI/UX: Controls the NFT fractionalization wizard, fraction amount controls,
+// staged transaction progress, success output, and failure recovery.
 class NftFractionalizeScreen extends StatefulWidget {
   const NftFractionalizeScreen({super.key});
 
@@ -143,7 +145,7 @@ class _NftFractionalizeScreenState extends State<NftFractionalizeScreen> {
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'Lock an NFT and mint 10,000 tradeable pieces. Each piece earns \$SPR rewards every second.',
+                  'Lock an NFT and mint 10,000 tradeable pieces. Each piece earns \$AREAL rewards every second.',
                   style: TextStyle(color: Colors.white54, fontSize: 13),
                 ),
                 const SizedBox(height: 20),

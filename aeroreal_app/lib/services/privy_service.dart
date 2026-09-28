@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:privy_flutter/privy_flutter.dart';
 
+import '../config/constants.dart';
+
 class PrivyService {
   PrivyService({this.appId, this.clientId});
 
@@ -196,11 +198,20 @@ class PrivyService {
       return null;
     }
 
+    const gas = '0x989680';
+    const gasLimit = '0x989680';
+    const maxPriorityFeePerGas = '0x3B9ACA00';
+    const maxFeePerGas = '0x1bf08eb000';
     final transaction = jsonEncode({
       'from': wallet.address,
       'to': to,
       'data': data,
       'value': value,
+      'chainId': '0x${AppConstants.monadChainId.toRadixString(16)}',
+      'gas': gas,
+      'gasLimit': gasLimit,
+      'maxPriorityFeePerGas': maxPriorityFeePerGas,
+      'maxFeePerGas': maxFeePerGas,
     });
     final request = EthereumRpcRequest.ethSendTransaction(transaction);
 
@@ -209,6 +220,11 @@ class PrivyService {
     // ignore: avoid_print
     print(
       'Privy: Data: ${data.substring(0, data.length > 40 ? 40 : data.length)}...',
+    );
+    debugPrint(
+      'Privy: gas=$gas, gasLimit=$gasLimit, '
+      'maxFeePerGas=$maxFeePerGas, '
+      'maxPriorityFeePerGas=$maxPriorityFeePerGas',
     );
 
     final result = await wallet.provider.request(request);
@@ -221,8 +237,7 @@ class PrivyService {
       case Failure<EthereumRpcResponse>(:final error):
         // ignore: avoid_print
         print('Privy: FAILED - $error');
-        debugPrint('Privy eth_sendTransaction failed: ${error.message}');
-        return null;
+        throw Exception('Privy eth_sendTransaction failed: ${error.message}');
     }
   }
 

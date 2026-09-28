@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../services/notification_service.dart';
 
+// UI/UX: Controls the notification inbox, read/clear actions, loading state,
+// empty state, and notification row styling.
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
 

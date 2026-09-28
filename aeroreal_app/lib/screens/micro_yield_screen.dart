@@ -9,6 +9,8 @@ import '../config/constants.dart';
 import '../services/contract_service.dart';
 import '../services/wallet_service.dart';
 
+// UI/UX: Controls yield tabs, drip-jar presentation, revenue statistics,
+// polling, claim/fund/simulate actions, and their status/error states.
 class MicroYieldScreen extends StatefulWidget {
   const MicroYieldScreen({super.key});
 

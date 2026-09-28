@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../services/contract_service.dart';
 
+// UI/UX: Controls NFT lookup fields, collection/token results, validation,
+// loading feedback, and lookup error presentation.
 class NftDiscoveryScreen extends StatefulWidget {
   const NftDiscoveryScreen({super.key});
 

@@ -5,6 +5,8 @@ import '../config/constants.dart';
 import '../services/contract_service.dart';
 import '../services/privy_service.dart';
 
+// UI/UX: Controls the fraction Buy/Sell tabs, listing forms, transaction
+// progress, empty states, and marketplace error feedback.
 class FractionMarketplaceScreen extends StatefulWidget {
   const FractionMarketplaceScreen({super.key});
 
@@ -46,30 +48,33 @@ class _FractionMarketplaceScreenState extends State<FractionMarketplaceScreen>
     if (!mounted) return;
     setState(() => _loadingListings = true);
     try {
-      final listings = await context
-          .read<ContractService>()
-          .getActiveFractionListings();
+      final contracts = context.read<ContractService>();
+      final list = await contracts.getActiveFractionListings();
       if (!mounted) return;
       setState(() {
-        _listings = listings;
+        _listings = list;
         _loadingListings = false;
+        _error = null;
       });
-    } catch (error) {
+    } catch (e) {
       if (!mounted) return;
       setState(() {
-        _error = 'Failed to load listings: $error';
+        _error = 'Failed: $e';
         _loadingListings = false;
       });
     }
   }
 
   Future<void> _listFractions() async {
-    final amountText = _amountController.text.trim();
-    final priceText = _priceController.text.trim();
-    if (amountText.isEmpty || priceText.isEmpty) {
+    final amountInput = _amountController.text.trim();
+    final priceInput = _priceController.text.trim();
+    if (amountInput.isEmpty || priceInput.isEmpty) {
       setState(() => _error = 'Enter both amount and price.');
       return;
     }
+
+    final amount = BigInt.from(double.parse(amountInput) * 1e18);
+    final price = BigInt.from(double.parse(priceInput) * 1e18);
 
     String fractionToken;
     switch (_sellAsset) {
@@ -86,23 +91,14 @@ class _FractionMarketplaceScreenState extends State<FractionMarketplaceScreen>
         fractionToken = AppConstants.goldFractionToken;
     }
 
+    setState(() {
+      _processing = true;
+      _error = null;
+      _status = 'Approving marketplace...';
+    });
+
     try {
-      final amount = BigInt.parse(amountText) * BigInt.from(10).pow(18);
-      final price = BigInt.parse(priceText) * BigInt.from(10).pow(18);
-
-      setState(() {
-        _processing = true;
-        _error = null;
-        _status = 'Approving marketplace...';
-      });
-
       final contracts = context.read<ContractService>();
-      await contracts.approveFractionToken(
-        AppConstants.fractionMarketplace,
-        amount,
-        tokenAddress: fractionToken,
-      );
-
       if (!mounted) return;
       setState(() => _status = 'Listing fractions...');
       await contracts.listFractions(
@@ -111,75 +107,83 @@ class _FractionMarketplaceScreenState extends State<FractionMarketplaceScreen>
         price: price,
       );
 
+      await Future<void>.delayed(const Duration(seconds: 4));
+
       if (!mounted) return;
       setState(() {
         _processing = false;
-        _status = 'Listed successfully!';
+        _status = 'Listed!';
       });
       await _loadListings();
-    } catch (error) {
+    } catch (e) {
       if (!mounted) return;
       setState(() {
         _processing = false;
         _status = null;
-        _error = 'List failed: $error';
+        _error = 'List failed: $e';
       });
     }
   }
 
-  Future<void> _buyFraction(int listingId) async {
+  Future<void> _buy(int listingId) async {
     setState(() {
       _processing = true;
       _status = 'Buying...';
-      _error = null;
     });
+
     try {
       final contracts = context.read<ContractService>();
       await contracts.buyFractions(BigInt.from(listingId));
+      await Future<void>.delayed(const Duration(seconds: 4));
       if (!mounted) return;
       setState(() {
         _processing = false;
-        _status = 'Purchased successfully!';
+        _status = 'Purchased!';
       });
       await _loadListings();
-    } catch (error) {
+    } catch (e) {
       if (!mounted) return;
       setState(() {
         _processing = false;
         _status = null;
-        _error = 'Buy failed: $error';
+        _error = 'Buy failed: $e';
       });
     }
   }
 
-  Future<void> _cancelFraction(int listingId) async {
+  Future<void> _cancel(int listingId) async {
     setState(() {
       _processing = true;
       _status = 'Cancelling...';
-      _error = null;
     });
+
     try {
       final contracts = context.read<ContractService>();
       await contracts.cancelFractionListing(BigInt.from(listingId));
+      await Future<void>.delayed(const Duration(seconds: 4));
       if (!mounted) return;
       setState(() {
         _processing = false;
-        _status = 'Cancelled.';
+        _status = 'Cancelled';
       });
       await _loadListings();
-    } catch (error) {
+    } catch (e) {
       if (!mounted) return;
       setState(() {
         _processing = false;
         _status = null;
-        _error = 'Cancel failed: $error';
+        _error = 'Cancel failed: $e';
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final contracts = context.read<ContractService>();
+    final privy = context.read<PrivyService>();
+
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 0, 0, 0),
       appBar: AppBar(
         title: const Text('Fraction Market'),
         bottom: TabBar(
@@ -195,16 +199,27 @@ class _FractionMarketplaceScreenState extends State<FractionMarketplaceScreen>
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [_buildBuyTab(), _buildSellTab()],
+        children: [_buildBuyTab(contracts, privy), _buildSellTab()],
       ),
     );
   }
 
-  Widget _buildBuyTab() {
-    final privy = context.read<PrivyService>();
-
+  Widget _buildBuyTab(ContractService contracts, PrivyService privy) {
     if (_loadingListings) {
       return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_error != null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Text(
+            _error!,
+            style: const TextStyle(color: Colors.redAccent),
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
     }
 
     if (_listings.isEmpty) {
@@ -212,7 +227,7 @@ class _FractionMarketplaceScreenState extends State<FractionMarketplaceScreen>
         child: Padding(
           padding: EdgeInsets.all(24),
           child: Text(
-            'No fraction listings yet. \\nBe the first to sell!',
+            'No fraction listings yet. Be the first to sell!',
             style: TextStyle(color: Colors.white54),
             textAlign: TextAlign.center,
           ),
@@ -226,14 +241,16 @@ class _FractionMarketplaceScreenState extends State<FractionMarketplaceScreen>
       child: ListView.builder(
         padding: const EdgeInsets.all(16),
         itemCount: _listings.length,
-        itemBuilder: (context, index) {
-          final listing = _listings[index];
-          final amount = listing['amount'] as BigInt;
-          final price = listing['price'] as BigInt;
-          final seller = (listing['seller'] as String).substring(0, 10);
+        itemBuilder: (context, i) {
+          final listing = _listings[i];
+          final amount = contracts.formatToken(listing['amount'] as BigInt);
+          final price = contracts.formatToken(listing['price'] as BigInt);
+          final seller = (listing['seller'] as String);
+          final shortSeller = seller.length > 12
+              ? '${seller.substring(0, 10)}...'
+              : seller;
           final isOwner =
-              privy.walletAddress?.toLowerCase() ==
-              (listing['seller'] as String).toLowerCase();
+              privy.walletAddress?.toLowerCase() == seller.toLowerCase();
 
           return Container(
             margin: const EdgeInsets.only(bottom: 12),
@@ -258,14 +275,14 @@ class _FractionMarketplaceScreenState extends State<FractionMarketplaceScreen>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            '${amount ~/ BigInt.from(10).pow(18)} fractions',
+                            '$amount fractions',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
                           Text(
-                            'Seller: $seller...',
+                            'Seller: $shortSeller',
                             style: const TextStyle(
                               color: Colors.white54,
                               fontSize: 11,
@@ -281,7 +298,7 @@ class _FractionMarketplaceScreenState extends State<FractionMarketplaceScreen>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '${price ~/ BigInt.from(10).pow(18)} mUSD',
+                      '$price mUSD',
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -292,8 +309,7 @@ class _FractionMarketplaceScreenState extends State<FractionMarketplaceScreen>
                       OutlinedButton(
                         onPressed: _processing
                             ? null
-                            : () =>
-                                  _cancelFraction(listing['listingId'] as int),
+                            : () => _cancel(listing['listingId'] as int),
                         style: OutlinedButton.styleFrom(
                           foregroundColor: Colors.redAccent,
                           side: const BorderSide(color: Colors.redAccent),
@@ -304,7 +320,7 @@ class _FractionMarketplaceScreenState extends State<FractionMarketplaceScreen>
                       ElevatedButton(
                         onPressed: _processing
                             ? null
-                            : () => _buyFraction(listing['listingId'] as int),
+                            : () => _buy(listing['listingId'] as int),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF00D18A),
                           foregroundColor: Colors.black,

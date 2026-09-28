@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// UI/UX: Controls the placeholder tokenization destination shown while the
+// full RWA creation workflow is still being built.
 class RwaTokenizeScreen extends StatelessWidget {
   const RwaTokenizeScreen({super.key});
 

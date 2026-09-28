@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../services/kyc_service.dart';
 import '../services/privy_service.dart';
 
+// UI/UX: Controls identity-verification fields, validation, verified-state
+// presentation, reset behavior, and no-wallet/error messaging.
 class KycScreen extends StatefulWidget {
   const KycScreen({super.key});
 

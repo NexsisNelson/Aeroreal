@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../services/watchlist_service.dart';
 import 'rwa_detail_screen.dart';
 
+// UI/UX: Controls saved-asset rows, price/change display, remove actions,
+// detail navigation, refresh, loading, and empty states.
 class WatchlistScreen extends StatefulWidget {
   const WatchlistScreen({super.key});
 
@@ -23,7 +25,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
 
   Future<void> _load() async {
     setState(() => _loading = true);
-    final assets = await _service.getWatchlist();
+    final assets = await _service.getWatchlist(context);
     if (!mounted) return;
     setState(() {
       _assets = assets;
@@ -118,7 +120,10 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                           ),
                           IconButton(
                             onPressed: () async {
-                              await _service.removeFromWatchlist(asset['id']);
+                              await _service.removeFromWatchlist(
+                                context,
+                                asset['id'],
+                              );
                               _load();
                             },
                             icon: const Icon(

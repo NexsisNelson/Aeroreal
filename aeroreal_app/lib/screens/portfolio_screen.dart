@@ -8,6 +8,8 @@ import '../services/privy_service.dart';
 import '../services/rwa_service.dart';
 import '../services/wallet_service.dart';
 
+// UI/UX: Controls portfolio summary cards, PnL, allocation, chart ranges,
+// holdings, chain balances, refresh, and live/demo fallback states.
 class PortfolioScreen extends StatefulWidget {
   const PortfolioScreen({super.key});
 
@@ -29,6 +31,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
   double _cost = 0;
   bool _loading = true;
   String? _error;
+  bool _demoMode = false;
+  String _range = '1M';
 
   @override
   void initState() {
@@ -45,7 +49,18 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
       final privy = context.read<PrivyService>();
       final address = privy.walletAddress;
       if (address == null) {
-        setState(() => _loading = false);
+        if (!mounted) return;
+        setState(() {
+          _loading = false;
+          _demoMode = true;
+          _value = 12450.82;
+          _cost = 12108.64;
+          _mon = BigInt.from(6004300000000000000);
+          _fractions = BigInt.parse('10000000000000000000000');
+          _sprinkle = BigInt.parse('142500000000000000000');
+          _gold = BigInt.parse('10000000000000000000000');
+          _snapshots = _demoSnapshots;
+        });
         return;
       }
       final contracts = context.read<ContractService>();
@@ -55,7 +70,8 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
         contracts.getSprinkleBalance(address),
         contracts.getGoldFractionBalance(address),
       ]);
-      final basis = await _portfolio.getCostBasis();
+      if (!mounted) return;
+      final basis = await _portfolio.getCostBasis(context);
       final prices = <String, double>{};
       for (final entry in basis.entries) {
         final quote = await _rwa.getQuote(entry.key);
@@ -86,6 +102,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
         _cost = cost;
         _snapshots = snapshots;
         _loading = false;
+        _demoMode = false;
       });
     } catch (error) {
       if (!mounted) return;
@@ -96,6 +113,52 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
     }
   }
 
+  static final _demoSnapshots = [
+    {'value': 11780.0},
+    {'value': 11840.0},
+    {'value': 11920.0},
+    {'value': 11890.0},
+    {'value': 12040.0},
+    {'value': 12120.0},
+    {'value': 12280.0},
+    {'value': 12450.82},
+  ];
+
+  static const _demoHoldings = [
+    (
+      'Gold Certificate',
+      '10,000 fractions',
+      '\$2,150.42',
+      '+\$120.20 (+5.9%)',
+      Color(0xFFE4A84B),
+      Icons.workspace_premium,
+    ),
+    (
+      'Coffee Batch',
+      '5,000 fractions',
+      '\$1,850.00',
+      '-\$50.00 (-2.6%)',
+      Color(0xFF9B6A4A),
+      Icons.coffee,
+    ),
+    (
+      'Demo NFT',
+      '1 NFT',
+      '\$500.00',
+      '+\$50.00 (+11.1%)',
+      Color(0xFF836EF9),
+      Icons.image_outlined,
+    ),
+    (
+      'USDC',
+      '500 USDC',
+      '\$500.00',
+      '\$0.00 (0%)',
+      Color(0xFF00D18A),
+      Icons.attach_money,
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     final pnl = _value - _cost;
@@ -103,9 +166,16 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
     final positive = pnl >= 0;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Portfolio'),
+        title: const Text(
+          'Portfolio',
+          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800),
+        ),
         actions: [
-          IconButton(onPressed: _load, icon: const Icon(Icons.refresh)),
+          IconButton(
+            onPressed: _load,
+            tooltip: 'Refresh portfolio',
+            icon: const Icon(Icons.refresh, color: Color(0xFF9587B8)),
+          ),
         ],
       ),
       body: _loading
@@ -118,24 +188,27 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                 children: [
                   _summaryCard(pnl, pnlPercent, positive),
                   const SizedBox(height: 20),
-                  _sectionTitle('Allocation'),
-                  _allocationChart(),
+                  _allocationCard(),
                   const SizedBox(height: 20),
-                  _sectionTitle('Performance'),
-                  _performanceChart(),
+                  _performanceCard(),
                   const SizedBox(height: 20),
-                  _sectionTitle('Your Holdings'),
-                  if (_costBasis.isEmpty)
+                  _sectionTitle(
+                    'HOLDINGS',
+                    trailing: '${_demoMode ? 4 : _costBasis.length} assets',
+                  ),
+                  if (_demoMode)
+                    ..._demoHoldings.map(_demoHoldingCard)
+                  else if (_costBasis.isEmpty)
                     _emptyCard(
                       'No holdings yet. Buy an asset to start tracking PnL.',
                     )
                   else
                     ..._costBasis.entries.map(_holdingCard),
                   const SizedBox(height: 20),
-                  _sectionTitle('Chain Balances'),
+                  _sectionTitle('CHAIN BALANCES'),
                   _balanceRow('MON (gas)', _mon),
                   _balanceRow('fMDAPE (fractions)', _fractions),
-                  _balanceRow('SPR (rewards)', _sprinkle),
+                  _balanceRow('AREAL (rewards)', _sprinkle),
                   _balanceRow('fGOLD (gold fractions)', _gold),
                   if (_error != null) ...[
                     const SizedBox(height: 16),
@@ -154,7 +227,11 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: const Color(0xFF243B39),
+        gradient: const LinearGradient(
+          colors: [Color(0xFF6E55D9), Color(0xFF302875)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
           color: const Color(0xFF00D18A).withValues(alpha: 0.35),
@@ -164,8 +241,13 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Total Portfolio Value',
-            style: TextStyle(color: Colors.white70),
+            'TOTAL VALUE',
+            style: TextStyle(
+              color: Colors.white70,
+              fontSize: 11,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 1.2,
+            ),
           ),
           const SizedBox(height: 8),
           Text(
@@ -179,42 +261,15 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
               color: positive ? const Color(0xFF00D18A) : Colors.redAccent,
             ),
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget _allocationChart() {
-    final values = [
-      _mon.toDouble(),
-      _fractions.toDouble(),
-      _sprinkle.toDouble(),
-    ];
-    final total = values.fold<double>(0, (sum, value) => sum + value);
-    if (total == 0) return _emptyCard('No balance allocation available yet.');
-    return SizedBox(
-      height: 180,
-      child: Row(
-        children: [
-          Expanded(
-            child: PieChart(
-              PieChartData(
-                sectionsSpace: 3,
-                centerSpaceRadius: 34,
-                sections: [
-                  _pie(values[0], const Color.fromARGB(255, 74, 24, 199)),
-                  _pie(values[1], const Color(0xFF00D18A)),
-                  _pie(values[2], const Color(0xFFED9B40)),
-                ],
-              ),
-            ),
-          ),
-          const Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          const SizedBox(height: 18),
+          const Row(
             children: [
-              _Legend(color: Color(0xFF836EF9), label: 'MON'),
-              _Legend(color: Color(0xFF00D18A), label: 'Fractions'),
-              _Legend(color: Color(0xFFED9B40), label: 'Rewards'),
+              Icon(Icons.link, size: 14, color: Colors.white70),
+              SizedBox(width: 6),
+              Text(
+                'On Monad Testnet',
+                style: TextStyle(color: Colors.white70, fontSize: 12),
+              ),
             ],
           ),
         ],
@@ -222,14 +277,152 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
     );
   }
 
-  PieChartSectionData _pie(double value, Color color) {
-    return PieChartSectionData(
-      value: value,
-      color: color,
-      radius: 48,
-      showTitle: false,
+  Widget _allocationCard() {
+    const entries = [
+      ('NFTs', '45%', Color(0xFF836EF9)),
+      ('Commodities', '35%', Color(0xFFE4A84B)),
+      ('Stablecoins', '15%', Color(0xFF00D18A)),
+      ('Invoices', '5%', Color(0xFF5690C9)),
+    ];
+    return _panel(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _cardHeading('Allocation', 'By Asset Type'),
+          const SizedBox(height: 12),
+          Row(
+            children: [
+              SizedBox(
+                width: 150,
+                height: 150,
+                child: PieChart(
+                  PieChartData(
+                    centerSpaceRadius: 42,
+                    sectionsSpace: 3,
+                    sections: entries
+                        .map(
+                          (entry) => PieChartSectionData(
+                            value: double.parse(entry.$2.replaceAll('%', '')),
+                            color: entry.$3,
+                            radius: 28,
+                            showTitle: false,
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Column(
+                  children: entries
+                      .map(
+                        (entry) => _Legend(
+                          color: entry.$3,
+                          label: '${entry.$1}  ${entry.$2}',
+                        ),
+                      )
+                      .toList(),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
+
+  Widget _performanceCard() {
+    return _panel(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _cardHeading('30-Day Performance', null),
+          const SizedBox(height: 14),
+          SizedBox(height: 150, child: _performanceChart()),
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: ['AUG 22', 'AUG 29', 'SEP 05', 'SEP 12', 'SEP 20']
+                .map(
+                  (date) => Text(
+                    date,
+                    style: const TextStyle(
+                      color: Color(0xFF746B83),
+                      fontSize: 9,
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+          const SizedBox(height: 14),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: ['1D', '1W', '1M', '1Y', 'All']
+                .map(
+                  (range) => GestureDetector(
+                    onTap: () => setState(() => _range = range),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 7,
+                      ),
+                      decoration: BoxDecoration(
+                        color: _range == range
+                            ? const Color.fromARGB(255, 74, 24, 199)
+                            : const Color(0xFF211B31),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        range,
+                        style: TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w700,
+                          color: _range == range
+                              ? Colors.white
+                              : const Color(0xFF837C95),
+                        ),
+                      ),
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _panel({required Widget child}) => Container(
+    padding: const EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: const Color.fromARGB(255, 0, 0, 0),
+      borderRadius: BorderRadius.circular(20),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withValues(alpha: 0.18),
+          blurRadius: 16,
+          offset: const Offset(0, 7),
+        ),
+      ],
+    ),
+    child: child,
+  );
+
+  Widget _cardHeading(String title, String? subtitle) => Row(
+    children: [
+      Expanded(
+        child: Text(
+          title,
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+        ),
+      ),
+      if (subtitle != null)
+        Text(
+          subtitle,
+          style: const TextStyle(color: Color(0xFF837C95), fontSize: 11),
+        ),
+    ],
+  );
 
   Widget _performanceChart() {
     final values = _snapshots
@@ -339,13 +532,91 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
     );
   }
 
-  Widget _sectionTitle(String text) => Padding(
+  Widget _sectionTitle(String text, {String? trailing}) => Padding(
     padding: const EdgeInsets.only(bottom: 10),
-    child: Text(
-      text,
-      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    child: Row(
+      children: [
+        Expanded(
+          child: Text(
+            text,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
+        ),
+        if (trailing != null)
+          Text(
+            trailing,
+            style: const TextStyle(color: Color(0xFF837C95), fontSize: 12),
+          ),
+      ],
     ),
   );
+
+  Widget _demoHoldingCard(
+    (String, String, String, String, Color, IconData) holding,
+  ) {
+    final positive = holding.$4.startsWith('+');
+    return Container(
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: const Color.fromARGB(255, 0, 0, 0),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: holding.$5.withValues(alpha: 0.16),
+              shape: BoxShape.circle,
+            ),
+            child: Icon(holding.$6, color: holding.$5, size: 20),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  holding.$1,
+                  style: const TextStyle(fontWeight: FontWeight.w700),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  holding.$2,
+                  style: const TextStyle(
+                    color: Color(0xFF837C95),
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                holding.$3,
+                style: const TextStyle(fontWeight: FontWeight.w700),
+              ),
+              const SizedBox(height: 4),
+              Text(
+                holding.$4,
+                style: TextStyle(
+                  color: positive
+                      ? const Color(0xFF00D18A)
+                      : const Color(0xFFFF6B7A),
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _emptyCard(String text) => Container(
     padding: const EdgeInsets.all(16),

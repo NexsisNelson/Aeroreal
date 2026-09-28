@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+// UI/UX: Controls the asset-type-specific risk notice styling and copy shown
+// on commodity, invoice, and generic RWA surfaces.
 class RiskDisclosure extends StatelessWidget {
   final String assetType;
 

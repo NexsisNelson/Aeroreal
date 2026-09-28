@@ -1,5 +1,7 @@
 // lib/services/contract_service.dart
 
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:web3dart/web3dart.dart';
 import 'package:wallet/wallet.dart';
@@ -8,14 +10,16 @@ import '../config/abis.dart';
 import '../config/constants.dart';
 import 'privy_service.dart';
 import 'notification_service.dart';
+import 'traction_service.dart';
 import 'tx_history_service.dart';
+import '../utils/transaction_feedback.dart';
 
 /// ContractService reads from and writes to the deployed Monad contracts.
-class ContractService {
+class ContractService extends ChangeNotifier {
   final PrivyService privyService;
+  BuildContext? context;
   late final Web3Client client;
   late final Web3Client mainnetClient;
-  final _txHistory = TxHistoryService();
 
   ContractService(this.privyService) {
     client = Web3Client(AppConstants.monadRpcUrl, http.Client());
@@ -41,6 +45,12 @@ class ContractService {
     final encoded = fn.encodeCall(params);
     final hexData =
         '0x${encoded.map((b) => b.toRadixString(16).padLeft(2, '0')).join()}';
+    var insufficientBalanceShown = false;
+
+    debugPrint('=== SENDING TX ===');
+    debugPrint('Contract: $contractAddress');
+    debugPrint('Function: $functionName');
+    debugPrint('Params: $params');
 
     try {
       final hash = await privyService.signAndSendTransaction(
@@ -55,6 +65,8 @@ class ContractService {
           final balance = await client.getBalance(
             EthereumAddress.fromHex(walletAddress),
           );
+          await _showInsufficientBalance(walletAddress, balance.getInWei);
+          insufficientBalanceShown = true;
           throw Exception(
             'Privy signing failed. Wallet balance: ${balance.getInWei} wei. '
             'Ensure the wallet has MON for gas.',
@@ -65,19 +77,55 @@ class ContractService {
         );
       }
 
-      await _txHistory.log(
-        hash: hash,
-        action: functionName,
-        details: 'Contract: ${contractAddress.substring(0, 10)}...',
-      );
       await NotificationService().notify(
         type: NotificationType.transactionSuccess,
         title: 'Transaction Submitted',
         body: '$functionName submitted on Monad Testnet',
       );
-      await _waitForReceipt(hash);
+      await waitForReceipt(hash);
+      final transactionContext = context;
+      if (transactionContext != null && transactionContext.mounted) {
+        try {
+          await TxHistoryService().log(
+            transactionContext,
+            hash: hash,
+            action: functionName,
+            details: 'Contract: ${contractAddress.substring(0, 10)}...',
+          );
+          if (!transactionContext.mounted) return hash;
+          final tractionAction = _mapFunctionToTractionAction(functionName);
+          if (tractionAction != null) {
+            await TractionService().log(
+              transactionContext,
+              hash: hash,
+              action: tractionAction,
+              description:
+                  '$functionName on ${contractAddress.substring(0, 10)}...',
+            );
+          }
+        } catch (_) {
+          // Persistence is best-effort and must not hide a confirmed tx.
+        }
+      }
+      notifyListeners();
       return hash;
     } catch (error) {
+      if (!insufficientBalanceShown && _looksLikeInsufficientBalance(error)) {
+        await _showInsufficientBalance(privyService.walletAddress);
+      } else {
+        final currentContext = context;
+        if (currentContext != null && currentContext.mounted) {
+          if (TransactionFeedback.isConnectionIssue(error)) {
+            TransactionFeedback.showConnectionToast(currentContext);
+          } else {
+            await TransactionFeedback.showTransactionError(
+              currentContext,
+              functionName: functionName,
+              error: error,
+            );
+          }
+        }
+      }
       await NotificationService().notify(
         type: NotificationType.transactionFailed,
         title: 'Transaction Failed',
@@ -87,18 +135,84 @@ class ContractService {
     }
   }
 
-  /// Poll for a transaction receipt.
-  Future<void> _waitForReceipt(String txHash, {int maxAttempts = 30}) async {
-    for (var i = 0; i < maxAttempts; i++) {
+  bool _looksLikeInsufficientBalance(Object error) {
+    final message = error.toString().toLowerCase();
+    return message.contains('insufficient') ||
+        message.contains('underfunded') ||
+        message.contains('not enough') ||
+        message.contains('gas required exceeds');
+  }
+
+  Future<void> _showInsufficientBalance(
+    String? walletAddress, [
+    BigInt? knownBalance,
+  ]) async {
+    if (walletAddress == null || walletAddress.isEmpty) return;
+
+    var balance = knownBalance ?? BigInt.zero;
+    if (knownBalance == null) {
       try {
-        final receipt = await client.getTransactionReceipt(txHash);
-        if (receipt != null) return;
+        balance = (await client.getBalance(
+          EthereumAddress.fromHex(walletAddress),
+        )).getInWei;
       } catch (_) {}
-      await Future<void>.delayed(const Duration(seconds: 2));
     }
-    throw Exception(
-      'Transaction not confirmed after ${maxAttempts * 2}s: $txHash',
+
+    final currentContext = context;
+    if (currentContext == null || !currentContext.mounted) return;
+    await showDialog<void>(
+      context: currentContext,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Insufficient MON for gas'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Current balance: ${formatToken(balance)} MON'),
+            const SizedBox(height: 8),
+            SelectableText(walletAddress),
+          ],
+        ),
+        actions: [
+          TextButton.icon(
+            onPressed: () =>
+                Clipboard.setData(ClipboardData(text: walletAddress)),
+            icon: const Icon(Icons.copy),
+            label: const Text('Copy address'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('Close'),
+          ),
+        ],
+      ),
     );
+  }
+
+  TractionAction? _mapFunctionToTractionAction(String functionName) {
+    switch (functionName) {
+      case 'mint':
+        return TractionAction.mintNft;
+      case 'fractionalize':
+        return TractionAction.fractionalizeNft;
+      case 'createVault':
+        return TractionAction.tokenizeRwa;
+      case 'list':
+        return TractionAction.listNft;
+      case 'buy':
+        return TractionAction.buyNft;
+      case 'stake':
+        return TractionAction.stakeFractions;
+      case 'claimYield':
+        return TractionAction.claimYield;
+      case 'depositRevenue':
+        return TractionAction.depositRevenue;
+      case 'addToWhitelist':
+      case 'vaultWhitelist':
+        return TractionAction.addToWhitelist;
+      default:
+        return null;
+    }
   }
 
   // =========================================================
@@ -178,6 +292,39 @@ class ContractService {
     return result[0] as BigInt;
   }
 
+  Future<BigInt> getCoffeeFractionBalance(String address) async {
+    final token = _contract(AppConstants.coffeeFractionToken, AppABIs.erc20);
+    final result = await client.call(
+      contract: token,
+      function: token.function('balanceOf'),
+      params: [EthereumAddress.fromHex(address)],
+    );
+    return result[0] as BigInt;
+  }
+
+  // =========================================================
+  // FAUCET
+  // =========================================================
+
+  Future<String> claimFromFaucet() async {
+    return _sendPrivyTransaction(
+      contractAddress: AppConstants.faucet,
+      functionName: 'claim',
+      params: [],
+      abi: AppABIs.faucet,
+    );
+  }
+
+  Future<BigInt> getFaucetCooldown(String walletAddress) async {
+    final contract = _contract(AppConstants.faucet, AppABIs.faucet);
+    final result = await client.call(
+      contract: contract,
+      function: contract.function('timeUntilClaim'),
+      params: [EthereumAddress.fromHex(walletAddress)],
+    );
+    return result[0] as BigInt;
+  }
+
   Future<BigInt> getEarnedYield(String address) async {
     final contract = _contract(AppConstants.streamer, AppABIs.streamer);
     final fn = contract.function('earned');
@@ -220,6 +367,31 @@ class ContractService {
       params: [EthereumAddress.fromHex(owner)],
     );
     return result[0] as BigInt;
+  }
+
+  /// Get the total number of claims made.
+  Future<BigInt> getTotalClaims() async {
+    final contract = _contract(AppConstants.faucet, AppABIs.faucet);
+    final fn = contract.function('totalClaims');
+    final result = await client.call(
+      contract: contract,
+      function: fn,
+      params: [],
+    );
+    return result[0] as BigInt;
+  }
+
+  Future<String> transferERC20({
+    required String tokenAddress,
+    required String recipient,
+    required BigInt amount,
+  }) {
+    return _sendPrivyTransaction(
+      contractAddress: tokenAddress,
+      functionName: 'transfer',
+      params: [EthereumAddress.fromHex(recipient), amount],
+      abi: AppABIs.erc20,
+    );
   }
 
   /// Read the fraction token address from any vault.
@@ -270,6 +442,139 @@ class ContractService {
       params: [EthereumAddress.fromHex(spender), amount],
       abi: AppABIs.erc20,
     );
+  }
+
+  Future<String> listFractions({
+    required String fractionToken,
+    required BigInt amount,
+    required BigInt price,
+  }) async {
+    final approveTx = await _sendPrivyTransaction(
+      contractAddress: fractionToken,
+      functionName: 'approve',
+      params: [
+        EthereumAddress.fromHex(AppConstants.fractionMarketplace),
+        amount,
+      ],
+      abi: AppABIs.erc20,
+    );
+
+    await waitForReceipt(approveTx);
+    await Future<void>.delayed(const Duration(seconds: 2));
+
+    final allowance = await getAllowance(
+      fractionToken,
+      AppConstants.fractionMarketplace,
+    );
+    if (allowance < amount) {
+      throw Exception(
+        'Approval did not persist. Allowance: $allowance, needed: $amount',
+      );
+    }
+
+    return _sendPrivyTransaction(
+      contractAddress: AppConstants.fractionMarketplace,
+      functionName: 'list',
+      params: [EthereumAddress.fromHex(fractionToken), amount, price],
+      abi: AppABIs.fractionMarketplace,
+    );
+  }
+
+  /// Check the allowance granted to a marketplace spender for an ERC-20 token.
+  Future<BigInt> getAllowance(
+    String tokenAddress,
+    String spenderAddress,
+  ) async {
+    final walletAddress = privyService.walletAddress;
+    if (walletAddress == null) {
+      throw Exception('Connect a wallet before checking token allowance.');
+    }
+
+    final contract = _contract(tokenAddress, AppABIs.erc20);
+    final result = await client.call(
+      contract: contract,
+      function: contract.function('allowance'),
+      params: [
+        EthereumAddress.fromHex(walletAddress),
+        EthereumAddress.fromHex(spenderAddress),
+      ],
+    );
+    return result[0] as BigInt;
+  }
+
+  Future<String> buyFractions(BigInt listingId) async {
+    final listing = await getFractionListing(listingId);
+    final price = listing['price'] as BigInt;
+
+    await _sendPrivyTransaction(
+      contractAddress: AppConstants.mockStablecoin,
+      functionName: 'approve',
+      params: [
+        EthereumAddress.fromHex(AppConstants.fractionMarketplace),
+        price,
+      ],
+      abi: AppABIs.erc20,
+    );
+
+    return _sendPrivyTransaction(
+      contractAddress: AppConstants.fractionMarketplace,
+      functionName: 'buy',
+      params: [listingId],
+      abi: AppABIs.fractionMarketplace,
+    );
+  }
+
+  Future<String> cancelFractionListing(BigInt listingId) async {
+    return _sendPrivyTransaction(
+      contractAddress: AppConstants.fractionMarketplace,
+      functionName: 'cancel',
+      params: [listingId],
+      abi: AppABIs.fractionMarketplace,
+    );
+  }
+
+  Future<Map<String, dynamic>> getFractionListing(BigInt listingId) async {
+    final contract = _contract(
+      AppConstants.fractionMarketplace,
+      AppABIs.fractionMarketplace,
+    );
+    final result = await client.call(
+      contract: contract,
+      function: contract.function('getListing'),
+      params: [listingId],
+    );
+    return {
+      'seller': (result[0] as EthereumAddress).with0x,
+      'fractionToken': (result[1] as EthereumAddress).with0x,
+      'amount': result[2] as BigInt,
+      'price': result[3] as BigInt,
+      'active': result[4] as bool,
+    };
+  }
+
+  Future<int> getNextFractionListingId() async {
+    final contract = _contract(
+      AppConstants.fractionMarketplace,
+      AppABIs.fractionMarketplace,
+    );
+    final result = await client.call(
+      contract: contract,
+      function: contract.function('nextListingId'),
+      params: [],
+    );
+    return (result[0] as BigInt).toInt();
+  }
+
+  Future<List<Map<String, dynamic>>> getActiveFractionListings() async {
+    final total = await getNextFractionListingId();
+    final listings = <Map<String, dynamic>>[];
+    for (var id = 1; id < total; id++) {
+      final listing = await getFractionListing(BigInt.from(id));
+      if (listing['active'] as bool) {
+        listings.add({...listing, 'listingId': id});
+      }
+    }
+    return listings;
   }
 
   Future<String> stake(BigInt amount) async {
@@ -335,20 +640,7 @@ class ContractService {
   }
 
   Future<List<BigInt>> getNFTsOwnedBy(String owner) async {
-    final total = await getNFTTotalSupply();
-    final owned = <BigInt>[];
-    final targetOwner = owner.toLowerCase();
-
-    for (var tokenId = BigInt.one; tokenId <= total; tokenId += BigInt.one) {
-      try {
-        final nftOwner = await getNFTOwner(tokenId);
-        if (nftOwner.toLowerCase() == targetOwner) owned.add(tokenId);
-      } catch (_) {
-        // Skip missing or burned token IDs.
-      }
-      await Future<void>.delayed(const Duration(milliseconds: 200));
-    }
-    return owned;
+    return getNFTsOfCollectionOwnedBy(AppConstants.demoNft, owner);
   }
 
   Future<String> getCollectionName(String contractAddress) async {
@@ -389,6 +681,8 @@ class ContractService {
     String walletAddress,
   ) async {
     final balance = await getCollectionBalance(contractAddress, walletAddress);
+    if (balance == BigInt.zero) return [];
+
     final owned = <BigInt>[];
     final contract = _contract(contractAddress, AppABIs.erc721);
     try {
@@ -403,9 +697,10 @@ class ContractService {
       }
       return owned;
     } catch (_) {
+      owned.clear();
       for (
         var tokenId = BigInt.one;
-        tokenId <= BigInt.from(100);
+        tokenId <= BigInt.from(100) && BigInt.from(owned.length) < balance;
         tokenId += BigInt.one
       ) {
         try {
@@ -419,7 +714,7 @@ class ContractService {
             owned.add(tokenId);
           }
         } catch (_) {
-          break;
+          continue;
         }
       }
       return owned;
@@ -560,103 +855,11 @@ class ContractService {
 
   Future<String> approveMarketplaceForPayment(BigInt amount) async {
     return _sendPrivyTransaction(
-      contractAddress: AppConstants.mockStablecoin,
+      contractAddress: AppConstants.nftMarketplacePaymentToken,
       functionName: 'approve',
       params: [EthereumAddress.fromHex(AppConstants.nftMarketplace), amount],
       abi: AppABIs.erc20,
     );
-  }
-
-  // =========================================================
-  // FRACTION MARKETPLACE
-  // =========================================================
-
-  Future<String> listFractions({
-    required String fractionToken,
-    required BigInt amount,
-    required BigInt price,
-  }) async {
-    return _sendPrivyTransaction(
-      contractAddress: AppConstants.fractionMarketplace,
-      functionName: 'list',
-      params: [EthereumAddress.fromHex(fractionToken), amount, price],
-      abi: AppABIs.fractionMarketplace,
-    );
-  }
-
-  Future<String> buyFractions(BigInt listingId) async {
-    final listing = await getFractionListing(listingId);
-    final price = listing['price'] as BigInt;
-
-    await _sendPrivyTransaction(
-      contractAddress: AppConstants.mockStablecoin,
-      functionName: 'approve',
-      params: [
-        EthereumAddress.fromHex(AppConstants.fractionMarketplace),
-        price,
-      ],
-      abi: AppABIs.erc20,
-    );
-
-    return _sendPrivyTransaction(
-      contractAddress: AppConstants.fractionMarketplace,
-      functionName: 'buy',
-      params: [listingId],
-      abi: AppABIs.fractionMarketplace,
-    );
-  }
-
-  Future<String> cancelFractionListing(BigInt listingId) async {
-    return _sendPrivyTransaction(
-      contractAddress: AppConstants.fractionMarketplace,
-      functionName: 'cancel',
-      params: [listingId],
-      abi: AppABIs.fractionMarketplace,
-    );
-  }
-
-  Future<Map<String, dynamic>> getFractionListing(BigInt listingId) async {
-    final contract = _contract(
-      AppConstants.fractionMarketplace,
-      AppABIs.fractionMarketplace,
-    );
-    final result = await client.call(
-      contract: contract,
-      function: contract.function('getListing'),
-      params: [listingId],
-    );
-    return {
-      'seller': (result[0] as EthereumAddress).with0x,
-      'fractionToken': (result[1] as EthereumAddress).with0x,
-      'amount': result[2] as BigInt,
-      'price': result[3] as BigInt,
-      'active': result[4] as bool,
-    };
-  }
-
-  Future<List<Map<String, dynamic>>> getActiveFractionListings() async {
-    final total = await getNextFractionListingId();
-    final listings = <Map<String, dynamic>>[];
-    for (var id = 1; id < total; id++) {
-      final listing = await getFractionListing(BigInt.from(id));
-      if (listing['active'] as bool) {
-        listings.add({...listing, 'listingId': id});
-      }
-    }
-    return listings;
-  }
-
-  Future<int> getNextFractionListingId() async {
-    final contract = _contract(
-      AppConstants.fractionMarketplace,
-      AppABIs.fractionMarketplace,
-    );
-    final result = await client.call(
-      contract: contract,
-      function: contract.function('nextListingId'),
-      params: [],
-    );
-    return (result[0] as BigInt).toInt();
   }
 
   Future<Map<String, dynamic>> getListing(BigInt listingId) async {
@@ -701,6 +904,21 @@ class ContractService {
       }
     }
     return listings;
+  }
+
+  /// Read all NFTs that have been sold or otherwise removed from the market.
+  Future<List<Map<String, dynamic>>> getSoldListings() async {
+    final total = await getNextListingId();
+    final sold = <Map<String, dynamic>>[];
+    for (var id = 1; id < total; id++) {
+      try {
+        final listing = await getListing(BigInt.from(id));
+        if (!(listing['active'] as bool)) {
+          sold.add({...listing, 'listingId': id});
+        }
+      } catch (_) {}
+    }
+    return sold;
   }
 
   /// Mint a fresh DemoNFT to the current wallet.
@@ -858,6 +1076,16 @@ class ContractService {
   // DEMO: SIMULATE REVENUE PAYMENT (Monad-optimized)
   // =========================================================
 
+  /// Mint demo mUSD directly to a wallet for the hackathon demo flow.
+  Future<String> mintMockStablecoin(String to, BigInt amount) async {
+    return _sendPrivyTransaction(
+      contractAddress: AppConstants.mockStablecoin,
+      functionName: 'mint',
+      params: [EthereumAddress.fromHex(to), amount],
+      abi: AppABIs.erc20,
+    );
+  }
+
   /// Approve the RevenueStreamer to spend mock stablecoin.
   Future<String> approveMockStablecoin(
     String streamerAddress,
@@ -884,10 +1112,16 @@ class ContractService {
   /// Compatibility waiter for the UI flow and screen-level receipt checks.
   Future<void> waitForReceipt(String txHash, {int maxAttempts = 60}) async {
     for (var i = 0; i < maxAttempts; i++) {
+      TransactionReceipt? receipt;
       try {
-        final receipt = await client.getTransactionReceipt(txHash);
-        if (receipt != null) return;
+        receipt = await client.getTransactionReceipt(txHash);
       } catch (_) {}
+      if (receipt != null) {
+        if (receipt.status == false) {
+          throw Exception('Transaction reverted: $txHash');
+        }
+        return;
+      }
       await Future<void>.delayed(const Duration(seconds: 1));
     }
     throw Exception('Transaction not confirmed after ${maxAttempts}s');

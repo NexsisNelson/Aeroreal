@@ -44,7 +44,7 @@ class RwaService {
   }
 
   Future<Map<String, dynamic>> _get(Uri uri) async {
-    final response = await http.get(uri);
+    final response = await http.get(uri).timeout(const Duration(seconds: 10));
     final decoded = jsonDecode(response.body) as Map<String, dynamic>;
     if (response.statusCode != 200 || decoded['error'] != null) {
       throw Exception(decoded['error'] ?? 'RWA request failed');
