@@ -98,9 +98,9 @@ class _FractionMarketplaceScreenState extends State<FractionMarketplaceScreen>
 
       final contracts = context.read<ContractService>();
       await contracts.approveFractionToken(
-        fractionToken,
         AppConstants.fractionMarketplace,
         amount,
+        tokenAddress: fractionToken,
       );
 
       if (!mounted) return;

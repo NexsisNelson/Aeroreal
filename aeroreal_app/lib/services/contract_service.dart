@@ -259,9 +259,13 @@ class ContractService {
   // WRITES
   // =========================================================
 
-  Future<String> approveFractionToken(String spender, BigInt amount) async {
+  Future<String> approveFractionToken(
+    String spender,
+    BigInt amount, {
+    String? tokenAddress,
+  }) async {
     return _sendPrivyTransaction(
-      contractAddress: AppConstants.fractionToken,
+      contractAddress: tokenAddress ?? AppConstants.fractionToken,
       functionName: 'approve',
       params: [EthereumAddress.fromHex(spender), amount],
       abi: AppABIs.erc20,
@@ -566,19 +570,6 @@ class ContractService {
   // =========================================================
   // FRACTION MARKETPLACE
   // =========================================================
-
-  Future<String> approveFractionToken(
-    String tokenAddress,
-    String spender,
-    BigInt amount,
-  ) async {
-    return _sendPrivyTransaction(
-      contractAddress: tokenAddress,
-      functionName: 'approve',
-      params: [EthereumAddress.fromHex(spender), amount],
-      abi: AppABIs.erc20,
-    );
-  }
 
   Future<String> listFractions({
     required String fractionToken,
