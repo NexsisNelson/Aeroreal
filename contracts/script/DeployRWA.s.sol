@@ -21,7 +21,6 @@ import "../src/RevenueStreamer.sol";
  *         Then wires everything together.
  */
 contract DeployRWA is Script {
-
     uint256 constant TOTAL_FRACTIONS = 10_000 * 1e18;
 
     function run() external {
@@ -115,18 +114,12 @@ contract DeployRWA is Script {
         // =====================================================
         // 8. Deploy RevenueStreamers for each vault.
         // =====================================================
-        RevenueStreamer cocoaStreamer = new RevenueStreamer(
-            address(cocoaVault.fractionToken()),
-            address(mUSD),
-            address(cocoaVault)
-        );
+        RevenueStreamer cocoaStreamer =
+            new RevenueStreamer(address(cocoaVault.fractionToken()), address(mUSD), address(cocoaVault));
         console.log("Cocoa Streamer:", address(cocoaStreamer));
 
-        RevenueStreamer invoiceStreamer = new RevenueStreamer(
-            address(invoiceVault.fractionToken()),
-            address(mUSD),
-            address(invoiceVault)
-        );
+        RevenueStreamer invoiceStreamer =
+            new RevenueStreamer(address(invoiceVault.fractionToken()), address(mUSD), address(invoiceVault));
         console.log("Invoice Streamer:", address(invoiceStreamer));
 
         // =====================================================

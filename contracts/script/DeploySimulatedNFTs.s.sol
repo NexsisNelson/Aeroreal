@@ -12,18 +12,9 @@ contract DeploySimulatedNFTs is Script {
         console.log("Deployer:", deployer);
         vm.startBroadcast(privateKey);
 
-        SimulatedNFTCollection apes = new SimulatedNFTCollection(
-            "Simulated Bored Apes",
-            "sBAYC"
-        );
-        SimulatedNFTCollection punks = new SimulatedNFTCollection(
-            "Simulated CryptoPunks",
-            "sPUNK"
-        );
-        SimulatedNFTCollection doodles = new SimulatedNFTCollection(
-            "Simulated Doodles",
-            "sDOODLE"
-        );
+        SimulatedNFTCollection apes = new SimulatedNFTCollection("Simulated Bored Apes", "sBAYC");
+        SimulatedNFTCollection punks = new SimulatedNFTCollection("Simulated CryptoPunks", "sPUNK");
+        SimulatedNFTCollection doodles = new SimulatedNFTCollection("Simulated Doodles", "sDOODLE");
 
         vm.stopBroadcast();
 

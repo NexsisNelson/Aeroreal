@@ -61,13 +61,8 @@ contract DeployEcosystem is Script {
         // =====================================================
         // STEP 2: Create a Vault via the Factory.
         // =====================================================
-        address vaultAddress = factory.createVault(
-            address(demoNft),
-            tokenId,
-            TOTAL_FRACTIONS,
-            "Fractionalized Monad Demo Ape",
-            "fMDAPE"
-        );
+        address vaultAddress =
+            factory.createVault(address(demoNft), tokenId, TOTAL_FRACTIONS, "Fractionalized Monad Demo Ape", "fMDAPE");
         console.log("Vault deployed at:", vaultAddress);
 
         FractionalizerVault vault = FractionalizerVault(vaultAddress);
@@ -84,10 +79,7 @@ contract DeployEcosystem is Script {
         // =====================================================
         // STEP 4: Deploy the MicroYieldStreamer for this FractionToken.
         // =====================================================
-        MicroYieldStreamer streamer = new MicroYieldStreamer(
-            fractionTokenAddress,
-            SPRINKLE_TOKEN
-        );
+        MicroYieldStreamer streamer = new MicroYieldStreamer(fractionTokenAddress, SPRINKLE_TOKEN);
         console.log("Streamer deployed at:", address(streamer));
 
         // =====================================================
