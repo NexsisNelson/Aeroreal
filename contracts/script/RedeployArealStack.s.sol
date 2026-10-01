@@ -8,10 +8,8 @@ import "../src/MicroYieldStreamer.sol";
 import "../src/FractionalizerVault.sol";
 
 contract RedeployArealStack is Script {
-    address constant GOLD_FRACTION_TOKEN =
-        0x6511204b20e1cbeCEC46673Ac602F97C72388Ff1;
-    address constant GOLD_VAULT =
-        0x1dBBfCCe0095847548dD21dCCEbfe8eB9C7cdb4a;
+    address constant GOLD_FRACTION_TOKEN = 0x6511204b20e1cbeCEC46673Ac602F97C72388Ff1;
+    address constant GOLD_VAULT = 0x1dBBfCCe0095847548dD21dCCEbfe8eB9C7cdb4a;
 
     function run() external {
         uint256 privateKey = vm.envUint("PRIVATE_KEY");

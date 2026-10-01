@@ -19,30 +19,21 @@ contract DeployCommunityNFTs is Script {
 
         vm.startBroadcast(privateKey);
 
-        SimulatedNFTCollection monadApes = new SimulatedNFTCollection(
-            "Monad Apes",
-            "MAPE"
-        );
+        SimulatedNFTCollection monadApes = new SimulatedNFTCollection("Monad Apes", "MAPE");
         console.log("Monad Apes:", address(monadApes));
         for (uint256 i = 0; i < 10; i++) {
             monadApes.mint(deployer);
         }
         console.log("Minted 10 Monad Apes");
 
-        SimulatedNFTCollection monadPunks = new SimulatedNFTCollection(
-            "Monad Punks",
-            "MPUNK"
-        );
+        SimulatedNFTCollection monadPunks = new SimulatedNFTCollection("Monad Punks", "MPUNK");
         console.log("Monad Punks:", address(monadPunks));
         for (uint256 i = 0; i < 10; i++) {
             monadPunks.mint(deployer);
         }
         console.log("Minted 10 Monad Punks");
 
-        SimulatedNFTCollection monadFrogs = new SimulatedNFTCollection(
-            "Monad Frogs",
-            "MFROG"
-        );
+        SimulatedNFTCollection monadFrogs = new SimulatedNFTCollection("Monad Frogs", "MFROG");
         console.log("Monad Frogs:", address(monadFrogs));
         for (uint256 i = 0; i < 10; i++) {
             monadFrogs.mint(deployer);

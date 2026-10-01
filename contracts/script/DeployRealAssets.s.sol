@@ -21,7 +21,6 @@ import "../src/InvoiceCertificate.sol";
  *         - CommodityCertificate + InvoiceCertificate factories
  */
 contract DeployRealAssets is Script {
-
     // ---- REPLACE THESE with your existing deployed addresses ----
     address constant MOCK_STABLECOIN = 0x01eA8d5FF45f5fAaC8b5BbE1e48cc734cd104512;
     address constant REVENUE_ORACLE = 0x867Ca7417E20c191AAf149219B8af86f3Bb6d689;
@@ -68,11 +67,8 @@ contract DeployRealAssets is Script {
         goldVault.fractionalize();
         console.log("Gold vault fractionalized");
 
-        RevenueStreamer goldStreamer = new RevenueStreamer(
-            address(goldVault.fractionToken()),
-            MOCK_STABLECOIN,
-            address(goldVault)
-        );
+        RevenueStreamer goldStreamer =
+            new RevenueStreamer(address(goldVault.fractionToken()), MOCK_STABLECOIN, address(goldVault));
         console.log("GoldStreamer:", address(goldStreamer));
         goldVault.whitelistStreamer(address(goldStreamer));
 
@@ -99,11 +95,8 @@ contract DeployRealAssets is Script {
         coffeeVault.fractionalize();
         console.log("Coffee vault fractionalized");
 
-        RevenueStreamer coffeeStreamer = new RevenueStreamer(
-            address(coffeeVault.fractionToken()),
-            MOCK_STABLECOIN,
-            address(coffeeVault)
-        );
+        RevenueStreamer coffeeStreamer =
+            new RevenueStreamer(address(coffeeVault.fractionToken()), MOCK_STABLECOIN, address(coffeeVault));
         console.log("CoffeeStreamer:", address(coffeeStreamer));
         coffeeVault.whitelistStreamer(address(coffeeStreamer));
 
@@ -132,11 +125,8 @@ contract DeployRealAssets is Script {
         tbillVault.fractionalize();
         console.log("Treasury vault fractionalized");
 
-        RevenueStreamer tbillStreamer = new RevenueStreamer(
-            address(tbillVault.fractionToken()),
-            MOCK_STABLECOIN,
-            address(tbillVault)
-        );
+        RevenueStreamer tbillStreamer =
+            new RevenueStreamer(address(tbillVault.fractionToken()), MOCK_STABLECOIN, address(tbillVault));
         console.log("TreasuryStreamer:", address(tbillStreamer));
         tbillVault.whitelistStreamer(address(tbillStreamer));
 
