@@ -48,4 +48,8 @@ contract UserNFTCollection is ERC721URIStorage, ERC2981, Ownable {
     function getCreator(uint256 tokenId) external view returns (address) {
         return creatorOf[tokenId];
     }
+
+    function supportsInterface(bytes4 interfaceId) public view override(ERC721URIStorage, ERC2981) returns (bool) {
+        return super.supportsInterface(interfaceId);
+    }
 }
