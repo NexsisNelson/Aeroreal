@@ -18,21 +18,11 @@ contract DeploySimulatedAssets is Script {
         SimulatedMarketplace market = new SimulatedMarketplace(AREAL);
         console.log("SimulatedMarketplace:", address(market));
 
-        SimulatedAsset sBTC = new SimulatedAsset(
-            "Simulated Bitcoin", "sBTC", "BTC", deployer, 60_000 * 1e18
-        );
-        SimulatedAsset sETH = new SimulatedAsset(
-            "Simulated Ethereum", "sETH", "ETH", deployer, 3_000 * 1e18
-        );
-        SimulatedAsset sGOLD = new SimulatedAsset(
-            "Simulated Gold", "sGOLD", "XAU", deployer, 2_100 * 1e18
-        );
-        SimulatedAsset sCOFFEE = new SimulatedAsset(
-            "Simulated Coffee", "sCOFFEE", "COFFEE", deployer, 200 * 1e18
-        );
-        SimulatedAsset sSOL = new SimulatedAsset(
-            "Simulated Solana", "sSOL", "SOL", deployer, 150 * 1e18
-        );
+        SimulatedAsset sBTC = new SimulatedAsset("Simulated Bitcoin", "sBTC", "BTC", deployer, 60_000 * 1e18);
+        SimulatedAsset sETH = new SimulatedAsset("Simulated Ethereum", "sETH", "ETH", deployer, 3_000 * 1e18);
+        SimulatedAsset sGOLD = new SimulatedAsset("Simulated Gold", "sGOLD", "XAU", deployer, 2_100 * 1e18);
+        SimulatedAsset sCOFFEE = new SimulatedAsset("Simulated Coffee", "sCOFFEE", "COFFEE", deployer, 200 * 1e18);
+        SimulatedAsset sSOL = new SimulatedAsset("Simulated Solana", "sSOL", "SOL", deployer, 150 * 1e18);
 
         console.log("sBTC:", address(sBTC));
         console.log("sETH:", address(sETH));

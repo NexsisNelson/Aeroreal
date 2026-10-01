@@ -22,10 +22,7 @@ contract RedeployArealStack is Script {
 
         vm.startBroadcast(privateKey);
 
-        YieldRewardToken areal = new YieldRewardToken(
-            "Aeroreal Token",
-            "AREAL"
-        );
+        YieldRewardToken areal = new YieldRewardToken("Aeroreal Token", "AREAL");
         console.log("New AREAL:", address(areal));
 
         ArealFaucet faucet = new ArealFaucet(address(areal));
@@ -34,10 +31,7 @@ contract RedeployArealStack is Script {
         areal.setFaucet(address(faucet));
         console.log("AREAL faucet set");
 
-        MicroYieldStreamer streamer = new MicroYieldStreamer(
-            GOLD_FRACTION_TOKEN,
-            address(areal)
-        );
+        MicroYieldStreamer streamer = new MicroYieldStreamer(GOLD_FRACTION_TOKEN, address(areal));
         console.log("New MicroYieldStreamer:", address(streamer));
 
         areal.setStreamer(address(streamer));
