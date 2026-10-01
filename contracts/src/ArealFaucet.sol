@@ -26,10 +26,7 @@ contract ArealFaucet is ReentrancyGuard, Ownable {
 
     function claim() external nonReentrant {
         uint256 last = lastClaimAt[msg.sender];
-        require(
-            last == 0 || block.timestamp >= last + CLAIM_COOLDOWN,
-            "Already claimed in the last 24 hours"
-        );
+        require(last == 0 || block.timestamp >= last + CLAIM_COOLDOWN, "Already claimed in the last 24 hours");
 
         lastClaimAt[msg.sender] = block.timestamp;
         totalClaims++;

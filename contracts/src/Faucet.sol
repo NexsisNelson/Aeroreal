@@ -36,19 +36,10 @@ contract Faucet is ReentrancyGuard, Ownable {
     uint256 public totalClaims;
 
     event Claimed(
-        address indexed wallet,
-        uint256 musdAmount,
-        uint256 fGoldAmount,
-        uint256 fCoffeeAmount,
-        uint256 nftTokenId
+        address indexed wallet, uint256 musdAmount, uint256 fGoldAmount, uint256 fCoffeeAmount, uint256 nftTokenId
     );
 
-    constructor(
-        address _musd,
-        address _fGold,
-        address _fCoffee,
-        address _demoNft
-    ) Ownable(msg.sender) {
+    constructor(address _musd, address _fGold, address _fCoffee, address _demoNft) Ownable(msg.sender) {
         musd = IMintableERC20(_musd);
         fGold = IFaucetFractionToken(_fGold);
         fCoffee = IFaucetFractionToken(_fCoffee);
@@ -57,10 +48,7 @@ contract Faucet is ReentrancyGuard, Ownable {
 
     function claim() external nonReentrant {
         uint256 last = lastClaimAt[msg.sender];
-        require(
-            last == 0 || block.timestamp >= last + CLAIM_COOLDOWN,
-            "Already claimed in the last 24 hours"
-        );
+        require(last == 0 || block.timestamp >= last + CLAIM_COOLDOWN, "Already claimed in the last 24 hours");
 
         musd.mint(msg.sender, musdAmount);
         fGold.faucetMint(msg.sender, fGoldAmount);
@@ -71,13 +59,7 @@ contract Faucet is ReentrancyGuard, Ownable {
         lastClaimAt[msg.sender] = block.timestamp;
         totalClaims++;
 
-        emit Claimed(
-            msg.sender,
-            musdAmount,
-            fGoldAmount,
-            fCoffeeAmount,
-            tokenId
-        );
+        emit Claimed(msg.sender, musdAmount, fGoldAmount, fCoffeeAmount, tokenId);
     }
 
     function timeUntilClaim(address wallet) external view returns (uint256) {
@@ -88,11 +70,7 @@ contract Faucet is ReentrancyGuard, Ownable {
         return next - block.timestamp;
     }
 
-    function setAmounts(
-        uint256 _musdAmount,
-        uint256 _fGoldAmount,
-        uint256 _fCoffeeAmount
-    ) external onlyOwner {
+    function setAmounts(uint256 _musdAmount, uint256 _fGoldAmount, uint256 _fCoffeeAmount) external onlyOwner {
         musdAmount = _musdAmount;
         fGoldAmount = _fGoldAmount;
         fCoffeeAmount = _fCoffeeAmount;

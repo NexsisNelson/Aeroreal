@@ -21,7 +21,6 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
  *         each holder calls claimProceeds() to withdraw their share.
  */
 contract InvoiceVault is FractionalizerVault {
-
     using SafeERC20 for IERC20;
 
     // =========================================================
@@ -122,15 +121,7 @@ contract InvoiceVault is FractionalizerVault {
         address _settlementToken,
         string memory _invoiceDocumentURI,
         string memory _buyerJurisdiction
-    )
-        FractionalizerVault(
-            _nftContract,
-            _nftTokenId,
-            _totalFractions,
-            _name,
-            _symbol
-        )
-    {
+    ) FractionalizerVault(_nftContract, _nftTokenId, _totalFractions, _name, _symbol) {
         require(_maturityDate > block.timestamp, "Maturity must be in the future");
         require(_discountBps <= 5000, "Discount too high (max 50%)");
         require(_faceValue > 0, "Face value must be > 0");
@@ -145,14 +136,7 @@ contract InvoiceVault is FractionalizerVault {
         invoiceDocumentURI = _invoiceDocumentURI;
         buyerJurisdiction = _buyerJurisdiction;
 
-        emit InvoiceMetadataSet(
-            _smeIssuer,
-            _invoiceBuyer,
-            _faceValue,
-            _discountBps,
-            _maturityDate,
-            _settlementToken
-        );
+        emit InvoiceMetadataSet(_smeIssuer, _invoiceBuyer, _faceValue, _discountBps, _maturityDate, _settlementToken);
     }
 
     // =========================================================
@@ -172,11 +156,7 @@ contract InvoiceVault is FractionalizerVault {
         require(_amountReceived > 0, "Amount must be > 0");
 
         // Pull the funds into the vault.
-        IERC20(settlementToken).safeTransferFrom(
-            msg.sender,
-            address(this),
-            _amountReceived
-        );
+        IERC20(settlementToken).safeTransferFrom(msg.sender, address(this), _amountReceived);
 
         isSettled = true;
         totalSettled = _amountReceived;
@@ -192,11 +172,7 @@ contract InvoiceVault is FractionalizerVault {
         require(!isSettled, "Already fully settled");
         require(_amountReceived > 0, "Amount must be > 0");
 
-        IERC20(settlementToken).safeTransferFrom(
-            msg.sender,
-            address(this),
-            _amountReceived
-        );
+        IERC20(settlementToken).safeTransferFrom(msg.sender, address(this), _amountReceived);
 
         totalSettled += _amountReceived;
 
@@ -264,19 +240,23 @@ contract InvoiceVault is FractionalizerVault {
     /**
      * @notice Get all invoice metadata in a single call.
      */
-    function getInvoiceInfo() external view returns (
-        address _smeIssuer,
-        address _invoiceBuyer,
-        uint256 _faceValue,
-        uint256 _discountBps,
-        uint256 _issueDate,
-        uint256 _maturityDate,
-        bool _isSettled,
-        uint256 _totalSettled,
-        address _settlementToken,
-        string memory _invoiceDocumentURI,
-        string memory _buyerJurisdiction
-    ) {
+    function getInvoiceInfo()
+        external
+        view
+        returns (
+            address _smeIssuer,
+            address _invoiceBuyer,
+            uint256 _faceValue,
+            uint256 _discountBps,
+            uint256 _issueDate,
+            uint256 _maturityDate,
+            bool _isSettled,
+            uint256 _totalSettled,
+            address _settlementToken,
+            string memory _invoiceDocumentURI,
+            string memory _buyerJurisdiction
+        )
+    {
         return (
             smeIssuer,
             invoiceBuyer,

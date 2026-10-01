@@ -23,7 +23,6 @@ contract CommodityCertificate is ERC721 {
 }
 
 contract CommodityVaultTest is Test {
-
     CommodityCertificate public cert;
     CommodityVault public vault;
 
@@ -46,16 +45,16 @@ contract CommodityVaultTest is Test {
         // 3. Deploy the CommodityVault for that certificate.
         vault = new CommodityVault(
             address(cert),
-            1,                              // tokenId
-            TOTAL_FRACTIONS,                // fraction count
+            1, // tokenId
+            TOTAL_FRACTIONS, // fraction count
             "Fractionalized Cocoa Batch 001", // name
-            "fCOCOA",                       // symbol
-            "Cocoa",                        // commodityType
-            100,                            // quantity: 100 kg
-            "kg",                           // unit
+            "fCOCOA", // symbol
+            "Cocoa", // commodityType
+            100, // quantity: 100 kg
+            "kg", // unit
             "Lagos Free Zone, Warehouse A", // storageLocation
-            "ipfs://QmAuditReportHash",     // auditReportURI
-            "Nexsis Custody Ltd"            // custodian
+            "ipfs://QmAuditReportHash", // auditReportURI
+            "Nexsis Custody Ltd" // custodian
         );
 
         // 4. Alice approves the vault to take the certificate.
@@ -69,8 +68,7 @@ contract CommodityVaultTest is Test {
             uint256 quantity,
             string memory unit,
             string memory location,
-            string memory auditURI,
-            ,
+            string memory auditURI,,
             string memory custodian
         ) = vault.getCommodityInfo();
 
@@ -90,16 +88,8 @@ contract CommodityVaultTest is Test {
         vault.fractionalize();
 
         FractionToken fractionToken = vault.fractionToken();
-        assertEq(
-            fractionToken.balanceOf(alice),
-            TOTAL_FRACTIONS,
-            "Alice should own all fractions"
-        );
-        assertEq(
-            cert.ownerOf(1),
-            address(vault),
-            "Certificate should be locked in the vault"
-        );
+        assertEq(fractionToken.balanceOf(alice), TOTAL_FRACTIONS, "Alice should own all fractions");
+        assertEq(cert.ownerOf(1), address(vault), "Certificate should be locked in the vault");
 
         console.log("TEST: Commodity fractionalized");
 
@@ -110,11 +100,7 @@ contract CommodityVaultTest is Test {
         vm.prank(alice);
         fractionToken.transfer(bob, TOTAL_FRACTIONS / 4);
 
-        assertEq(
-            fractionToken.balanceOf(bob),
-            TOTAL_FRACTIONS / 4,
-            "Bob should hold 25% of fractions"
-        );
+        assertEq(fractionToken.balanceOf(bob), TOTAL_FRACTIONS / 4, "Bob should hold 25% of fractions");
 
         console.log("TEST: Bob whitelisted and holds 25%");
 
@@ -125,11 +111,7 @@ contract CommodityVaultTest is Test {
         vm.prank(alice);
         vault.redeem();
 
-        assertEq(
-            cert.ownerOf(1),
-            alice,
-            "Alice should own the certificate again"
-        );
+        assertEq(cert.ownerOf(1), alice, "Alice should own the certificate again");
 
         console.log("TEST: Full commodity lifecycle complete");
     }
@@ -140,7 +122,7 @@ contract CommodityVaultTest is Test {
         // because it deployed the vault.
         vault.updateAuditReport("ipfs://QmNewAuditHash");
 
-        (, , , , string memory auditURI, , ) = vault.getCommodityInfo();
+        (,,,, string memory auditURI,,) = vault.getCommodityInfo();
         assertEq(auditURI, "ipfs://QmNewAuditHash", "Audit URI not updated");
 
         console.log("TEST: Audit report updated");

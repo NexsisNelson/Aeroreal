@@ -17,7 +17,6 @@ contract MockStablecoinOracle is ERC20 {
 }
 
 contract RevenueOracleTest is Test {
-
     RevenueOracle public oracle;
     MockStablecoinOracle public usdc;
 

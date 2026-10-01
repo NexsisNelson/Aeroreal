@@ -11,7 +11,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  *         NOT for production.
  */
 contract MockStablecoin is ERC20, Ownable {
-
     constructor() ERC20("Mock USD", "mUSD") Ownable(msg.sender) {}
 
     /// @notice Anyone can mint for testing purposes. Rate-limited in production.

@@ -6,9 +6,7 @@ import "forge-std/Test.sol";
 import "../src/FractionMarketplace.sol";
 
 contract MarketplaceToken is ERC20 {
-    constructor(string memory name_, string memory symbol_)
-        ERC20(name_, symbol_)
-    {}
+    constructor(string memory name_, string memory symbol_) ERC20(name_, symbol_) {}
 
     function mint(address to, uint256 amount) external {
         _mint(to, amount);
@@ -64,7 +62,7 @@ contract FractionMarketplaceTest is Test {
         assertEq(paymentToken.balanceOf(seller), 495 ether);
         assertEq(paymentToken.balanceOf(feeRecipient), 5 ether);
         assertEq(marketplace.activeListingCount(), 0);
-        (, , , , bool active) = marketplace.getListing(listingId);
+        (,,,, bool active) = marketplace.getListing(listingId);
         assertFalse(active);
     }
 

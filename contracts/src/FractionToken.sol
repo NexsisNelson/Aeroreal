@@ -77,11 +77,10 @@ contract FractionToken is ERC20, Ownable {
         emit WalletRemoved(_wallet);
     }
 
-    function updateMetadata(
-        string memory _assetType,
-        string memory _jurisdiction,
-        string memory _legalDocumentURI
-    ) external onlyOwner {
+    function updateMetadata(string memory _assetType, string memory _jurisdiction, string memory _legalDocumentURI)
+        external
+        onlyOwner
+    {
         assetType = _assetType;
         jurisdiction = _jurisdiction;
         legalDocumentURI = _legalDocumentURI;

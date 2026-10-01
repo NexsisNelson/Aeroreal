@@ -28,7 +28,6 @@ contract MockStablecoinRS is ERC20 {
 }
 
 contract RevenueStreamerTest is Test {
-
     MockFractionToken public fractionToken;
     MockStablecoinRS public usdc;
     RevenueStreamer public streamer;
@@ -49,11 +48,7 @@ contract RevenueStreamerTest is Test {
         usdc = new MockStablecoinRS();
 
         // Deploy streamer.
-        streamer = new RevenueStreamer(
-            address(fractionToken),
-            address(usdc),
-            vaultAddr
-        );
+        streamer = new RevenueStreamer(address(fractionToken), address(usdc), vaultAddr);
 
         // Mint fractions to Alice and Bob.
         fractionToken.mint(alice, 10_000e18);
@@ -67,15 +62,7 @@ contract RevenueStreamerTest is Test {
     // TEST 1: Metadata correct
     // =========================================================
     function testStreamerMetadata() public view {
-        (
-            address _staking,
-            address _reward,
-            address _vault,
-            ,
-            ,
-            ,
-            ,
-        ) = streamer.getStreamerInfo();
+        (address _staking, address _reward, address _vault,,,,,) = streamer.getStreamerInfo();
 
         assertEq(_staking, address(fractionToken));
         assertEq(_reward, address(usdc));

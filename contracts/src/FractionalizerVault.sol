@@ -132,7 +132,13 @@ contract FractionalizerVault is ERC721Holder, ReentrancyGuard {
     function getVaultInfo()
         external
         view
-        returns (address _nftContract, uint256 _nftId, address _fractionToken, uint256 _totalFractions, bool _isRedeemed)
+        returns (
+            address _nftContract,
+            uint256 _nftId,
+            address _fractionToken,
+            uint256 _totalFractions,
+            bool _isRedeemed
+        )
     {
         return (nftContract, nftTokenId, address(fractionToken), totalFractions, isRedeemed);
     }

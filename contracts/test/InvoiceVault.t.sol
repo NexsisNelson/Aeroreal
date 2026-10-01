@@ -33,7 +33,6 @@ contract MockStablecoin is ERC20 {
 }
 
 contract InvoiceVaultTest is Test {
-
     InvoiceCertificate public cert;
     InvoiceVault public vault;
     MockStablecoin public usdc;
@@ -44,7 +43,7 @@ contract InvoiceVaultTest is Test {
 
     uint256 constant TOTAL_FRACTIONS = 10_000 * 1e18;
     uint256 constant FACE_VALUE = 5_000 * 1e18; // $5,000 invoice
-    uint256 constant DISCOUNT_BPS = 500;        // 5% discount
+    uint256 constant DISCOUNT_BPS = 500; // 5% discount
     uint256 constant MATURITY_DAYS = 60;
 
     function setUp() public {
@@ -67,8 +66,8 @@ contract InvoiceVaultTest is Test {
             TOTAL_FRACTIONS,
             "Invoice INV-2026-001",
             "fINV001",
-            issuer,                                       // smeIssuer
-            address(0xB0B),                               // invoiceBuyer
+            issuer, // smeIssuer
+            address(0xB0B), // invoiceBuyer
             FACE_VALUE,
             DISCOUNT_BPS,
             block.timestamp + (MATURITY_DAYS * 1 days),
@@ -87,11 +86,9 @@ contract InvoiceVaultTest is Test {
             address smeIssuer,
             address invoiceBuyer,
             uint256 faceValue,
-            uint256 discountBps,
-            ,
+            uint256 discountBps,,
             uint256 maturityDate,
-            bool isSettled,
-            ,
+            bool isSettled,,
             address settlementToken,
             string memory invoiceDocURI,
             string memory buyerJurisdiction
@@ -114,16 +111,8 @@ contract InvoiceVaultTest is Test {
         vm.prank(issuer);
         vault.fractionalize();
 
-        assertEq(
-            vault.fractionToken().balanceOf(issuer),
-            TOTAL_FRACTIONS,
-            "Issuer should own all fractions"
-        );
-        assertEq(
-            cert.ownerOf(1),
-            address(vault),
-            "Certificate should be locked in vault"
-        );
+        assertEq(vault.fractionToken().balanceOf(issuer), TOTAL_FRACTIONS, "Issuer should own all fractions");
+        assertEq(cert.ownerOf(1), address(vault), "Certificate should be locked in vault");
 
         console.log("TEST: Invoice fractionalized");
     }
@@ -160,7 +149,7 @@ contract InvoiceVaultTest is Test {
 
         vm.startPrank(issuer);
         vault.fractionToken().transfer(alice, TOTAL_FRACTIONS / 2); // 50%
-        vault.fractionToken().transfer(bob, TOTAL_FRACTIONS / 4);   // 25%
+        vault.fractionToken().transfer(bob, TOTAL_FRACTIONS / 4); // 25%
         vm.stopPrank();
 
         // Step 3: Buyer pays the invoice at maturity.
@@ -181,11 +170,7 @@ contract InvoiceVaultTest is Test {
         vault.claimProceeds();
 
         uint256 aliceExpected = (payment * 50) / 100;
-        assertEq(
-            usdc.balanceOf(alice),
-            aliceExpected,
-            "Alice should have 50% of proceeds"
-        );
+        assertEq(usdc.balanceOf(alice), aliceExpected, "Alice should have 50% of proceeds");
 
         console.log("TEST: Alice claimed", aliceExpected);
 
@@ -194,11 +179,7 @@ contract InvoiceVaultTest is Test {
         vault.claimProceeds();
 
         uint256 bobExpected = (payment * 25) / 100;
-        assertEq(
-            usdc.balanceOf(bob),
-            bobExpected,
-            "Bob should have 25% of proceeds"
-        );
+        assertEq(usdc.balanceOf(bob), bobExpected, "Bob should have 25% of proceeds");
 
         console.log("TEST: Bob claimed", bobExpected);
 

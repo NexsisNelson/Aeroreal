@@ -21,7 +21,6 @@ contract MockNFT2 is ERC721 {
 }
 
 contract EdgeCasesTest is Test {
-
     MockNFT2 public nft;
     FractionFactory public factory;
     YieldRewardToken public sprinkleToken;
@@ -49,13 +48,7 @@ contract EdgeCasesTest is Test {
     }
 
     function testFaucetMintAllowsFreshRecipient() public {
-        FaucetFractionToken token = new FaucetFractionToken(
-            "Faucet Gold",
-            "fGOLD",
-            "Gold",
-            "US",
-            ""
-        );
+        FaucetFractionToken token = new FaucetFractionToken("Faucet Gold", "fGOLD", "Gold", "US", "");
 
         address faucet = 0xf4a4C3D1e2f3A4B5c6D7e8f9A0B1C2D3e4f5A6B7;
         token.setFaucet(faucet);
@@ -71,9 +64,7 @@ contract EdgeCasesTest is Test {
     // =====================================================
     function testCannotDoubleFractionalize() public {
         vm.prank(alice);
-        address vaultAddress = factory.createVault(
-            address(nft), 1, TOTAL_FRACTIONS, "fMAPE", "fMAPE"
-        );
+        address vaultAddress = factory.createVault(address(nft), 1, TOTAL_FRACTIONS, "fMAPE", "fMAPE");
 
         FractionalizerVault vault = FractionalizerVault(vaultAddress);
 
@@ -84,9 +75,7 @@ contract EdgeCasesTest is Test {
 
         vm.prank(alice);
         vm.expectRevert("This NFT is already fractionalized");
-        factory.createVault(
-            address(nft), 1, TOTAL_FRACTIONS, "fMAPE-DUP", "fMAPED"
-        );
+        factory.createVault(address(nft), 1, TOTAL_FRACTIONS, "fMAPE-DUP", "fMAPED");
 
         console.log("TEST 1 PASSED: Cannot double fractionalize");
     }
@@ -96,9 +85,7 @@ contract EdgeCasesTest is Test {
     // =====================================================
     function testCannotRedeemWithPartialFractions() public {
         vm.prank(alice);
-        address vaultAddress = factory.createVault(
-            address(nft), 1, TOTAL_FRACTIONS, "fMAPE", "fMAPE"
-        );
+        address vaultAddress = factory.createVault(address(nft), 1, TOTAL_FRACTIONS, "fMAPE", "fMAPE");
 
         FractionalizerVault vault = FractionalizerVault(vaultAddress);
         FractionToken fractionToken = vault.fractionToken();
@@ -128,9 +115,7 @@ contract EdgeCasesTest is Test {
     // =====================================================
     function testCannotDoubleRedeem() public {
         vm.prank(alice);
-        address vaultAddress = factory.createVault(
-            address(nft), 1, TOTAL_FRACTIONS, "fMAPE", "fMAPE"
-        );
+        address vaultAddress = factory.createVault(address(nft), 1, TOTAL_FRACTIONS, "fMAPE", "fMAPE");
 
         FractionalizerVault vault = FractionalizerVault(vaultAddress);
 
@@ -152,9 +137,7 @@ contract EdgeCasesTest is Test {
     // =====================================================
     function testFairYieldSplit() public {
         vm.prank(alice);
-        address vaultAddress = factory.createVault(
-            address(nft), 1, TOTAL_FRACTIONS, "fMAPE", "fMAPE"
-        );
+        address vaultAddress = factory.createVault(address(nft), 1, TOTAL_FRACTIONS, "fMAPE", "fMAPE");
         FractionalizerVault vault = FractionalizerVault(vaultAddress);
         FractionToken fractionToken = vault.fractionToken();
 
@@ -170,10 +153,7 @@ contract EdgeCasesTest is Test {
         vm.prank(alice);
         fractionToken.transfer(bob, 2_500);
 
-        MicroYieldStreamer streamer = new MicroYieldStreamer(
-            address(fractionToken),
-            address(sprinkleToken)
-        );
+        MicroYieldStreamer streamer = new MicroYieldStreamer(address(fractionToken), address(sprinkleToken));
         sprinkleToken.setStreamer(address(streamer));
         streamer.setRewardRate(1e18);
 
@@ -210,9 +190,7 @@ contract EdgeCasesTest is Test {
     // =====================================================
     function testNonStakerCannotClaim() public {
         vm.prank(alice);
-        address vaultAddress = factory.createVault(
-            address(nft), 1, TOTAL_FRACTIONS, "fMAPE", "fMAPE"
-        );
+        address vaultAddress = factory.createVault(address(nft), 1, TOTAL_FRACTIONS, "fMAPE", "fMAPE");
         FractionalizerVault vault = FractionalizerVault(vaultAddress);
 
         vm.startPrank(alice);
@@ -220,10 +198,7 @@ contract EdgeCasesTest is Test {
         vault.fractionalize();
         vm.stopPrank();
 
-        MicroYieldStreamer streamer = new MicroYieldStreamer(
-            address(vault.fractionToken()),
-            address(sprinkleToken)
-        );
+        MicroYieldStreamer streamer = new MicroYieldStreamer(address(vault.fractionToken()), address(sprinkleToken));
         sprinkleToken.setStreamer(address(streamer));
         streamer.setRewardRate(1e18);
 

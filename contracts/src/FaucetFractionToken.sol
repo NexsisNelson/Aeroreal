@@ -33,11 +33,7 @@ contract FaucetFractionToken is FractionToken {
         _mint(_to, _amount);
     }
 
-    function _update(
-        address from,
-        address to,
-        uint256 value
-    ) internal override {
+    function _update(address from, address to, uint256 value) internal override {
         if (whitelistEnabled && (msg.sender == vault || msg.sender == faucet)) {
             ERC20._update(from, to, value);
             return;
@@ -48,10 +44,7 @@ contract FaucetFractionToken is FractionToken {
                 require(whitelisted[from] || from == faucet, "Sender not whitelisted");
             }
             if (to != address(0)) {
-                require(
-                    whitelisted[to] || to == faucet || msg.sender == faucet,
-                    "Recipient not whitelisted"
-                );
+                require(whitelisted[to] || to == faucet || msg.sender == faucet, "Recipient not whitelisted");
             }
         }
         super._update(from, to, value);

@@ -31,11 +31,7 @@ contract FractionMarketplace is ReentrancyGuard, Ownable {
     address public feeRecipient;
 
     event Listed(
-        uint256 indexed listingId,
-        address indexed seller,
-        address indexed fractionToken,
-        uint256 amount,
-        uint256 price
+        uint256 indexed listingId, address indexed seller, address indexed fractionToken, uint256 amount, uint256 price
     );
     event Purchased(uint256 indexed listingId, address indexed buyer, uint256 price);
     event Cancelled(uint256 indexed listingId);
@@ -46,11 +42,7 @@ contract FractionMarketplace is ReentrancyGuard, Ownable {
         feeRecipient = msg.sender;
     }
 
-    function list(
-        address fractionToken,
-        uint256 amount,
-        uint256 price
-    ) external nonReentrant returns (uint256) {
+    function list(address fractionToken, uint256 amount, uint256 price) external nonReentrant returns (uint256) {
         require(fractionToken != address(0), "Invalid fraction token");
         require(amount > 0, "Amount must be > 0");
         require(price > 0, "Price must be > 0");
@@ -58,13 +50,8 @@ contract FractionMarketplace is ReentrancyGuard, Ownable {
         IERC20(fractionToken).safeTransferFrom(msg.sender, address(this), amount);
 
         uint256 listingId = nextListingId++;
-        listings[listingId] = Listing({
-            seller: msg.sender,
-            fractionToken: fractionToken,
-            amount: amount,
-            price: price,
-            active: true
-        });
+        listings[listingId] =
+            Listing({seller: msg.sender, fractionToken: fractionToken, amount: amount, price: price, active: true});
         activeListingCount++;
 
         emit Listed(listingId, msg.sender, fractionToken, amount, price);
@@ -110,21 +97,9 @@ contract FractionMarketplace is ReentrancyGuard, Ownable {
     function getListing(uint256 listingId)
         external
         view
-        returns (
-            address seller,
-            address fractionToken,
-            uint256 amount,
-            uint256 price,
-            bool active
-        )
+        returns (address seller, address fractionToken, uint256 amount, uint256 price, bool active)
     {
         Listing storage listing = listings[listingId];
-        return (
-            listing.seller,
-            listing.fractionToken,
-            listing.amount,
-            listing.price,
-            listing.active
-        );
+        return (listing.seller, listing.fractionToken, listing.amount, listing.price, listing.active);
     }
 }

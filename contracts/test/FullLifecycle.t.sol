@@ -27,7 +27,6 @@ contract MockNFT is ERC721 {
  * @notice Simulates the entire user journey from deposit to redeem.
  */
 contract FullLifecycleTest is Test {
-
     // ---- Our Contracts ----
     MockNFT public nft;
     FractionFactory public factory;
@@ -65,13 +64,7 @@ contract FullLifecycleTest is Test {
         // STEP 1: Alice creates a Vault for her NFT.
         // =====================================================
         vm.prank(alice);
-        address vaultAddress = factory.createVault(
-            address(nft),
-            1,
-            TOTAL_FRACTIONS,
-            "Fractionalized Mock Ape",
-            "fMAPE"
-        );
+        address vaultAddress = factory.createVault(address(nft), 1, TOTAL_FRACTIONS, "Fractionalized Mock Ape", "fMAPE");
 
         FractionalizerVault vault = FractionalizerVault(vaultAddress);
         FractionToken fractionToken = vault.fractionToken();
@@ -94,10 +87,7 @@ contract FullLifecycleTest is Test {
         // =====================================================
         // STEP 3: Deploy the MicroYieldStreamer.
         // =====================================================
-        MicroYieldStreamer streamer = new MicroYieldStreamer(
-            address(fractionToken),
-            address(sprinkleToken)
-        );
+        MicroYieldStreamer streamer = new MicroYieldStreamer(address(fractionToken), address(sprinkleToken));
 
         // The test contract owns the Sprinkle token. Transfer ownership
         // is not needed because the streamer calls setStreamer, but the

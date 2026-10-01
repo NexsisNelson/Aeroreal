@@ -15,7 +15,6 @@ import "./FractionalizerVault.sol";
  *         The base vault's fractionalization mechanics are inherited unchanged.
  */
 contract CommodityVault is FractionalizerVault {
-
     // =========================================================
     // COMMODITY METADATA
     // =========================================================
@@ -45,12 +44,7 @@ contract CommodityVault is FractionalizerVault {
     // EVENTS
     // =========================================================
 
-    event CommodityMetadataSet(
-        string commodityType,
-        uint256 quantity,
-        string unitOfMeasure,
-        string storageLocation
-    );
+    event CommodityMetadataSet(string commodityType, uint256 quantity, string unitOfMeasure, string storageLocation);
 
     event AuditReportUpdated(string auditReportURI);
     event InsuranceUpdated(string insuranceURI);
@@ -87,15 +81,7 @@ contract CommodityVault is FractionalizerVault {
         string memory _storageLocation,
         string memory _auditReportURI,
         string memory _custodian
-    )
-        FractionalizerVault(
-            _nftContract,
-            _nftTokenId,
-            _totalFractions,
-            _name,
-            _symbol
-        )
-    {
+    ) FractionalizerVault(_nftContract, _nftTokenId, _totalFractions, _name, _symbol) {
         commodityType = _commodityType;
         quantity = _quantity;
         unitOfMeasure = _unitOfMeasure;
@@ -103,12 +89,7 @@ contract CommodityVault is FractionalizerVault {
         auditReportURI = _auditReportURI;
         custodian = _custodian;
 
-        emit CommodityMetadataSet(
-            _commodityType,
-            _quantity,
-            _unitOfMeasure,
-            _storageLocation
-        );
+        emit CommodityMetadataSet(_commodityType, _quantity, _unitOfMeasure, _storageLocation);
     }
 
     // =========================================================
@@ -141,23 +122,19 @@ contract CommodityVault is FractionalizerVault {
      * @notice Get all commodity metadata in a single call.
      *         Saves gas for the frontend.
      */
-    function getCommodityInfo() external view returns (
-        string memory _commodityType,
-        uint256 _quantity,
-        string memory _unitOfMeasure,
-        string memory _storageLocation,
-        string memory _auditReportURI,
-        string memory _insuranceURI,
-        string memory _custodian
-    ) {
-        return (
-            commodityType,
-            quantity,
-            unitOfMeasure,
-            storageLocation,
-            auditReportURI,
-            insuranceURI,
-            custodian
-        );
+    function getCommodityInfo()
+        external
+        view
+        returns (
+            string memory _commodityType,
+            uint256 _quantity,
+            string memory _unitOfMeasure,
+            string memory _storageLocation,
+            string memory _auditReportURI,
+            string memory _insuranceURI,
+            string memory _custodian
+        )
+    {
+        return (commodityType, quantity, unitOfMeasure, storageLocation, auditReportURI, insuranceURI, custodian);
     }
 }

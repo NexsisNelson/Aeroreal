@@ -29,11 +29,7 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
     IERC20 public arealToken;
 
     event Listed(
-        uint256 indexed listingId,
-        address indexed seller,
-        address indexed nftContract,
-        uint256 tokenId,
-        uint256 price
+        uint256 indexed listingId, address indexed seller, address indexed nftContract, uint256 tokenId, uint256 price
     );
     event Purchased(uint256 indexed listingId, address indexed buyer, uint256 price);
     event Cancelled(uint256 indexed listingId);
@@ -44,17 +40,12 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
         feeRecipient = msg.sender;
     }
 
-    function list(
-        address nftContract,
-        uint256 tokenId,
-        uint256 price
-    ) external nonReentrant returns (uint256) {
+    function list(address nftContract, uint256 tokenId, uint256 price) external nonReentrant returns (uint256) {
         require(price > 0, "Price must be > 0");
         IERC721 nft = IERC721(nftContract);
         require(nft.ownerOf(tokenId) == msg.sender, "Not the owner");
         require(
-            nft.isApprovedForAll(msg.sender, address(this)) ||
-                nft.getApproved(tokenId) == address(this),
+            nft.isApprovedForAll(msg.sender, address(this)) || nft.getApproved(tokenId) == address(this),
             "Marketplace not approved"
         );
 
@@ -63,13 +54,8 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
         }
 
         uint256 listingId = nextListingId++;
-        listings[listingId] = Listing({
-            seller: msg.sender,
-            nftContract: nftContract,
-            tokenId: tokenId,
-            price: price,
-            active: true
-        });
+        listings[listingId] =
+            Listing({seller: msg.sender, nftContract: nftContract, tokenId: tokenId, price: price, active: true});
         activeListingCount++;
         emit Listed(listingId, msg.sender, nftContract, tokenId, price);
         return listingId;
@@ -84,11 +70,7 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
         paymentToken.safeTransferFrom(msg.sender, listing.seller, listing.price - fee);
         if (fee > 0) paymentToken.safeTransferFrom(msg.sender, feeRecipient, fee);
 
-        IERC721(listing.nftContract).safeTransferFrom(
-            listing.seller,
-            msg.sender,
-            listing.tokenId
-        );
+        IERC721(listing.nftContract).safeTransferFrom(listing.seller, msg.sender, listing.tokenId);
 
         listing.active = false;
         activeListingCount--;
@@ -126,21 +108,9 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
     function getListing(uint256 listingId)
         external
         view
-        returns (
-            address seller,
-            address nftContract,
-            uint256 tokenId,
-            uint256 price,
-            bool active
-        )
+        returns (address seller, address nftContract, uint256 tokenId, uint256 price, bool active)
     {
         Listing storage listing = listings[listingId];
-        return (
-            listing.seller,
-            listing.nftContract,
-            listing.tokenId,
-            listing.price,
-            listing.active
-        );
+        return (listing.seller, listing.nftContract, listing.tokenId, listing.price, listing.active);
     }
 }

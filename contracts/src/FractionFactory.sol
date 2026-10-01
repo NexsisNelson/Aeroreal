@@ -56,19 +56,11 @@ contract FractionFactory {
     ) external returns (address vault) {
         require(_nftContract != address(0), "Invalid NFT contract");
         require(_totalFractions > 0, "Fractions must be > 0");
-        require(
-            vaultForNFT[_nftContract][_nftTokenId] == address(0),
-            "This NFT is already fractionalized"
-        );
+        require(vaultForNFT[_nftContract][_nftTokenId] == address(0), "This NFT is already fractionalized");
 
         // 1. Deploy a brand new Vault from the FractionalizerVault blueprint.
-        FractionalizerVault newVault = new FractionalizerVault(
-            _nftContract,
-            _nftTokenId,
-            _totalFractions,
-            _name,
-            _symbol
-        );
+        FractionalizerVault newVault =
+            new FractionalizerVault(_nftContract, _nftTokenId, _totalFractions, _name, _symbol);
 
         vault = address(newVault);
 
@@ -78,12 +70,7 @@ contract FractionFactory {
 
         // 3. Emit an event so the Flutter app hears about it in real time.
         emit VaultCreated(
-            vault,
-            _nftContract,
-            _nftTokenId,
-            address(newVault.fractionToken()),
-            _totalFractions,
-            msg.sender
+            vault, _nftContract, _nftTokenId, address(newVault.fractionToken()), _totalFractions, msg.sender
         );
     }
 

@@ -31,7 +31,6 @@ import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
  *         The Streamer upgrade (Day 5) will connect to this.
  */
 contract RevenueOracle is Ownable {
-
     using SafeERC20 for IERC20;
 
     // =========================================================
@@ -56,17 +55,8 @@ contract RevenueOracle is Ownable {
 
     event ReporterAdded(address indexed reporter);
     event ReporterRemoved(address indexed reporter);
-    event RevenueReported(
-        address indexed vault,
-        uint256 amount,
-        string revenueType,
-        uint256 timestamp
-    );
-    event RevenueWithdrawn(
-        address indexed vault,
-        address indexed recipient,
-        uint256 amount
-    );
+    event RevenueReported(address indexed vault, uint256 amount, string revenueType, uint256 timestamp);
+    event RevenueWithdrawn(address indexed vault, address indexed recipient, uint256 amount);
 
     // =========================================================
     // CONSTRUCTOR
@@ -113,11 +103,7 @@ contract RevenueOracle is Ownable {
      * @dev The caller MUST approve this contract to spend `_amount` BEFORE
      *      calling this function.
      */
-    function reportRevenue(
-        address _vault,
-        uint256 _amount,
-        string memory _revenueType
-    ) external onlyReporter {
+    function reportRevenue(address _vault, uint256 _amount, string memory _revenueType) external onlyReporter {
         require(_vault != address(0), "Invalid vault");
         require(_amount > 0, "Amount must be > 0");
 
@@ -138,11 +124,7 @@ contract RevenueOracle is Ownable {
      * @param _recipient The address receiving the funds.
      * @param _amount The amount to withdraw.
      */
-    function withdrawRevenue(
-        address _vault,
-        address _recipient,
-        uint256 _amount
-    ) external onlyReporter {
+    function withdrawRevenue(address _vault, address _recipient, uint256 _amount) external onlyReporter {
         require(_recipient != address(0), "Invalid recipient");
         require(_amount > 0, "Amount must be > 0");
         require(vaultRevenue[_vault] >= _amount, "Insufficient vault revenue");

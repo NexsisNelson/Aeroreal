@@ -25,7 +25,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  *         This is production-grade: yield comes from real revenue, not minting.
  */
 contract RevenueStreamer is ReentrancyGuard, Ownable {
-
     using SafeERC20 for IERC20;
 
     // =========================================================
@@ -42,15 +41,15 @@ contract RevenueStreamer is ReentrancyGuard, Ownable {
     address public vault;
 
     // ---- Reward math (same pattern as MicroYieldStreamer) ----
-    uint256 public rewardRate;              // Stablecoins per second (global).
+    uint256 public rewardRate; // Stablecoins per second (global).
     uint256 public lastUpdateTime;
     uint256 public rewardPerTokenStored;
 
     // ---- User tracking ----
     struct UserInfo {
-        uint256 amount;                     // Staked fractions.
+        uint256 amount; // Staked fractions.
         uint256 rewardPerTokenPaid;
-        uint256 rewards;                    // Pending stablecoin yield.
+        uint256 rewards; // Pending stablecoin yield.
     }
 
     mapping(address => UserInfo) public userInfo;
@@ -83,11 +82,7 @@ contract RevenueStreamer is ReentrancyGuard, Ownable {
      * @param _rewardToken The stablecoin address (USDC/cNGN).
      * @param _vault The vault this Streamer serves.
      */
-    constructor(
-        address _stakingToken,
-        address _rewardToken,
-        address _vault
-    ) Ownable(msg.sender) {
+    constructor(address _stakingToken, address _rewardToken, address _vault) Ownable(msg.sender) {
         require(_stakingToken != address(0), "Invalid staking token");
         require(_rewardToken != address(0), "Invalid reward token");
         require(_vault != address(0), "Invalid vault");
@@ -143,14 +138,12 @@ contract RevenueStreamer is ReentrancyGuard, Ownable {
         if (totalStaked == 0) {
             return rewardPerTokenStored;
         }
-        return rewardPerTokenStored +
-            ((block.timestamp - lastUpdateTime) * rewardRate * 1e18) / totalStaked;
+        return rewardPerTokenStored + ((block.timestamp - lastUpdateTime) * rewardRate * 1e18) / totalStaked;
     }
 
     function earned(address account) public view returns (uint256) {
         UserInfo storage user = userInfo[account];
-        return user.rewards +
-            ((user.amount * (rewardPerToken() - user.rewardPerTokenPaid)) / 1e18);
+        return user.rewards + ((user.amount * (rewardPerToken() - user.rewardPerTokenPaid)) / 1e18);
     }
 
     // =========================================================
@@ -215,16 +208,20 @@ contract RevenueStreamer is ReentrancyGuard, Ownable {
     // VIEWS
     // =========================================================
 
-    function getStreamerInfo() external view returns (
-        address _stakingToken,
-        address _rewardToken,
-        address _vault,
-        uint256 _totalStaked,
-        uint256 _rewardRate,
-        uint256 _lifetimeRevenueReceived,
-        uint256 _lifetimeYieldClaimed,
-        uint256 _currentPoolBalance
-    ) {
+    function getStreamerInfo()
+        external
+        view
+        returns (
+            address _stakingToken,
+            address _rewardToken,
+            address _vault,
+            uint256 _totalStaked,
+            uint256 _rewardRate,
+            uint256 _lifetimeRevenueReceived,
+            uint256 _lifetimeYieldClaimed,
+            uint256 _currentPoolBalance
+        )
+    {
         return (
             address(stakingToken),
             address(rewardToken),

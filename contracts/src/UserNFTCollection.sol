@@ -18,23 +18,11 @@ contract UserNFTCollection is ERC721URIStorage, ERC2981, Ownable {
 
     mapping(uint256 => address) public creatorOf;
 
-    event NFTMinted(
-        uint256 indexed tokenId,
-        address indexed creator,
-        string tokenURI,
-        uint96 royaltyBps
-    );
+    event NFTMinted(uint256 indexed tokenId, address indexed creator, string tokenURI, uint96 royaltyBps);
 
-    constructor(string memory _name, string memory _symbol)
-        ERC721(_name, _symbol)
-        Ownable(msg.sender)
-    {}
+    constructor(string memory _name, string memory _symbol) ERC721(_name, _symbol) Ownable(msg.sender) {}
 
-    function mint(
-        address _to,
-        string memory _tokenURI,
-        uint96 _royaltyBps
-    ) external returns (uint256) {
+    function mint(address _to, string memory _tokenURI, uint96 _royaltyBps) external returns (uint256) {
         require(_to != address(0), "Invalid recipient");
         require(_royaltyBps <= 1000, "Royalty max 10%");
 
