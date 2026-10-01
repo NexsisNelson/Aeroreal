@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import '../utils/app_icons.dart';
 
+// UI/UX: Controls the asset-type-specific risk notice styling and copy shown
+// on commodity, invoice, and generic RWA surfaces.
 class RiskDisclosure extends StatelessWidget {
   final String assetType;
 
@@ -23,7 +26,7 @@ class RiskDisclosure extends StatelessWidget {
       case 'Invoice':
         return const Color(0xFF00D18A);
       default:
-        return const Color(0xFF836EF9);
+        return const Color.fromARGB(255, 74, 24, 199);
     }
   }
 
@@ -41,7 +44,7 @@ class RiskDisclosure extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.warning_amber_rounded, color: color, size: 20),
+          AppIcon(AppIcons.warningAmberRounded, color: color, size: 20),
           const SizedBox(width: 10),
           Expanded(
             child: Column(

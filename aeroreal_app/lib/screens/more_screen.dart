@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../utils/app_icons.dart';
 
 import 'agent_api_screen.dart';
 import 'fractionalize_screen.dart';
@@ -6,6 +7,8 @@ import 'settings_screen.dart';
 import 'tx_history_screen.dart';
 import 'yield_screen.dart';
 
+// UI/UX: Controls the secondary navigation list and the destinations exposed
+// outside the primary bottom navigation tabs.
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
 
@@ -16,32 +19,32 @@ class MoreScreen extends StatelessWidget {
       body: ListView(
         children: [
           _MoreTile(
-            icon: Icons.add_circle_outline,
+            icon: AppIcons.addCircleOutline,
             title: 'Create',
             subtitle: 'Fractionalize an asset or create a vault',
             onTap: () => _open(context, const FractionalizeScreen()),
           ),
           _MoreTile(
-            icon: Icons.water_drop_outlined,
+            icon: AppIcons.waterDropOutlined,
             title: 'Yield',
             subtitle: 'Stake fractions and track earned yield',
             onTap: () => _open(context, const YieldScreen()),
           ),
           _MoreTile(
-            icon: Icons.smart_toy_outlined,
+            icon: AppIcons.smartToyOutlined,
             title: 'Agent',
             subtitle: 'Inspect the Aeroreal agent API',
             onTap: () => _open(context, const AgentApiScreen()),
           ),
           _MoreTile(
-            icon: Icons.history,
+            icon: AppIcons.history,
             title: 'Transaction History',
             subtitle: 'Review on-chain actions and receipts',
             onTap: () => _open(context, const TxHistoryScreen()),
           ),
           const Divider(height: 1),
           _MoreTile(
-            icon: Icons.settings_outlined,
+            icon: AppIcons.settingsOutlined,
             title: 'Settings',
             subtitle: 'Identity, wallet, and account preferences',
             onTap: () => _open(context, const SettingsScreen()),
@@ -57,7 +60,7 @@ class MoreScreen extends StatelessWidget {
 }
 
 class _MoreTile extends StatelessWidget {
-  final IconData icon;
+  final FaIconData icon;
   final String title;
   final String subtitle;
   final VoidCallback onTap;
@@ -73,10 +76,10 @@ class _MoreTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
-      leading: Icon(icon, color: const Color(0xFF836EF9)),
+      leading: AppIcon(icon, color: const Color.fromARGB(255, 74, 24, 199)),
       title: Text(title),
       subtitle: Text(subtitle),
-      trailing: const Icon(Icons.chevron_right),
+      trailing: const AppIcon(AppIcons.chevronRight),
       onTap: onTap,
     );
   }

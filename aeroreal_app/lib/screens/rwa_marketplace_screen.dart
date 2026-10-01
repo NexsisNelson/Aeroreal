@@ -1,14 +1,18 @@
 // lib/screens/rwa_marketplace_screen.dart
 
 import 'package:flutter/material.dart';
+import '../utils/app_icons.dart';
 import 'package:provider/provider.dart';
 
 import '../config/constants.dart';
 import '../services/contract_service.dart';
 import '../services/wallet_service.dart';
+import '../widgets/error_banner.dart';
 import '../widgets/ipfs_link.dart';
 import '../widgets/risk_disclosure.dart';
 
+// UI/UX: Controls the on-chain RWA overview, certificate cards, balances,
+// document links, risk notices, refresh, and partial-error states.
 class RwaMarketplaceScreen extends StatefulWidget {
   const RwaMarketplaceScreen({super.key});
 
@@ -109,7 +113,7 @@ class _RwaMarketplaceScreenState extends State<RwaMarketplaceScreen> {
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: _load,
-          color: const Color(0xFF836EF9),
+          color: const Color.fromARGB(255, 74, 24, 199),
           child: ListView(
             padding: const EdgeInsets.all(20),
             children: [
@@ -135,7 +139,10 @@ class _RwaMarketplaceScreenState extends State<RwaMarketplaceScreen> {
                   ),
                   IconButton(
                     onPressed: _load,
-                    icon: const Icon(Icons.refresh, color: Color(0xFF836EF9)),
+                    icon: const AppIcon(
+                      AppIcons.refresh,
+                      color: Color(0xFF836EF9),
+                    ),
                     tooltip: 'Refresh marketplace',
                   ),
                 ],
@@ -154,8 +161,8 @@ class _RwaMarketplaceScreenState extends State<RwaMarketplaceScreen> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(
-                        Icons.trending_up,
+                      const AppIcon(
+                        AppIcons.trendingUp,
                         color: Colors.white,
                         size: 32,
                       ),
@@ -195,14 +202,10 @@ class _RwaMarketplaceScreenState extends State<RwaMarketplaceScreen> {
                 ),
               const SizedBox(height: 20),
               if (_error != null)
-                Container(
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    color: Colors.red.withValues(alpha: 0.12),
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.redAccent),
-                  ),
-                  child: Text(_error!),
+                ErrorBanner(
+                  error: _error!,
+                  onDismiss: () => setState(() => _error = null),
+                  onRetry: () => setState(() => _error = null),
                 ),
               if (_loading)
                 const Center(
@@ -260,7 +263,7 @@ class _RwaMarketplaceScreenState extends State<RwaMarketplaceScreen> {
           IpfsLink(
             label: 'View Audit Report',
             ipfsHash: audit,
-            icon: Icons.verified_outlined,
+            icon: AppIcons.verifiedOutlined,
           ),
         ],
       ),
@@ -327,7 +330,7 @@ class _RwaMarketplaceScreenState extends State<RwaMarketplaceScreen> {
           IpfsLink(
             label: 'View Invoice Document',
             ipfsHash: documentUri,
-            icon: Icons.receipt_long_outlined,
+            icon: AppIcons.receiptLongOutlined,
           ),
         ],
       ),
@@ -343,10 +346,10 @@ class _RwaMarketplaceScreenState extends State<RwaMarketplaceScreen> {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1625),
+        color: const Color.fromARGB(255, 0, 0, 0),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(
-          color: const Color(0xFF836EF9).withValues(alpha: 0.4),
+          color: const Color.fromARGB(255, 74, 24, 199).withValues(alpha: 0.4),
         ),
       ),
       child: Column(

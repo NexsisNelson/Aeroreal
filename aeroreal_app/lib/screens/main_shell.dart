@@ -1,14 +1,17 @@
 // lib/screens/main_shell.dart
 
 import 'package:flutter/material.dart';
+import '../utils/app_icons.dart';
 
+import '../widgets/pill_nav_bar.dart';
 import 'explore_screen.dart';
+import 'fractionalize_screen.dart';
 import 'home_screen.dart';
-import 'more_screen.dart';
 import 'nft_marketplace_screen.dart';
-import 'portfolio_screen.dart';
-import 'watchlist_screen.dart';
+import 'yield_screen.dart';
 
+// UI/UX: Controls the app's primary tab structure, selected tab state, and
+// bottom navigation appearance/order.
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
 
@@ -21,56 +24,44 @@ class _MainShellState extends State<MainShell> {
 
   final List<Widget> _screens = const [
     HomeScreen(),
-    PortfolioScreen(),
     ExploreScreen(),
     NftMarketplaceScreen(),
-    WatchlistScreen(),
-    MoreScreen(),
+    FractionalizeScreen(),
+    YieldScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: IndexedStack(index: _currentIndex, children: _screens),
-      bottomNavigationBar: NavigationBar(
+      bottomNavigationBar: PillNavBar(
         selectedIndex: _currentIndex,
-        onDestinationSelected: (i) => setState(() => _currentIndex = i),
-        backgroundColor: const Color(0xFF1A1625),
-        indicatorColor: const Color(0xFF836EF9).withAlpha(77),
-        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-        destinations: const [
-          NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home, color: Color(0xFF836EF9)),
+        onSelect: (i) => setState(() => _currentIndex = i),
+        items: const [
+          PillNavItem(
+            icon: AppIcons.homeOutlined,
+            selectedIcon: AppIcons.home,
             label: 'Home',
           ),
-          NavigationDestination(
-            icon: Icon(Icons.account_balance_wallet_outlined),
-            selectedIcon: Icon(
-              Icons.account_balance_wallet,
-              color: Color(0xFF836EF9),
-            ),
-            label: 'Portfolio',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.search_outlined),
-            selectedIcon: Icon(Icons.search, color: Color(0xFF836EF9)),
+          PillNavItem(
+            icon: AppIcons.searchOutlined,
+            selectedIcon: AppIcons.search,
             label: 'Explore',
           ),
-          NavigationDestination(
-            icon: Icon(Icons.storefront_outlined),
-            selectedIcon: Icon(Icons.storefront, color: Color(0xFF836EF9)),
+          PillNavItem(
+            icon: AppIcons.storefrontOutlined,
+            selectedIcon: AppIcons.storefront,
             label: 'Market',
           ),
-          NavigationDestination(
-            icon: Icon(Icons.star_outline),
-            selectedIcon: Icon(Icons.star, color: Color(0xFFFFD700)),
-            label: 'Watch',
+          PillNavItem(
+            icon: AppIcons.addBoxOutlined,
+            selectedIcon: AppIcons.addBox,
+            label: 'Create',
           ),
-          NavigationDestination(
-            icon: Icon(Icons.more_horiz),
-            selectedIcon: Icon(Icons.more_horiz, color: Color(0xFF836EF9)),
-            label: 'More',
+          PillNavItem(
+            icon: AppIcons.waterDropOutlined,
+            selectedIcon: AppIcons.waterDrop,
+            label: 'Yield',
           ),
         ],
       ),

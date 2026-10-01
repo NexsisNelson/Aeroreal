@@ -25,6 +25,25 @@ class RwaService {
     return List<Map<String, dynamic>>.from(body['assets'] ?? const []);
   }
 
+  Future<List<Map<String, dynamic>>> getCategoryAssets(
+    String categoryId,
+  ) async {
+    final body = await _get(
+      Uri.parse('$baseUrl/api/rwa/category/${Uri.encodeComponent(categoryId)}'),
+    );
+    return List<Map<String, dynamic>>.from(body['assets'] ?? const []);
+  }
+
+  Future<List<Map<String, dynamic>>> searchNftCollections({
+    required String query,
+  }) async {
+    final uri = Uri.parse(
+      '$baseUrl/api/nfts/search',
+    ).replace(queryParameters: {'q': query});
+    final body = await _get(uri);
+    return List<Map<String, dynamic>>.from(body['collections'] ?? const []);
+  }
+
   Future<Map<String, dynamic>> getQuote(String slug) {
     return _get(
       Uri.parse('$baseUrl/api/rwa/asset/${Uri.encodeComponent(slug)}'),
@@ -38,13 +57,13 @@ class RwaService {
   }) async {
     final uri = Uri.parse(
       '$baseUrl/api/rwa/asset/${Uri.encodeComponent(symbol)}/chart',
-    ).replace(queryParameters: {'period': period, 'count': '$count'});
+    ).replace(queryParameters: {'days': '$count'});
     final body = await _get(uri);
     return List<Map<String, dynamic>>.from(body['candles'] ?? const []);
   }
 
   Future<Map<String, dynamic>> _get(Uri uri) async {
-    final response = await http.get(uri);
+    final response = await http.get(uri).timeout(const Duration(seconds: 10));
     final decoded = jsonDecode(response.body) as Map<String, dynamic>;
     if (response.statusCode != 200 || decoded['error'] != null) {
       throw Exception(decoded['error'] ?? 'RWA request failed');

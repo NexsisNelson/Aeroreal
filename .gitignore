@@ -1,47 +1,25 @@
-# Compiler files
-cache/
-out/
+# Local environment and credentials
+**/.env
+**/.env.*
+!**/.env.example
 
-# Flutter and Dart build output
-.dart_tool/
-.flutter-plugins
-.flutter-plugins-dependencies
-.packages
-build/
-coverage/
+# Dependency and generated output
+**/node_modules/
+**/.dart_tool/
+**/build/
+**/out/
+**/cache/
+**/coverage/
+**/Pods/
+**/.gradle/
+**/.flutter-plugins-dependencies
+**/*.log
+**/flutter_analyze.txt
+**/nul
+**/=
 
-# Android and Apple generated files
-.gradle/
-.kotlin/
-local.properties
-Pods/
-
-# Node dependencies and logs
-node_modules/
-npm-debug.log*
-
-# IDE and OS files
-.idea/
-.vscode/
-.DS_Store
-Thumbs.db
-
-# Local analysis output
-flutter_analyze.txt
-
-# Commonly ignored directories
-.logs/
-.ignore/
-
-# Ignores development broadcast logs
-!/broadcast
-/broadcast/*/31337/
-/broadcast/**/dry-run/
-
-# Docs
-docs/
-
-# Dotenv file
-.env
-.env.*
-!.env.example
+# Local IDE state
+**/.idea/
+**/.vscode/*
+!**/.vscode/launch.json
+!**/.vscode/tasks.json

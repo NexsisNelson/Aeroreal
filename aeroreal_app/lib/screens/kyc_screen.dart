@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import '../utils/app_icons.dart';
 import 'package:provider/provider.dart';
 
 import '../services/kyc_service.dart';
 import '../services/privy_service.dart';
+import '../widgets/error_banner.dart';
 
+// UI/UX: Controls identity-verification fields, validation, verified-state
+// presentation, reset behavior, and no-wallet/error messaging.
 class KycScreen extends StatefulWidget {
   const KycScreen({super.key});
 
@@ -108,7 +112,7 @@ class _KycScreenState extends State<KycScreen> {
       padding: const EdgeInsets.all(24),
       children: [
         const SizedBox(height: 24),
-        const Icon(Icons.verified, color: Color(0xFF00D18A), size: 80),
+        const AppIcon(AppIcons.verified, color: Color(0xFF00D18A), size: 80),
         const SizedBox(height: 16),
         const Text(
           'Identity Verified',
@@ -126,7 +130,7 @@ class _KycScreenState extends State<KycScreen> {
         const SizedBox(height: 20),
         OutlinedButton.icon(
           onPressed: _resetVerification,
-          icon: const Icon(Icons.restart_alt),
+          icon: const AppIcon(AppIcons.restartAlt),
           label: const Text('Reset Demo Verification'),
         ),
       ],
@@ -137,7 +141,7 @@ class _KycScreenState extends State<KycScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: const Color(0xFF1A1625),
+        color: const Color.fromARGB(255, 0, 0, 0),
         borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
@@ -228,12 +232,16 @@ class _KycScreenState extends State<KycScreen> {
                   height: 18,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Icon(Icons.verified_user),
+              : const AppIcon(AppIcons.verifiedUser),
           label: Text(_loading ? 'Checking...' : 'Verify Identity'),
         ),
         if (_error != null) ...[
           const SizedBox(height: 16),
-          Text(_error!, style: const TextStyle(color: Colors.redAccent)),
+          ErrorBanner(
+            error: _error!,
+            onDismiss: () => setState(() => _error = null),
+            onRetry: () => setState(() => _error = null),
+          ),
         ],
       ],
     );

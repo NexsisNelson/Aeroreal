@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import '../utils/app_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// UI/UX: Controls document-link text, missing-hash fallback, and external-link
+// behavior for IPFS-backed records.
 class IpfsLink extends StatelessWidget {
   final String label;
   final String ipfsHash;
-  final IconData icon;
+  final FaIconData icon;
 
   const IpfsLink({
     super.key,
     required this.label,
     required this.ipfsHash,
-    this.icon = Icons.description_outlined,
+    this.icon = AppIcons.descriptionOutlined,
   });
 
   String get _gatewayUrl {
@@ -37,7 +40,7 @@ class IpfsLink extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 6),
         child: Row(
           children: [
-            Icon(icon, size: 16, color: Colors.white38),
+            AppIcon(icon, size: 16, color: Colors.white38),
             const SizedBox(width: 8),
             Text(
               '$label: Not provided',
@@ -57,7 +60,11 @@ class IpfsLink extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 4),
           child: Row(
             children: [
-              Icon(icon, size: 16, color: const Color(0xFF836EF9)),
+              AppIcon(
+                icon,
+                size: 16,
+                color: const Color.fromARGB(255, 74, 24, 199),
+              ),
               const SizedBox(width: 8),
               Expanded(
                 child: Text(
@@ -70,8 +77,7 @@ class IpfsLink extends StatelessWidget {
                   ),
                 ),
               ),
-              const Icon(Icons.open_in_new,
-                  size: 14, color: Color(0xFF836EF9)),
+              const AppIcon(AppIcons.openInNew, size: 14, color: Color(0xFF836EF9)),
             ],
           ),
         ),

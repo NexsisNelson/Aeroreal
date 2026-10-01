@@ -1,0 +1,744 @@
+{
+  "0x50b3aae58ccd7c23e463f1a311eabdf52a39f2e7": {
+    "walletAddress": "0x50b3aae58ccd7c23e463f1a311eabdf52a39f2e7",
+    "createdAt": "2026-09-25T14:53:15.441Z",
+    "updatedAt": "2026-10-01T19:56:02.415Z",
+    "watchlist": [
+      {
+        "id": "nft-42",
+        "name": "Demo Ape #42",
+        "symbol": "NFT",
+        "price_usd": 500
+      }
+    ],
+    "costBasis": {},
+    "txHistory": [
+      {
+        "hash": "0xce60775434f664c966392655cd836694670cfe5b7cdb58546dc87c970ea9d951",
+        "action": "mint",
+        "details": "Contract: 0x00000000...",
+        "timestamp": "2026-10-01T20:56:00.310372"
+      },
+      {
+        "hash": "0x1f6f4b467a43858436d623e88e4eaedb26082510958eee29341a269d51ff273b",
+        "action": "mint",
+        "details": "Contract: 0x4DAafE00...",
+        "timestamp": "2026-10-01T12:42:11.216438"
+      },
+      {
+        "hash": "0xd66fb123203823d78e4bc9ba01dddbcd9aa40a418519eccca185eadf79eed7ab",
+        "action": "mint",
+        "details": "Contract: 0x4DAafE00...",
+        "timestamp": "2026-10-01T12:29:27.763426"
+      },
+      {
+        "hash": "0x046241eb5ecefc1cfbe1ca8567cb600429d6d56203022ab1823aae76d361e0e6",
+        "action": "transfer",
+        "details": "Contract: 0x01c6b9a2...",
+        "timestamp": "2026-10-01T11:33:11.254895"
+      },
+      {
+        "hash": "0xeeec1e5fcfdebcf2ff6c59704aa164953a2675035ebeb5d0f77bf20ff21fa267",
+        "action": "fractionalize",
+        "details": "Contract: 0x00b6af65...",
+        "timestamp": "2026-09-30T18:17:51.069213"
+      },
+      {
+        "hash": "0x82d3414250bfda2905163cd27c40f8289bdf216fead515bdfb4ebfba92dec5f0",
+        "action": "approve",
+        "details": "Contract: 0x4DAafE00...",
+        "timestamp": "2026-09-30T18:17:42.930505"
+      },
+      {
+        "hash": "0xf80956ca2a2e2d33b072c3cbd1b7321306744f136fa658e5e5d7de329bf8efa5",
+        "action": "createVault",
+        "details": "Contract: 0xeB4f5592...",
+        "timestamp": "2026-09-30T18:17:30.031366"
+      },
+      {
+        "hash": "0xb7b6094d4b482d2dab3c7cb8101f8a9a32fa0fed2e64410cb3ec3a0373d3bb4a",
+        "action": "approve",
+        "details": "Contract: 0x01c6b9a2...",
+        "timestamp": "2026-09-30T02:28:13.907385"
+      },
+      {
+        "hash": "0xa1795230259a7a43cffbbe14092721a5f91a255095430bc1420d6e2e2fb05213",
+        "action": "transfer",
+        "details": "Contract: 0x01c6b9a2...",
+        "timestamp": "2026-09-30T01:39:18.347691"
+      },
+      {
+        "hash": "0x72e1fda4c803f7ea047e4a2e16727bf986aa89cf7e5506224b9651a1770603fd",
+        "action": "transfer",
+        "details": "Contract: 0x01c6b9a2...",
+        "timestamp": "2026-09-29T20:31:04.761890"
+      },
+      {
+        "hash": "0x44692cbce6931de485a3aaf403877c1506164998f97957ce6853d2b7890471ae",
+        "action": "claim",
+        "details": "Contract: 0x52dbb61f...",
+        "timestamp": "2026-09-29T17:04:10.665162"
+      }
+    ],
+    "tractionLog": [
+      {
+        "hash": "0xce60775434f664c966392655cd836694670cfe5b7cdb58546dc87c970ea9d951",
+        "action": "mintNft",
+        "description": "mint on 0x00000000...",
+        "timestamp": "2026-10-01T20:56:01.191544"
+      },
+      {
+        "hash": "0x1f6f4b467a43858436d623e88e4eaedb26082510958eee29341a269d51ff273b",
+        "action": "mintNft",
+        "description": "mint on 0x4DAafE00...",
+        "timestamp": "2026-10-01T12:42:12.219757"
+      },
+      {
+        "hash": "0xd66fb123203823d78e4bc9ba01dddbcd9aa40a418519eccca185eadf79eed7ab",
+        "action": "mintNft",
+        "description": "mint on 0x4DAafE00...",
+        "timestamp": "2026-10-01T12:29:28.878434"
+      },
+      {
+        "hash": "0xeeec1e5fcfdebcf2ff6c59704aa164953a2675035ebeb5d0f77bf20ff21fa267",
+        "action": "fractionalizeNft",
+        "description": "fractionalize on 0x00b6af65...",
+        "timestamp": "2026-09-30T18:17:52.519483"
+      },
+      {
+        "hash": "0xf80956ca2a2e2d33b072c3cbd1b7321306744f136fa658e5e5d7de329bf8efa5",
+        "action": "tokenizeRwa",
+        "description": "createVault on 0xeB4f5592...",
+        "timestamp": "2026-09-30T18:17:32.942312"
+      },
+      {
+        "hash": "0xf7c1b86bd13baabfb27aecb4017b7f3d1e8fe5fc6a878e07ff3a4af6fc991b74",
+        "action": "fractionalizeNft",
+        "description": "fractionalize on 0x2a0405b8...",
+        "timestamp": "2026-09-27T15:44:38.479304"
+      },
+      {
+        "hash": "0x46f8c06a0ea7c9ea67db26fc7694ee2596a599c8c88ce7eb5fca528677cb5331",
+        "action": "tokenizeRwa",
+        "description": "createVault on 0xeB4f5592...",
+        "timestamp": "2026-09-27T15:44:25.127561"
+      },
+      {
+        "hash": "0x4be0ed88fc0d1ef8bb0aae050425224a9466710fd8fffa5822fd3e6335c873e9",
+        "action": "mintNft",
+        "description": "mint on 0x4DAafE00...",
+        "timestamp": "2026-09-27T15:43:22.826300"
+      },
+      {
+        "hash": "0xd759ad23454d2fb7ffab932a5511e517bef3542c343a552faf60624131c22b8b",
+        "action": "listNft",
+        "description": "list on 0x6965C9D3...",
+        "timestamp": "2026-09-27T15:41:12.752382"
+      },
+      {
+        "hash": "0xddd2f6ae39537ab57da02030d9b474dbd10d7cfd6f16bf08a909ba673f434e57",
+        "action": "mintNft",
+        "description": "mint on 0x4DAafE00...",
+        "timestamp": "2026-09-27T15:13:43.343948"
+      },
+      {
+        "hash": "0xea9cafa6ac550fd19056c53a9eb62c65250c49918eb8ba9d19a1ad931e3c1d76",
+        "action": "mintNft",
+        "description": "mint on 0x4DAafE00...",
+        "timestamp": "2026-09-27T15:13:26.882075"
+      },
+      {
+        "hash": "0x91b890edead2ae601423b3327b8d43447dd13caa92c2c6314ec68ee642fbf713",
+        "action": "buyNft",
+        "description": "buy on 0x6CB3FaD5...",
+        "timestamp": "2026-09-27T15:05:26.222772"
+      }
+    ],
+    "searchHistory": [
+      "monad",
+      "bored ape",
+      "Bored%20ApeBored%20ApeBored%20Ape",
+      "dodge"
+    ],
+    "preferences": {
+      "theme": "dark",
+      "currency": "USD",
+      "notifications": true,
+      "hideBalances": false
+    },
+    "yieldHistory": {
+      "nft": [
+        {
+          "timestamp": "2026-09-29T16:47:57.290574",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-29T20:29:20.564475",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-30T01:37:42.597664",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-30T15:02:48.241443",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-30T18:10:48.004152",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-10-01T11:29:26.062263",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-10-01T12:35:10.998173",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-10-01T20:04:55.838295",
+          "amount": 0
+        }
+      ],
+      "gold": [
+        {
+          "timestamp": "2026-09-29T16:47:59.747581",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-29T20:29:22.970381",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-30T01:37:43.028922",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-30T15:02:48.638754",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-30T18:10:49.093466",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-10-01T11:29:27.099330",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-10-01T12:35:12.093626",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-10-01T20:04:56.435538",
+          "amount": 0
+        }
+      ],
+      "coffee": [
+        {
+          "timestamp": "2026-09-29T16:48:01.886121",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-29T20:29:23.903034",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-30T01:37:43.540575",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-30T15:02:49.238394",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-30T18:10:50.551505",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-10-01T11:29:27.446152",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-10-01T12:35:13.018524",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-10-01T20:04:56.599758",
+          "amount": 0
+        }
+      ]
+    },
+    "simulatedHoldings": {
+      "SUI": {
+        "symbol": "SUI",
+        "totalAmount": 25,
+        "totalCostAreal": 29.289999999999996,
+        "firstPurchase": "2026-09-29T19:31:09.194Z",
+        "lastPurchase": "2026-09-29T19:31:09.194Z",
+        "avgPrice": 1.1715999999999998
+      },
+      "HSUITE": {
+        "symbol": "HSUITE",
+        "coingeckoId": "hsuite",
+        "totalAmount": 123,
+        "totalCostAreal": 0.0119894373,
+        "firstPurchase": "2026-09-30T00:39:24.145Z",
+        "lastPurchase": "2026-09-30T00:39:24.145Z",
+        "avgPrice": 0.00009747509999999999
+      },
+      "RNT": {
+        "symbol": "RNT",
+        "coingeckoId": "reental",
+        "imageUrl": "https://coin-images.coingecko.com/coins/images/32508/large/LOGO_MARK_RNT_PROTOCOL.png?1788917195",
+        "totalAmount": 100,
+        "totalCostAreal": 32.112142,
+        "firstPurchase": "2026-10-01T10:33:17.025Z",
+        "lastPurchase": "2026-10-01T10:33:17.025Z",
+        "avgPrice": 0.32112142
+      }
+    }
+  },
+  "0x4bfa03063870eed2f4ac4d74541ff1193011035e": {
+    "walletAddress": "0x4bfa03063870eed2f4ac4d74541ff1193011035e",
+    "createdAt": "2026-09-27T03:15:08.841Z",
+    "updatedAt": "2026-09-27T03:15:19.335Z",
+    "watchlist": [],
+    "costBasis": {},
+    "txHistory": [],
+    "tractionLog": [],
+    "searchHistory": [],
+    "preferences": {
+      "theme": "dark",
+      "currency": "USD",
+      "notifications": true,
+      "hideBalances": false
+    },
+    "yieldHistory": {
+      "nft": [
+        {
+          "timestamp": "2026-09-27T04:15:16.936742",
+          "amount": 0
+        }
+      ],
+      "gold": [
+        {
+          "timestamp": "2026-09-27T04:15:17.449431",
+          "amount": 0
+        }
+      ],
+      "coffee": [
+        {
+          "timestamp": "2026-09-27T04:15:18.114524",
+          "amount": 0
+        }
+      ]
+    }
+  },
+  "0x6d077dd839868ae79d7bf3f5933a945896d92fbe": {
+    "walletAddress": "0x6d077dd839868ae79d7bf3f5933a945896d92fbe",
+    "createdAt": "2026-09-27T06:47:15.481Z",
+    "updatedAt": "2026-09-27T06:47:24.715Z",
+    "watchlist": [],
+    "costBasis": {},
+    "txHistory": [],
+    "tractionLog": [],
+    "searchHistory": [],
+    "preferences": {
+      "theme": "dark",
+      "currency": "USD",
+      "notifications": true,
+      "hideBalances": false
+    },
+    "yieldHistory": {
+      "nft": [
+        {
+          "timestamp": "2026-09-27T07:47:22.308042",
+          "amount": 0
+        }
+      ],
+      "gold": [
+        {
+          "timestamp": "2026-09-27T07:47:22.748308",
+          "amount": 0
+        }
+      ],
+      "coffee": [
+        {
+          "timestamp": "2026-09-27T07:47:23.532769",
+          "amount": 0
+        }
+      ]
+    }
+  },
+  "0xdce6ab43ae575c3180270badfe2a4bb24f96234d": {
+    "walletAddress": "0xdce6ab43ae575c3180270badfe2a4bb24f96234d",
+    "createdAt": "2026-09-28T18:53:53.780Z",
+    "updatedAt": "2026-09-28T21:36:34.761Z",
+    "watchlist": [],
+    "costBasis": {
+      "demo-nft-3": {
+        "symbol": "NFT",
+        "name": "Demo NFT #3",
+        "total_amount": 1,
+        "total_cost_usd": 500,
+        "first_purchase": "2026-09-28T12:11:45.882546",
+        "last_purchase": "2026-09-28T12:11:45.882670"
+      },
+      "simulated:BTC": {
+        "symbol": "sBTC",
+        "name": "Simulated sBTC",
+        "total_amount": 0.002,
+        "total_cost_usd": 169.62546,
+        "first_purchase": "2026-09-28T21:29:32.979507",
+        "last_purchase": "2026-09-28T21:29:32.979671"
+      }
+    },
+    "txHistory": [
+      {
+        "hash": "0x26436433e0b297f7ad5a53348301aedeadef55e1df46b857e9b34a29dd171397",
+        "action": "transfer",
+        "details": "Contract: 0x01c6b9a2...",
+        "timestamp": "2026-09-28T22:36:33.668784"
+      },
+      {
+        "hash": "0x2079a1a94ce8dc0ac35979df60d9ffa65f6250a140c8bb96572e02323471f458",
+        "action": "buy",
+        "details": "Contract: 0x5c1eFEAb...",
+        "timestamp": "2026-09-28T21:29:31.097133"
+      },
+      {
+        "hash": "0xe89bb7d8f3450fd8231bbbd2da04227e1f7558e3162d91319d2941b3b9bcd46f",
+        "action": "approve",
+        "details": "Contract: 0x01c6b9a2...",
+        "timestamp": "2026-09-28T21:29:24.329016"
+      },
+      {
+        "hash": "0xb5c83ec9fe3d28b476d3501514f3df2670f688591658685c43580b2e71bc77c1",
+        "action": "buy",
+        "details": "Contract: 0x9b18373F...",
+        "timestamp": "2026-09-28T12:11:41.305652"
+      },
+      {
+        "hash": "0xd2c5015d73ac16f17f391859ab6f80adbdea8008df41319f1cea16555e0afff8",
+        "action": "approve",
+        "details": "Contract: 0x01c6b9a2...",
+        "timestamp": "2026-09-28T12:11:35.246011"
+      },
+      {
+        "hash": "0xd76a9e813bb4498bac4f9470966f988310cb7f7855c2af6b27f46f9c17411763",
+        "action": "approve",
+        "details": "Contract: 0x01c6b9a2...",
+        "timestamp": "2026-09-28T12:09:03.392376"
+      },
+      {
+        "hash": "0x2bef19584d107429ba1e7807571305ba09c7835a12918d17af6d0c8b5d602732",
+        "action": "approve",
+        "details": "Contract: 0x01c6b9a2...",
+        "timestamp": "2026-09-28T12:02:18.888977"
+      },
+      {
+        "hash": "0xc7f98fadb0fe8baeb3237d031a2e2f93ec52d949b9ae27116a2bbc75a2f81377",
+        "action": "claim",
+        "details": "Contract: 0x6C256F5C...",
+        "timestamp": "2026-09-28T12:01:50.968547"
+      },
+      {
+        "hash": "0x3fdc8f216b8a76f13e09383812706122768a8ecab8f31234727c830362c6db08",
+        "action": "approve",
+        "details": "Contract: 0x01eA8d5F...",
+        "timestamp": "2026-09-28T11:59:28.329183"
+      },
+      {
+        "hash": "0x8a0af7958661c042be1f95c39d39cc09c4e070bb85c2109ece8b7a43256fe5e2",
+        "action": "approve",
+        "details": "Contract: 0x01eA8d5F...",
+        "timestamp": "2026-09-28T11:59:02.203419"
+      },
+      {
+        "hash": "0xf70b793ac5f8ec8d69c7b7013a860b6434109af84b70e382012ab5b16ad0f8aa",
+        "action": "approve",
+        "details": "Contract: 0x01eA8d5F...",
+        "timestamp": "2026-09-28T11:58:35.676446"
+      },
+      {
+        "hash": "0xc4f09c288efbe1fb3cae6f431a89502f8e61587d4acbb613691e7911f006a344",
+        "action": "claim",
+        "details": "Contract: 0x30952c4D...",
+        "timestamp": "2026-09-28T11:57:06.614695"
+      }
+    ],
+    "tractionLog": [
+      {
+        "hash": "0x2079a1a94ce8dc0ac35979df60d9ffa65f6250a140c8bb96572e02323471f458",
+        "action": "buyNft",
+        "description": "buy on 0x5c1eFEAb...",
+        "timestamp": "2026-09-28T21:29:32.171016"
+      },
+      {
+        "hash": "0xb5c83ec9fe3d28b476d3501514f3df2670f688591658685c43580b2e71bc77c1",
+        "action": "buyNft",
+        "description": "buy on 0x9b18373F...",
+        "timestamp": "2026-09-28T12:11:43.520286"
+      }
+    ],
+    "searchHistory": [],
+    "preferences": {
+      "theme": "dark",
+      "currency": "USD",
+      "notifications": true,
+      "hideBalances": false
+    },
+    "yieldHistory": {
+      "nft": [
+        {
+          "timestamp": "2026-09-28T11:56:13.291308",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-28T18:48:55.513660",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-28T19:54:18.106772",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-28T21:23:45.106099",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-28T22:27:57.921991",
+          "amount": 0
+        }
+      ],
+      "gold": [
+        {
+          "timestamp": "2026-09-28T11:56:15.695804",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-28T18:48:59.199942",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-28T19:54:19.807722",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-28T21:23:46.412283",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-28T22:27:58.800031",
+          "amount": 0
+        }
+      ],
+      "coffee": [
+        {
+          "timestamp": "2026-09-28T11:56:17.990281",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-28T18:49:03.586888",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-28T19:54:20.959995",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-28T21:23:47.141180",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-28T22:27:59.358930",
+          "amount": 0
+        }
+      ]
+    }
+  },
+  "0x29a4332b74717e42b1e65b7a1807054e9b2c2ffa": {
+    "walletAddress": "0x29a4332b74717e42b1e65b7a1807054e9b2c2ffa",
+    "createdAt": "2026-09-30T15:58:05.706Z",
+    "updatedAt": "2026-09-30T16:59:34.371Z",
+    "watchlist": [],
+    "costBasis": {},
+    "txHistory": [
+      {
+        "hash": "0x2819885a485369280ea75e44f11162c38967b5fe8bb6fa866f1def64bcc00620",
+        "action": "fractionalize",
+        "details": "Contract: 0x71e09c0c...",
+        "timestamp": "2026-09-30T17:42:43.917032"
+      },
+      {
+        "hash": "0x3b1550c28c453f880989581c5a0fdf93a5aaedcec975c7c53df1d9225974718f",
+        "action": "approve",
+        "details": "Contract: 0x4DAafE00...",
+        "timestamp": "2026-09-30T17:42:35.922570"
+      },
+      {
+        "hash": "0xf6bf514b6601afc7e275a2a36d6a592c2cdaef079fd0bc1e028739ace3050e90",
+        "action": "createVault",
+        "details": "Contract: 0xeB4f5592...",
+        "timestamp": "2026-09-30T17:42:25.596627"
+      }
+    ],
+    "tractionLog": [
+      {
+        "hash": "0x2819885a485369280ea75e44f11162c38967b5fe8bb6fa866f1def64bcc00620",
+        "action": "fractionalizeNft",
+        "description": "fractionalize on 0x71e09c0c...",
+        "timestamp": "2026-09-30T17:42:44.535561"
+      },
+      {
+        "hash": "0xf6bf514b6601afc7e275a2a36d6a592c2cdaef079fd0bc1e028739ace3050e90",
+        "action": "tokenizeRwa",
+        "description": "createVault on 0xeB4f5592...",
+        "timestamp": "2026-09-30T17:42:26.559533"
+      }
+    ],
+    "searchHistory": [],
+    "preferences": {
+      "theme": "dark",
+      "currency": "USD",
+      "notifications": true,
+      "hideBalances": false
+    },
+    "simulatedHoldings": {},
+    "simulatedNfts": [],
+    "yieldHistory": {
+      "nft": [
+        {
+          "timestamp": "2026-09-30T16:58:14.918250",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-30T17:59:30.912228",
+          "amount": 0
+        }
+      ],
+      "gold": [
+        {
+          "timestamp": "2026-09-30T16:58:15.488873",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-30T17:59:31.913090",
+          "amount": 0
+        }
+      ],
+      "coffee": [
+        {
+          "timestamp": "2026-09-30T16:58:16.202949",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-09-30T17:59:32.942227",
+          "amount": 0
+        }
+      ]
+    }
+  },
+  "0xdcd22971c39854714adcee51aa73f3c7e1bf527b": {
+    "walletAddress": "0xdcd22971c39854714adcee51aa73f3c7e1bf527b",
+    "createdAt": "2026-10-01T12:37:32.120Z",
+    "updatedAt": "2026-10-01T16:23:11.375Z",
+    "watchlist": [],
+    "costBasis": {},
+    "txHistory": [
+      {
+        "hash": "0x213b877b29533743ca74892b1b3d5d5cb31ba495f3592ff010e3b98fb2c496cb",
+        "action": "userMint",
+        "details": "Contract: 0x7d235E69...",
+        "timestamp": "2026-10-01T16:41:59.620587"
+      },
+      {
+        "hash": "0x16cd470982c45e5a603ed292730225434537b1c922e62b95482973d63ed2ee9a",
+        "action": "approve",
+        "details": "Contract: 0x01c6b9a2...",
+        "timestamp": "2026-10-01T13:44:50.340775"
+      }
+    ],
+    "tractionLog": [],
+    "searchHistory": [
+      "pax"
+    ],
+    "preferences": {
+      "theme": "dark",
+      "currency": "USD",
+      "notifications": true,
+      "hideBalances": false
+    },
+    "simulatedHoldings": {
+      "PAXG": {
+        "symbol": "PAXG",
+        "coingeckoId": "pax-gold",
+        "imageUrl": "https://coin-images.coingecko.com/coins/images/9519/large/asset-paxg.png?1785284785",
+        "totalAmount": 1,
+        "totalCostAreal": 4230.3749,
+        "firstPurchase": "2026-10-01T12:42:21.112Z",
+        "lastPurchase": "2026-10-01T12:42:21.112Z",
+        "avgPrice": 4230.3749
+      }
+    },
+    "simulatedNfts": [
+      {
+        "id": "0x7d235e698e9ae7c00c62aedab060fd50185d7ff3-1",
+        "collectionSymbol": "CLAYNOSAURZCLAYMAKE",
+        "collectionName": "Claynosaurz: Claymaker",
+        "contractAddress": "0x7d235E698e9ae7C00c62aEdab060fD50185d7fF3",
+        "tokenId": "1",
+        "transactionHash": "0x213b877b29533743ca74892b1b3d5d5cb31ba495f3592ff010e3b98fb2c496cb",
+        "mintedAt": "2026-10-01T15:42:07.623Z",
+        "fractionalized": false,
+        "fractionTokenAddress": null
+      }
+    ],
+    "yieldHistory": {
+      "nft": [
+        {
+          "timestamp": "2026-10-01T13:38:28.744062",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-10-01T15:54:41.181470",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-10-01T17:23:04.875307",
+          "amount": 0
+        }
+      ],
+      "gold": [
+        {
+          "timestamp": "2026-10-01T13:38:29.341117",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-10-01T15:54:45.371994",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-10-01T17:23:07.509269",
+          "amount": 0
+        }
+      ],
+      "coffee": [
+        {
+          "timestamp": "2026-10-01T13:38:30.388195",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-10-01T15:54:48.116019",
+          "amount": 0
+        },
+        {
+          "timestamp": "2026-10-01T17:23:08.992434",
+          "amount": 0
+        }
+      ]
+    }
+  }
+}

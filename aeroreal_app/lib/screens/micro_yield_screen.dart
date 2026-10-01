@@ -3,12 +3,16 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import '../utils/app_icons.dart';
 import 'package:provider/provider.dart';
 
 import '../config/constants.dart';
 import '../services/contract_service.dart';
 import '../services/wallet_service.dart';
+import '../widgets/error_banner.dart';
 
+// UI/UX: Controls yield tabs, drip-jar presentation, revenue statistics,
+// polling, claim/fund/simulate actions, and their status/error states.
 class MicroYieldScreen extends StatefulWidget {
   const MicroYieldScreen({super.key});
 
@@ -196,16 +200,19 @@ class _MicroYieldScreenState extends State<MicroYieldScreen>
       appBar: AppBar(
         title: const Text('Micro Yield'),
         actions: [
-          IconButton(onPressed: _refresh, icon: const Icon(Icons.refresh)),
+          IconButton(
+            onPressed: _refresh,
+            icon: const AppIcon(AppIcons.refresh),
+          ),
         ],
         bottom: TabBar(
           controller: _tabController,
-          indicatorColor: const Color(0xFF836EF9),
+          indicatorColor: const Color.fromARGB(255, 74, 24, 199),
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white54,
           tabs: const [
-            Tab(text: 'Gold', icon: Icon(Icons.monetization_on)),
-            Tab(text: 'Coffee', icon: Icon(Icons.local_cafe)),
+            Tab(text: 'Gold', icon: AppIcon(AppIcons.monetizationOn)),
+            Tab(text: 'Coffee', icon: AppIcon(AppIcons.localCafe)),
           ],
         ),
       ),
@@ -299,9 +306,9 @@ class _MicroYieldScreenState extends State<MicroYieldScreen>
         if (staked > BigInt.zero)
           ElevatedButton.icon(
             onPressed: _processing ? null : () => _claimFrom(streamerAddress),
-            icon: const Icon(Icons.water_drop),
+            icon: const AppIcon(AppIcons.waterDrop),
             label: Text(
-              'Claim ${contracts.formatToken(earned)} mUSD',
+              'Claim ${contracts.formatToken(earned)} AREAL',
               style: const TextStyle(fontSize: 16),
             ),
             style: ElevatedButton.styleFrom(
@@ -314,7 +321,7 @@ class _MicroYieldScreenState extends State<MicroYieldScreen>
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: const Color(0xFF1A1625),
+              color: const Color.fromARGB(255, 0, 0, 0),
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Text(
@@ -339,7 +346,11 @@ class _MicroYieldScreenState extends State<MicroYieldScreen>
         ],
         if (_error != null) ...[
           const SizedBox(height: 20),
-          Text(_error!, style: const TextStyle(color: Colors.redAccent)),
+          ErrorBanner(
+            error: _error!,
+            onDismiss: () => setState(() => _error = null),
+            onRetry: () => setState(() => _error = null),
+          ),
         ],
         const SizedBox(height: 24),
         const Divider(color: Colors.white12),
@@ -348,7 +359,7 @@ class _MicroYieldScreenState extends State<MicroYieldScreen>
           onPressed: _processing
               ? null
               : () => _simulateRevenue(streamerAddress, title),
-          icon: const Icon(Icons.science, size: 16),
+          icon: const AppIcon(AppIcons.science, size: 16),
           label: const Text('🧪 Simulate Revenue Payment (10,000 mUSD)'),
           style: OutlinedButton.styleFrom(
             foregroundColor: Colors.white70,
@@ -401,8 +412,8 @@ class _RevenueDripJar extends StatelessWidget {
           Positioned(
             top: 24,
             right: 30,
-            child: Icon(
-              Icons.attach_money,
+            child: AppIcon(
+              AppIcons.attachMoney,
               color: Colors.white.withValues(alpha: 0.15),
               size: 80,
             ),

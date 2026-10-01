@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import '../utils/app_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../services/tx_history_service.dart';
 
+// UI/UX: Controls transaction history loading, clear/refresh actions, empty
+// state presentation, record rows, and explorer navigation.
 class TxHistoryScreen extends StatefulWidget {
   const TxHistoryScreen({super.key});
 
@@ -23,7 +26,7 @@ class _TxHistoryScreenState extends State<TxHistoryScreen> {
 
   Future<void> _load() async {
     setState(() => _loading = true);
-    final records = await _service.getAll();
+    final records = await _service.getAll(context);
     if (!mounted) return;
     setState(() {
       _records = records;
@@ -39,7 +42,7 @@ class _TxHistoryScreenState extends State<TxHistoryScreen> {
   }
 
   Future<void> _clear() async {
-    await _service.clear();
+    await _service.clear(context);
     await _load();
   }
 
@@ -53,7 +56,7 @@ class _TxHistoryScreenState extends State<TxHistoryScreen> {
             IconButton(
               onPressed: _clear,
               tooltip: 'Clear history',
-              icon: const Icon(Icons.delete_outline),
+              icon: const AppIcon(AppIcons.deleteOutline),
             ),
         ],
       ),
@@ -68,7 +71,7 @@ class _TxHistoryScreenState extends State<TxHistoryScreen> {
             )
           : RefreshIndicator(
               onRefresh: _load,
-              color: const Color(0xFF836EF9),
+              color: const Color.fromARGB(255, 74, 24, 199),
               child: ListView.builder(
                 padding: const EdgeInsets.all(16),
                 itemCount: _records.length,
@@ -81,7 +84,7 @@ class _TxHistoryScreenState extends State<TxHistoryScreen> {
                       margin: const EdgeInsets.only(bottom: 8),
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1A1625),
+                        color: const Color.fromARGB(255, 0, 0, 0),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
@@ -94,8 +97,8 @@ class _TxHistoryScreenState extends State<TxHistoryScreen> {
                               ).withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: const Icon(
-                              Icons.receipt_long,
+                            child: const AppIcon(
+                              AppIcons.receiptLong,
                               color: Color(0xFF836EF9),
                               size: 18,
                             ),
@@ -132,8 +135,8 @@ class _TxHistoryScreenState extends State<TxHistoryScreen> {
                               ],
                             ),
                           ),
-                          const Icon(
-                            Icons.open_in_new,
+                          const AppIcon(
+                            AppIcons.openInNew,
                             color: Colors.white54,
                             size: 16,
                           ),

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import '../utils/app_icons.dart';
 
 import '../services/notification_service.dart';
 
+// UI/UX: Controls the notification inbox, read/clear actions, loading state,
+// empty state, and notification row styling.
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({super.key});
 
@@ -44,7 +47,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 await _load();
               },
               tooltip: 'Clear notifications',
-              icon: const Icon(Icons.delete_outline),
+              icon: const AppIcon(AppIcons.deleteOutline),
             ),
         ],
       ),
@@ -67,7 +70,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   margin: const EdgeInsets.only(bottom: 8),
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1A1625),
+                    color: const Color.fromARGB(255, 0, 0, 0),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Row(
@@ -79,7 +82,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           color: color.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Icon(
+                        child: AppIcon(
                           _iconFor(notification.type),
                           color: color,
                           size: 20,
@@ -127,20 +130,20 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
-  IconData _iconFor(NotificationType type) {
+  FaIconData _iconFor(NotificationType type) {
     switch (type) {
       case NotificationType.transactionSuccess:
-        return Icons.check_circle_outline;
+        return AppIcons.checkCircleOutline;
       case NotificationType.transactionFailed:
-        return Icons.error_outline;
+        return AppIcons.errorOutline;
       case NotificationType.yieldClaimable:
-        return Icons.water_drop_outlined;
+        return AppIcons.waterDropOutlined;
       case NotificationType.priceAlert:
-        return Icons.trending_up;
+        return AppIcons.trendingUp;
       case NotificationType.invoiceMaturity:
-        return Icons.schedule;
+        return AppIcons.schedule;
       case NotificationType.newListing:
-        return Icons.storefront_outlined;
+        return AppIcons.storefrontOutlined;
     }
   }
 
@@ -151,7 +154,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       case NotificationType.transactionFailed:
         return Colors.redAccent;
       case NotificationType.yieldClaimable:
-        return const Color(0xFF836EF9);
+        return const Color.fromARGB(255, 74, 24, 199);
       case NotificationType.priceAlert:
         return const Color(0xFFFFD700);
       case NotificationType.invoiceMaturity:

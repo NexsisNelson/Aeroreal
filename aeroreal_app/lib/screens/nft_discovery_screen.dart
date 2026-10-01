@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import '../utils/app_icons.dart';
 import 'package:provider/provider.dart';
 
 import '../services/contract_service.dart';
+import '../widgets/error_banner.dart';
 
+// UI/UX: Controls NFT lookup fields, collection/token results, validation,
+// loading feedback, and lookup error presentation.
 class NftDiscoveryScreen extends StatefulWidget {
   const NftDiscoveryScreen({super.key});
 
@@ -96,7 +100,7 @@ class _NftDiscoveryScreenState extends State<NftDiscoveryScreen> {
           ElevatedButton(
             onPressed: _loading ? null : _lookup,
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF836EF9),
+              backgroundColor: const Color.fromARGB(255, 74, 24, 199),
               padding: const EdgeInsets.symmetric(vertical: 16),
             ),
             child: _loading
@@ -105,14 +109,18 @@ class _NftDiscoveryScreenState extends State<NftDiscoveryScreen> {
           ),
           if (_error != null) ...[
             const SizedBox(height: 20),
-            Text(_error!, style: const TextStyle(color: Colors.redAccent)),
+            ErrorBanner(
+              error: _error!,
+              onDismiss: () => setState(() => _error = null),
+              onRetry: () => setState(() => _error = null),
+            ),
           ],
           if (_collectionName != null) ...[
             const SizedBox(height: 20),
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: const Color(0xFF1A1625),
+                color: const Color.fromARGB(255, 0, 0, 0),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: Column(
@@ -140,12 +148,12 @@ class _NftDiscoveryScreenState extends State<NftDiscoveryScreen> {
                 margin: const EdgeInsets.only(bottom: 8),
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1A1625),
+                  color: const Color.fromARGB(255, 0, 0, 0),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.image, color: Color(0xFF836EF9)),
+                    const AppIcon(AppIcons.image, color: Color(0xFF836EF9)),
                     const SizedBox(width: 12),
                     Text('Token #$tokenId'),
                   ],

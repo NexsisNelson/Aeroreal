@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import '../utils/app_icons.dart';
+import '../utils/number_formatting.dart';
 
 import '../services/watchlist_service.dart';
 import 'rwa_detail_screen.dart';
 
+// UI/UX: Controls saved-asset rows, price/change display, remove actions,
+// detail navigation, refresh, loading, and empty states.
 class WatchlistScreen extends StatefulWidget {
   const WatchlistScreen({super.key});
 
@@ -23,7 +27,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
 
   Future<void> _load() async {
     setState(() => _loading = true);
-    final assets = await _service.getWatchlist();
+    final assets = await _service.getWatchlist(context);
     if (!mounted) return;
     setState(() {
       _assets = assets;
@@ -50,7 +54,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
             )
           : RefreshIndicator(
               onRefresh: _load,
-              color: const Color(0xFF836EF9),
+              color: const Color.fromARGB(255, 74, 24, 199),
               child: ListView.builder(
                 padding: const EdgeInsets.all(16),
                 itemCount: _assets.length,
@@ -69,7 +73,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                       margin: const EdgeInsets.only(bottom: 8),
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1A1625),
+                        color: const Color.fromARGB(255, 0, 0, 0),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
@@ -118,11 +122,14 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                           ),
                           IconButton(
                             onPressed: () async {
-                              await _service.removeFromWatchlist(asset['id']);
+                              await _service.removeFromWatchlist(
+                                context,
+                                asset['id'],
+                              );
                               _load();
                             },
-                            icon: const Icon(
-                              Icons.star,
+                            icon: const AppIcon(
+                              AppIcons.star,
                               color: Color(0xFFFFD700),
                               size: 20,
                             ),
@@ -140,7 +147,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
   double _number(dynamic value) => value is num ? value.toDouble() : 0;
 
   String _currency(dynamic value) {
-    if (value is num) return '\$${value.toStringAsFixed(2)}';
+    if (value is num) return NumberFormatting.money(value);
     return '--';
   }
 }
@@ -159,7 +166,7 @@ class _AssetThumbnail extends StatelessWidget {
         color: const Color(0xFF2A243A),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: const Icon(Icons.token, color: Colors.white54, size: 18),
+      child: const AppIcon(AppIcons.token, color: Colors.white54, size: 18),
     );
     if (imageUrl == null || imageUrl!.isEmpty) return placeholder;
     return ClipRRect(

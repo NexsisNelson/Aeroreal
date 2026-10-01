@@ -1,11 +1,44 @@
 // lib/config/abis.dart
 
 class AppABIs {
+  /// Simulated marketplace ABI.
+  static const String simulatedMarketplace = '''
+[
+  {"inputs":[{"name":"_asset","type":"address"},{"name":"_amount","type":"uint256"}],"name":"buy","outputs":[],"stateMutability":"nonpayable","type":"function"},
+  {"inputs":[{"name":"_asset","type":"address"},{"name":"_amount","type":"uint256"}],"name":"sell","outputs":[],"stateMutability":"nonpayable","type":"function"}
+]
+''';
+
+  /// Simulated asset ABI.
+  static const String simulatedAsset = '''
+[
+  {"inputs":[],"name":"currentPriceUsd","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+  {"inputs":[],"name":"underlyingSymbol","outputs":[{"name":"","type":"string"}],"stateMutability":"view","type":"function"},
+  {"inputs":[{"name":"","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+  {"inputs":[],"name":"tradingEnabled","outputs":[{"name":"","type":"bool"}],"stateMutability":"view","type":"function"}
+]
+''';
+
+  /// Simulated NFT collection ABI.
+  static const String simulatedNft = '''
+[
+  {"inputs":[{"name":"to","type":"address"}],"name":"userMint","outputs":[{"name":"tokenId","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},
+  {"inputs":[{"name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+  {"inputs":[{"name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"name":"","type":"address"}],"stateMutability":"view","type":"function"},
+  {"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+  {"inputs":[{"name":"to","type":"address"},{"name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"stateMutability":"nonpayable","type":"function"},
+  {"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"stateMutability":"view","type":"function"},
+  {"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"stateMutability":"view","type":"function"}
+]
+''';
+
   /// ERC-20 ABI — used for SprinkleToken and FractionToken.
   static const String erc20 = '''
 [
   {"constant":true,"inputs":[{"name":"account","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
   {"constant":false,"inputs":[{"name":"spender","type":"address"},{"name":"amount","type":"uint256"}],"name":"approve","outputs":[{"name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},
+  {"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},
+  {"inputs":[{"name":"to","type":"address"},{"name":"amount","type":"uint256"}],"name":"mint","outputs":[],"stateMutability":"nonpayable","type":"function"},
   {"constant":true,"inputs":[{"name":"owner","type":"address"},{"name":"spender","type":"address"}],"name":"allowance","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
   {"constant":true,"inputs":[],"name":"decimals","outputs":[{"name":"","type":"uint8"}],"stateMutability":"view","type":"function"},
   {"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"stateMutability":"view","type":"function"},
@@ -79,6 +112,19 @@ class AppABIs {
 ]
 ''';
 
+  /// FractionMarketplace ABI.
+  static const String fractionMarketplace = '''
+[
+  {"inputs":[{"name":"_fractionToken","type":"address"},{"name":"_amount","type":"uint256"},{"name":"_price","type":"uint256"}],"name":"list","outputs":[{"name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},
+  {"inputs":[{"name":"_listingId","type":"uint256"}],"name":"buy","outputs":[],"stateMutability":"nonpayable","type":"function"},
+  {"inputs":[{"name":"_listingId","type":"uint256"}],"name":"cancel","outputs":[],"stateMutability":"nonpayable","type":"function"},
+  {"inputs":[{"name":"_listingId","type":"uint256"}],"name":"getListing","outputs":[{"name":"seller","type":"address"},{"name":"fractionToken","type":"address"},{"name":"amount","type":"uint256"},{"name":"price","type":"uint256"},{"name":"active","type":"bool"}],"stateMutability":"view","type":"function"},
+  {"inputs":[],"name":"nextListingId","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+  {"inputs":[],"name":"activeListingCount","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+  {"inputs":[],"name":"feeBps","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"}
+]
+''';
+
   /// CommodityVault ABI.
   static const String commodityVault = '''
 [
@@ -136,6 +182,39 @@ class AppABIs {
   {"inputs":[{"name":"_amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"},
   {"inputs":[],"name":"claimYield","outputs":[],"stateMutability":"nonpayable","type":"function"},
   {"inputs":[{"name":"_amount","type":"uint256"}],"name":"depositRevenue","outputs":[],"stateMutability":"nonpayable","type":"function"}
+]
+''';
+
+  /// Faucet ABI.
+  static const String faucet = '''
+[
+  {"inputs":[],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},
+  {"inputs":[{"name":"wallet","type":"address"}],"name":"timeUntilClaim","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+  {"inputs":[{"name":"","type":"address"}],"name":"lastClaimAt","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+  {"inputs":[],"name":"totalClaims","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"}
+]
+''';
+
+  /// AREAL faucet ABI.
+  static const String arealFaucet = '''
+[
+  {"inputs":[],"name":"claim","outputs":[],"stateMutability":"nonpayable","type":"function"},
+  {"inputs":[{"name":"wallet","type":"address"}],"name":"timeUntilClaim","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+  {"inputs":[{"name":"","type":"address"}],"name":"lastClaimAt","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+  {"inputs":[],"name":"totalClaims","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+  {"inputs":[],"name":"claimAmount","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"}
+]
+''';
+
+  static const String userNft = '''
+[
+  {"inputs":[{"name":"_to","type":"address"},{"name":"_tokenURI","type":"string"},{"name":"_royaltyBps","type":"uint96"}],"name":"mint","outputs":[{"name":"","type":"uint256"}],"stateMutability":"nonpayable","type":"function"},
+  {"inputs":[{"name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"name":"","type":"string"}],"stateMutability":"view","type":"function"},
+  {"inputs":[{"name":"tokenId","type":"uint256"}],"name":"getCreator","outputs":[{"name":"","type":"address"}],"stateMutability":"view","type":"function"},
+  {"inputs":[{"name":"account","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
+  {"inputs":[{"name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"name":"","type":"address"}],"stateMutability":"view","type":"function"},
+  {"inputs":[{"name":"operator","type":"address"},{"name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"stateMutability":"nonpayable","type":"function"},
+  {"inputs":[{"name":"owner","type":"address"},{"name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"name":"","type":"bool"}],"stateMutability":"view","type":"function"}
 ]
 ''';
 }
