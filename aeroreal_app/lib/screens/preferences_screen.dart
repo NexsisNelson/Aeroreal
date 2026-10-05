@@ -1,3 +1,7 @@
+// File overview: lib/screens/preferences_screen.dart
+// Purpose: Defines a screen in the Aeroreal application UI flow.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -90,7 +94,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                 'Transaction confirmations, yield alerts, price movements',
                 style: TextStyle(color: Colors.white54, fontSize: 11),
               ),
-              activeThumbColor: const Color(0xFF836EF9),
+              activeThumbColor: const Color.fromARGB(255, 87, 60, 241),
               contentPadding: EdgeInsets.zero,
             ),
           ),
@@ -105,7 +109,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                 'Replace portfolio values with hidden placeholders',
                 style: TextStyle(color: Colors.white54, fontSize: 11),
               ),
-              activeThumbColor: const Color(0xFF836EF9),
+              activeThumbColor: const Color.fromARGB(255, 87, 60, 241),
               contentPadding: EdgeInsets.zero,
             ),
           ),
@@ -113,7 +117,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
           FilledButton(
             onPressed: _saving ? null : _save,
             style: FilledButton.styleFrom(
-              backgroundColor: const Color(0xFF836EF9),
+              backgroundColor: const Color.fromARGB(255, 87, 60, 241),
               padding: const EdgeInsets.symmetric(vertical: 18),
             ),
             child: _saving

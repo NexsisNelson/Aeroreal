@@ -1,3 +1,7 @@
+// File overview: lib/utils/transaction_feedback.dart
+// Purpose: Contains small reusable helpers and formatting utilities.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';

@@ -1,3 +1,7 @@
+// File overview: lib/screens/fraction_marketplace_screen.dart
+// Purpose: Defines a screen in the Aeroreal application UI flow.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -266,7 +270,7 @@ class _FractionMarketplaceScreenState extends State<FractionMarketplaceScreen>
                   children: [
                     const Icon(
                       Icons.pie_chart,
-                      color: Color(0xFF836EF9),
+                      color: Color.fromARGB(255, 87, 60, 241),
                       size: 24,
                     ),
                     const SizedBox(width: 12),

@@ -72,7 +72,7 @@ class SettingsScreen extends StatelessWidget {
         backgroundColor: const Color.fromARGB(255, 0, 0, 0),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded),
+          icon: const Icon(Icons.navigate_before_ios_new_rounded),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text('Settings'),
@@ -294,7 +294,7 @@ class _ProfileCard extends StatelessWidget {
           height: 52,
           alignment: Alignment.center,
           decoration: const BoxDecoration(
-            color: Color(0xFF836EF9),
+            color: Color.fromARGB(255, 87, 60, 241),
             shape: BoxShape.circle,
           ),
           child: const Text(
@@ -480,7 +480,7 @@ class _NotificationTileState extends State<_NotificationTile> {
     return ListTile(
       leading: const Icon(
         Icons.notifications_outlined,
-        color: Color(0xFF836EF9),
+        color: Color.fromARGB(255, 87, 60, 241),
       ),
       title: const Text('Notifications'),
       subtitle: Text(_unread > 0 ? '$_unread unread' : 'No new notifications'),

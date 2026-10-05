@@ -1,3 +1,7 @@
+// File overview: lib/screens/more_screen.dart
+// Purpose: Defines a screen in the Aeroreal application UI flow.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'package:flutter/material.dart';
 
 import 'agent_api_screen.dart';

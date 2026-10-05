@@ -25,6 +25,8 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
     uint256 public activeListingCount;
     uint256 public feeBps = 250;
     address public feeRecipient;
+    uint256 public listingFee = 10 * 1e18;
+    IERC20 public arealToken;
 
     event Listed(
         uint256 indexed listingId,
@@ -55,6 +57,10 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
                 nft.getApproved(tokenId) == address(this),
             "Marketplace not approved"
         );
+
+        if (listingFee > 0 && address(arealToken) != address(0)) {
+            arealToken.safeTransferFrom(msg.sender, address(this), listingFee);
+        }
 
         uint256 listingId = nextListingId++;
         listings[listingId] = Listing({
@@ -106,6 +112,15 @@ contract NFTMarketplace is ReentrancyGuard, Ownable {
     function setFeeRecipient(address recipient) external onlyOwner {
         require(recipient != address(0), "Invalid recipient");
         feeRecipient = recipient;
+    }
+
+    function setListingFee(uint256 fee) external onlyOwner {
+        listingFee = fee;
+    }
+
+    function setArealToken(address tokenAddress) external onlyOwner {
+        require(tokenAddress != address(0), "Invalid token");
+        arealToken = IERC20(tokenAddress);
     }
 
     function getListing(uint256 listingId)

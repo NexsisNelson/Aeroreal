@@ -81,7 +81,7 @@ class AerorealApp extends StatelessWidget {
         brightness: Brightness.dark,
         scaffoldBackgroundColor: const Color.fromARGB(255, 0, 0, 0),
         colorScheme: const ColorScheme.dark(
-          primary: Color(0xFF836EF9),
+          primary: Color.fromARGB(255, 87, 60, 241),
           secondary: Color.fromARGB(255, 209, 94, 0),
           surface: Color.fromARGB(255, 0, 0, 0),
         ),

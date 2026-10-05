@@ -1,3 +1,7 @@
+// File overview: lib/screens/watchlist_screen.dart
+// Purpose: Defines a screen in the Aeroreal application UI flow.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'package:flutter/material.dart';
 
 import '../services/watchlist_service.dart';

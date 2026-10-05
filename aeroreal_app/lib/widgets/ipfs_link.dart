@@ -1,3 +1,7 @@
+// File overview: lib/widgets/ipfs_link.dart
+// Purpose: Defines reusable UI components used across the app.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -69,14 +73,18 @@ class IpfsLink extends StatelessWidget {
                 child: Text(
                   label,
                   style: const TextStyle(
-                    color: Color(0xFF836EF9),
+                    color: Color.fromARGB(255, 87, 60, 241),
                     fontSize: 12,
                     decoration: TextDecoration.underline,
-                    decorationColor: Color(0xFF836EF9),
+                    decorationColor: Color.fromARGB(255, 87, 60, 241),
                   ),
                 ),
               ),
-              const Icon(Icons.open_in_new, size: 14, color: Color(0xFF836EF9)),
+              const Icon(
+                Icons.open_in_new,
+                size: 14,
+                color: Color.fromARGB(255, 87, 60, 241),
+              ),
             ],
           ),
         ),

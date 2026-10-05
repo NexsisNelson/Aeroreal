@@ -1,3 +1,7 @@
+// File overview: lib/screens/bridge_screen.dart
+// Purpose: Defines a screen in the Aeroreal application UI flow.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';

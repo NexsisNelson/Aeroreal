@@ -1,3 +1,7 @@
+// File overview: lib/screens/portfolio_screen.dart
+// Purpose: Defines a screen in the Aeroreal application UI flow.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -146,7 +150,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
       '1 NFT',
       '\$500.00',
       '+\$50.00 (+11.1%)',
-      Color(0xFF836EF9),
+      Color.fromARGB(255, 87, 60, 241),
       Icons.image_outlined,
     ),
     (
@@ -279,7 +283,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
 
   Widget _allocationCard() {
     const entries = [
-      ('NFTs', '45%', Color(0xFF836EF9)),
+      ('NFTs', '45%', Color.fromARGB(255, 87, 60, 241)),
       ('Commodities', '35%', Color(0xFFE4A84B)),
       ('Stablecoins', '15%', Color(0xFF00D18A)),
       ('Invoices', '5%', Color(0xFF5690C9)),

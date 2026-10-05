@@ -1,3 +1,7 @@
+// File overview: lib/widgets/nft_featured_card.dart
+// Purpose: Defines reusable UI components used across the app.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -30,7 +34,7 @@ class NftFeaturedCard extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            colors: [Color(0xFF836EF9), Color(0xFF5C4BC7)],
+            colors: [Color.fromARGB(255, 87, 60, 241), Color(0xFF5C4BC7)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),

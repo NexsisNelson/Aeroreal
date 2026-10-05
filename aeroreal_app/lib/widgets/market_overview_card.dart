@@ -1,3 +1,7 @@
+// File overview: lib/widgets/market_overview_card.dart
+// Purpose: Defines reusable UI components used across the app.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -73,7 +77,11 @@ class _MarketOverviewCardState extends State<MarketOverviewCard> {
         children: [
           const Row(
             children: [
-              Icon(Icons.trending_up, color: Color(0xFF836EF9), size: 16),
+              Icon(
+                Icons.trending_up,
+                color: Color.fromARGB(255, 87, 60, 241),
+                size: 16,
+              ),
               SizedBox(width: 8),
               Text(
                 'Market Overview',

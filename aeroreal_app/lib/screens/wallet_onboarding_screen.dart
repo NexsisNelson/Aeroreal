@@ -436,7 +436,10 @@ class _WalletOnboardingScreenState extends State<WalletOnboardingScreen> {
                             _showSignIn = false;
                             _showEmailForm = false;
                           }),
-                          icon: const Icon(Icons.arrow_back_ios_new, size: 18),
+                          icon: const Icon(
+                            Icons.navigate_before_ios_new,
+                            size: 18,
+                          ),
                           color: const Color(0xFF9A87FF),
                         ),
                       ],
@@ -728,7 +731,7 @@ class _WalletOnboardingScreenState extends State<WalletOnboardingScreen> {
                 alignment: Alignment.centerLeft,
                 child: IconButton(
                   onPressed: () => setState(() => _showEmailForm = false),
-                  icon: const Icon(Icons.arrow_back_ios_new, size: 18),
+                  icon: const Icon(Icons.navigate_before_ios_new, size: 18),
                   color: const Color(0xFF9A87FF),
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
@@ -776,7 +779,7 @@ class _WalletOnboardingScreenState extends State<WalletOnboardingScreen> {
                   focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(17),
                     borderSide: const BorderSide(
-                      color: Color(0xFF836EF9),
+                      color: Color.fromARGB(255, 87, 60, 241),
                       width: 1.5,
                     ),
                   ),
@@ -893,7 +896,7 @@ class _WalletOnboardingScreenState extends State<WalletOnboardingScreen> {
                     _showCodeInput = false;
                     _resendTimer?.cancel();
                   }),
-                  icon: const Icon(Icons.arrow_back_ios_new, size: 18),
+                  icon: const Icon(Icons.navigate_before_ios_new, size: 18),
                   color: const Color(0xFF9A87FF),
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
@@ -1256,7 +1259,10 @@ class _OtpBox extends StatelessWidget {
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(13),
-            borderSide: const BorderSide(color: Color(0xFF836EF9), width: 2),
+            borderSide: const BorderSide(
+              color: Color.fromARGB(255, 87, 60, 241),
+              width: 2,
+            ),
           ),
         ),
       ),

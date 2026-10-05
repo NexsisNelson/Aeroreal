@@ -1,3 +1,7 @@
+// File overview: lib/screens/fractionalize_screen.dart
+// Purpose: Defines a screen in the Aeroreal application UI flow.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'package:flutter/material.dart';
 
 import 'nft_fractionalize_screen.dart';
@@ -69,7 +73,11 @@ class FractionalizeScreen extends StatelessWidget {
               child: const Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.info_outline, color: Color(0xFF836EF9), size: 20),
+                  Icon(
+                    Icons.info_outline,
+                    color: Color.fromARGB(255, 87, 60, 241),
+                    size: 20,
+                  ),
                   SizedBox(width: 12),
                   Expanded(
                     child: Text(

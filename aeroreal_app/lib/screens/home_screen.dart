@@ -1,3 +1,7 @@
+// File overview: lib/screens/home_screen.dart
+// Purpose: Defines a screen in the Aeroreal application UI flow.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -254,7 +258,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: const EdgeInsets.fromLTRB(22, 22, 22, 18),
                       decoration: BoxDecoration(
                         gradient: const LinearGradient(
-                          colors: [Color(0xFF836EF9), Color(0xFF43329A)],
+                          colors: [
+                            Color.fromARGB(255, 87, 60, 241),
+                            Color(0xFF43329A),
+                          ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),

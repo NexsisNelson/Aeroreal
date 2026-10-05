@@ -1,3 +1,7 @@
+// File overview: lib/screens/nft_discovery_screen.dart
+// Purpose: Defines a screen in the Aeroreal application UI flow.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -147,7 +151,10 @@ class _NftDiscoveryScreenState extends State<NftDiscoveryScreen> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.image, color: Color(0xFF836EF9)),
+                    const Icon(
+                      Icons.image,
+                      color: Color.fromARGB(255, 87, 60, 241),
+                    ),
                     const SizedBox(width: 12),
                     Text('Token #$tokenId'),
                   ],

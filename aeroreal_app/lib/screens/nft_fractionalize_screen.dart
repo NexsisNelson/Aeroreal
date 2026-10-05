@@ -1,3 +1,7 @@
+// File overview: lib/screens/nft_fractionalize_screen.dart
+// Purpose: Defines a screen in the Aeroreal application UI flow.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -157,7 +161,9 @@ class _NftFractionalizeScreenState extends State<NftFractionalizeScreen> {
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     foregroundColor: const Color.fromARGB(255, 74, 24, 199),
-                    side: const BorderSide(color: Color(0xFF836EF9)),
+                    side: const BorderSide(
+                      color: Color.fromARGB(255, 87, 60, 241),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 24),

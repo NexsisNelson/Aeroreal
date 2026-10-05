@@ -1,3 +1,7 @@
+// File overview: lib/screens/explore_screen.dart
+// Purpose: Defines a screen in the Aeroreal application UI flow.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -215,7 +219,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
     return Row(
       children: [
         _RoundIconButton(
-          icon: Icons.arrow_back,
+          icon: Icons.navigate_before,
           onPressed: () => Navigator.maybePop(context),
         ),
         const SizedBox(width: 14),
@@ -252,7 +256,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(18),
-          borderSide: const BorderSide(color: Color(0xFF836EF9)),
+          borderSide: const BorderSide(color: Color.fromARGB(255, 87, 60, 241)),
         ),
       ),
     );

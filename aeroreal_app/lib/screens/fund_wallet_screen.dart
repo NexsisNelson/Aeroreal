@@ -171,12 +171,20 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
                     gradient: const LinearGradient(
-                      colors: [Color(0xFF836EF9), Color(0xFF5C4BC7)],
+                      colors: [
+                        Color.fromARGB(255, 87, 60, 241),
+                        Color(0xFF5C4BC7),
+                      ],
                     ),
                     borderRadius: BorderRadius.circular(20),
                     boxShadow: [
                       BoxShadow(
-                        color: const Color(0xFF836EF9).withValues(alpha: 0.3),
+                        color: const Color.fromARGB(
+                          255,
+                          87,
+                          60,
+                          241,
+                        ).withValues(alpha: 0.3),
                         blurRadius: 20,
                         offset: const Offset(0, 8),
                       ),
@@ -218,7 +226,12 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                               : _claimTokens,
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
-                            foregroundColor: const Color(0xFF836EF9),
+                            foregroundColor: const Color.fromARGB(
+                              255,
+                              87,
+                              60,
+                              241,
+                            ),
                             padding: const EdgeInsets.symmetric(vertical: 16),
                             disabledBackgroundColor: Colors.white.withValues(
                               alpha: 0.5,
@@ -230,7 +243,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                                   height: 20,
                                   child: CircularProgressIndicator(
                                     strokeWidth: 2,
-                                    color: Color(0xFF836EF9),
+                                    color: Color.fromARGB(255, 87, 60, 241),
                                   ),
                                 )
                               : Text(
@@ -361,7 +374,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                               onPressed: _copyAddress,
                               icon: const Icon(
                                 Icons.copy,
-                                color: Color(0xFF836EF9),
+                                color: Color.fromARGB(255, 87, 60, 241),
                               ),
                             ),
                           ],

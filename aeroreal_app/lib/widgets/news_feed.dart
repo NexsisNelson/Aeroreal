@@ -1,3 +1,7 @@
+// File overview: lib/widgets/news_feed.dart
+// Purpose: Defines reusable UI components used across the app.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -69,7 +73,10 @@ class _NewsFeedState extends State<NewsFeed> {
               onPressed: () => setState(() => _showAll = !_showAll),
               child: Text(
                 _showAll ? 'See Less' : 'See All',
-                style: const TextStyle(color: Color(0xFF836EF9), fontSize: 12),
+                style: const TextStyle(
+                  color: Color.fromARGB(255, 87, 60, 241),
+                  fontSize: 12,
+                ),
               ),
             ),
           ],
@@ -115,7 +122,7 @@ class _NewsFeedState extends State<NewsFeed> {
                                 item.source,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
-                                  color: Color(0xFF836EF9),
+                                  color: Color.fromARGB(255, 87, 60, 241),
                                   fontSize: 10,
                                 ),
                               ),

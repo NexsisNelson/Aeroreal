@@ -1,3 +1,7 @@
+// File overview: lib/widgets/yield_chart.dart
+// Purpose: Defines reusable UI components used across the app.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'dart:math' as math;
 
 import 'package:fl_chart/fl_chart.dart';

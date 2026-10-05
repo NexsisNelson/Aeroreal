@@ -1,3 +1,7 @@
+// File overview: lib/widgets/risk_disclosure.dart
+// Purpose: Defines reusable UI components used across the app.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'package:flutter/material.dart';
 
 // UI/UX: Controls the asset-type-specific risk notice styling and copy shown

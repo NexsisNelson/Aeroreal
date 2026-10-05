@@ -1,3 +1,7 @@
+// File overview: lib/screens/tx_history_screen.dart
+// Purpose: Defines a screen in the Aeroreal application UI flow.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -98,7 +102,7 @@ class _TxHistoryScreenState extends State<TxHistoryScreen> {
                             ),
                             child: const Icon(
                               Icons.receipt_long,
-                              color: Color(0xFF836EF9),
+                              color: Color.fromARGB(255, 87, 60, 241),
                               size: 18,
                             ),
                           ),

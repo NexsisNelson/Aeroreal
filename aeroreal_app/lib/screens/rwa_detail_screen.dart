@@ -1,3 +1,7 @@
+// File overview: lib/screens/rwa_detail_screen.dart
+// Purpose: Defines a screen in the Aeroreal application UI flow.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -263,7 +267,7 @@ class _RwaDetailScreenState extends State<RwaDetailScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _RoundIconButton(
-          icon: Icons.arrow_back,
+          icon: Icons.navigate_before,
           onPressed: () => Navigator.maybePop(context),
         ),
         IconButton(

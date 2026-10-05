@@ -1,3 +1,7 @@
+// File overview: lib/services/kyc_service.dart
+// Purpose: Provides service-layer access to wallet, portfolio, and API data.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Stores mock identity verification locally for the demo flow.

@@ -1,3 +1,7 @@
+// File overview: lib/widgets/reputation_badge.dart
+// Purpose: Defines reusable UI components used across the app.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'package:flutter/material.dart';
 
 import '../services/reputation_service.dart';
@@ -14,7 +18,9 @@ class ReputationBadge extends StatelessWidget {
 
   Color get _color {
     if (reputation.tier.startsWith('A')) return const Color(0xFF00D18A);
-    if (reputation.tier.startsWith('B')) return const Color(0xFF836EF9);
+    if (reputation.tier.startsWith('B')) {
+      return const Color.fromARGB(255, 87, 60, 241);
+    }
     return const Color(0xFFED9B40);
   }
 
@@ -60,7 +66,9 @@ class ReputationCard extends StatelessWidget {
 
   Color get _color {
     if (reputation.tier.startsWith('A')) return const Color(0xFF00D18A);
-    if (reputation.tier.startsWith('B')) return const Color(0xFF836EF9);
+    if (reputation.tier.startsWith('B')) {
+      return const Color.fromARGB(255, 87, 60, 241);
+    }
     return const Color(0xFFED9B40);
   }
 

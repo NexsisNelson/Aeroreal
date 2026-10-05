@@ -1,3 +1,7 @@
+// File overview: lib/widgets/confirm_transaction.dart
+// Purpose: Defines reusable UI components used across the app.
+// This file is part of the Aeroreal codebase and should be kept readable and maintainable.
+
 import 'package:flutter/material.dart';
 
 // UI/UX: Controls the reusable transaction-confirmation dialog, detail rows,

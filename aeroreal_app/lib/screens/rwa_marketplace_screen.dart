@@ -137,7 +137,10 @@ class _RwaMarketplaceScreenState extends State<RwaMarketplaceScreen> {
                   ),
                   IconButton(
                     onPressed: _load,
-                    icon: const Icon(Icons.refresh, color: Color(0xFF836EF9)),
+                    icon: const Icon(
+                      Icons.refresh,
+                      color: Color.fromARGB(255, 87, 60, 241),
+                    ),
                     tooltip: 'Refresh marketplace',
                   ),
                 ],
@@ -210,7 +213,9 @@ class _RwaMarketplaceScreenState extends State<RwaMarketplaceScreen> {
                 const Center(
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 40),
-                    child: CircularProgressIndicator(color: Color(0xFF836EF9)),
+                    child: CircularProgressIndicator(
+                      color: Color.fromARGB(255, 87, 60, 241),
+                    ),
                   ),
                 ),
               if (!_loading && commodityInfo.isNotEmpty)
