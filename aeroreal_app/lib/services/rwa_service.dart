@@ -29,6 +29,25 @@ class RwaService {
     return List<Map<String, dynamic>>.from(body['assets'] ?? const []);
   }
 
+  Future<List<Map<String, dynamic>>> getCategoryAssets(
+    String categoryId,
+  ) async {
+    final body = await _get(
+      Uri.parse('$baseUrl/api/rwa/category/${Uri.encodeComponent(categoryId)}'),
+    );
+    return List<Map<String, dynamic>>.from(body['assets'] ?? const []);
+  }
+
+  Future<List<Map<String, dynamic>>> searchNftCollections({
+    required String query,
+  }) async {
+    final uri = Uri.parse(
+      '$baseUrl/api/nfts/search',
+    ).replace(queryParameters: {'q': query});
+    final body = await _get(uri);
+    return List<Map<String, dynamic>>.from(body['collections'] ?? const []);
+  }
+
   Future<Map<String, dynamic>> getQuote(String slug) {
     return _get(
       Uri.parse('$baseUrl/api/rwa/asset/${Uri.encodeComponent(slug)}'),
@@ -42,7 +61,7 @@ class RwaService {
   }) async {
     final uri = Uri.parse(
       '$baseUrl/api/rwa/asset/${Uri.encodeComponent(symbol)}/chart',
-    ).replace(queryParameters: {'period': period, 'count': '$count'});
+    ).replace(queryParameters: {'days': '$count'});
     final body = await _get(uri);
     return List<Map<String, dynamic>>.from(body['candles'] ?? const []);
   }

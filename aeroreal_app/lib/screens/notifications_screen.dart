@@ -3,6 +3,7 @@
 // This file is part of the Aeroreal codebase and should be kept readable and maintainable.
 
 import 'package:flutter/material.dart';
+import '../utils/app_icons.dart';
 
 import '../services/notification_service.dart';
 
@@ -50,7 +51,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                 await _load();
               },
               tooltip: 'Clear notifications',
-              icon: const Icon(Icons.delete_outline),
+              icon: const AppIcon(AppIcons.deleteOutline),
             ),
         ],
       ),
@@ -85,7 +86,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           color: color.withValues(alpha: 0.15),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Icon(
+                        child: AppIcon(
                           _iconFor(notification.type),
                           color: color,
                           size: 20,
@@ -133,20 +134,20 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     );
   }
 
-  IconData _iconFor(NotificationType type) {
+  FaIconData _iconFor(NotificationType type) {
     switch (type) {
       case NotificationType.transactionSuccess:
-        return Icons.check_circle_outline;
+        return AppIcons.checkCircleOutline;
       case NotificationType.transactionFailed:
-        return Icons.error_outline;
+        return AppIcons.errorOutline;
       case NotificationType.yieldClaimable:
-        return Icons.water_drop_outlined;
+        return AppIcons.waterDropOutlined;
       case NotificationType.priceAlert:
-        return Icons.trending_up;
+        return AppIcons.trendingUp;
       case NotificationType.invoiceMaturity:
-        return Icons.schedule;
+        return AppIcons.schedule;
       case NotificationType.newListing:
-        return Icons.storefront_outlined;
+        return AppIcons.storefrontOutlined;
     }
   }
 

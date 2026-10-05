@@ -3,6 +3,7 @@
 // This file is part of the Aeroreal codebase and should be kept readable and maintainable.
 
 import 'package:flutter/material.dart';
+import '../utils/app_icons.dart';
 
 // UI/UX: Controls the asset-type-specific risk notice styling and copy shown
 // on commodity, invoice, and generic RWA surfaces.
@@ -47,7 +48,7 @@ class RiskDisclosure extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(Icons.warning_amber_rounded, color: color, size: 20),
+          AppIcon(AppIcons.warningAmberRounded, color: color, size: 20),
           const SizedBox(width: 10),
           Expanded(
             child: Column(

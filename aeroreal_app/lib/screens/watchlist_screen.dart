@@ -3,6 +3,8 @@
 // This file is part of the Aeroreal codebase and should be kept readable and maintainable.
 
 import 'package:flutter/material.dart';
+import '../utils/app_icons.dart';
+import '../utils/number_formatting.dart';
 
 import '../services/watchlist_service.dart';
 import 'rwa_detail_screen.dart';
@@ -130,8 +132,8 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
                               );
                               _load();
                             },
-                            icon: const Icon(
-                              Icons.star,
+                            icon: const AppIcon(
+                              AppIcons.star,
                               color: Color(0xFFFFD700),
                               size: 20,
                             ),
@@ -149,7 +151,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
   double _number(dynamic value) => value is num ? value.toDouble() : 0;
 
   String _currency(dynamic value) {
-    if (value is num) return '\$${value.toStringAsFixed(2)}';
+    if (value is num) return NumberFormatting.money(value);
     return '--';
   }
 }
@@ -168,7 +170,7 @@ class _AssetThumbnail extends StatelessWidget {
         color: const Color(0xFF2A243A),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: const Icon(Icons.token, color: Colors.white54, size: 18),
+      child: const AppIcon(AppIcons.token, color: Colors.white54, size: 18),
     );
     if (imageUrl == null || imageUrl!.isEmpty) return placeholder;
     return ClipRRect(
