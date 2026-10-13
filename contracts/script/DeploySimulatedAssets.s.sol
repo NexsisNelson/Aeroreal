@@ -23,25 +23,12 @@ contract DeploySimulatedAssets is Script {
         SimulatedMarketplace market = new SimulatedMarketplace(AREAL);
         console.log("SimulatedMarketplace:", address(market));
 
-        SimulatedAsset sBTC = new SimulatedAsset(
-            "Simulated Bitcoin", "sBTC", "BTC", deployer, btcInitialPrice
-        );
-        SimulatedAsset sETH = new SimulatedAsset(
-            "Simulated Ethereum", "sETH", "ETH", deployer, ethInitialPrice
-        );
-        SimulatedAsset sGOLD = new SimulatedAsset(
-            "Simulated Gold", "sGOLD", "XAU", deployer, goldInitialPrice
-        );
-        SimulatedAsset sCOFFEE = new SimulatedAsset(
-            "Simulated Coffee",
-            "sCOFFEE",
-            "COFFEE",
-            deployer,
-            coffeeInitialPrice
-        );
-        SimulatedAsset sSOL = new SimulatedAsset(
-            "Simulated Solana", "sSOL", "SOL", deployer, solInitialPrice
-        );
+        SimulatedAsset sBTC = new SimulatedAsset("Simulated Bitcoin", "sBTC", "BTC", deployer, btcInitialPrice);
+        SimulatedAsset sETH = new SimulatedAsset("Simulated Ethereum", "sETH", "ETH", deployer, ethInitialPrice);
+        SimulatedAsset sGOLD = new SimulatedAsset("Simulated Gold", "sGOLD", "XAU", deployer, goldInitialPrice);
+        SimulatedAsset sCOFFEE =
+            new SimulatedAsset("Simulated Coffee", "sCOFFEE", "COFFEE", deployer, coffeeInitialPrice);
+        SimulatedAsset sSOL = new SimulatedAsset("Simulated Solana", "sSOL", "SOL", deployer, solInitialPrice);
 
         console.log("sBTC:", address(sBTC));
         console.log("sETH:", address(sETH));
@@ -67,16 +54,9 @@ contract DeploySimulatedAssets is Script {
         console.log("sSOL:", address(sSOL));
     }
 
-    function _initialPrice(string memory variableName)
-        private
-        view
-        returns (uint256)
-    {
+    function _initialPrice(string memory variableName) private view returns (uint256) {
         uint256 price = vm.envUint(variableName);
-        require(
-            price > 0,
-            string.concat(variableName, " must be greater than zero")
-        );
+        require(price > 0, string.concat(variableName, " must be greater than zero"));
         return price * 1e18;
     }
 }
