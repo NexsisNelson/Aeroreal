@@ -20,18 +20,8 @@ contract SimulatedMarketplace is ReentrancyGuard, Ownable {
     uint256 public feeBps = 100;
     address public feeRecipient;
 
-    event Bought(
-        address indexed buyer,
-        address indexed asset,
-        uint256 amount,
-        uint256 arealCost
-    );
-    event Sold(
-        address indexed seller,
-        address indexed asset,
-        uint256 amount,
-        uint256 arealProceeds
-    );
+    event Bought(address indexed buyer, address indexed asset, uint256 amount, uint256 arealCost);
+    event Sold(address indexed seller, address indexed asset, uint256 amount, uint256 arealProceeds);
 
     constructor(address _areal) Ownable(msg.sender) {
         require(_areal != address(0), "Invalid AREAL");

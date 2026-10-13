@@ -21,10 +21,7 @@ contract Deploy is Script {
         vm.startBroadcast(deployerPrivateKey);
 
         // 1. Deploy the AREAL reward token.
-        YieldRewardToken areal = new YieldRewardToken(
-            "Aeroreal Token",
-            "AREAL"
-        );
+        YieldRewardToken areal = new YieldRewardToken("Aeroreal Token", "AREAL");
         console.log("YieldRewardToken deployed at:", address(areal));
 
         // 2. Deploy the FractionFactory (the Vending Machine).

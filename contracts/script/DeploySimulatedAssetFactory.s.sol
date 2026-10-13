@@ -12,8 +12,7 @@ contract DeploySimulatedAssetFactory is Script {
         require(marketplace != address(0), "Invalid marketplace");
 
         vm.startBroadcast(privateKey);
-        SimulatedAssetFactory factory =
-            new SimulatedAssetFactory(marketplace, oracle);
+        SimulatedAssetFactory factory = new SimulatedAssetFactory(marketplace, oracle);
         vm.stopBroadcast();
 
         console.log("SimulatedAssetFactory:", address(factory));

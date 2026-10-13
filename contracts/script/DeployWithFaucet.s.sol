@@ -67,10 +67,7 @@ contract DeployWithFaucet is Script {
         coffeeVault.fractionalize();
 
         Faucet faucet = new Faucet(
-            address(musd),
-            address(goldVault.fractionToken()),
-            address(coffeeVault.fractionToken()),
-            address(cert)
+            address(musd), address(goldVault.fractionToken()), address(coffeeVault.fractionToken()), address(cert)
         );
         console.log("Faucet:", address(faucet));
 

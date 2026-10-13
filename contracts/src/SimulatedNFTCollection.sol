@@ -10,10 +10,7 @@ contract SimulatedNFTCollection is ERC721, Ownable {
 
     event Minted(address indexed to, uint256 indexed tokenId);
 
-    constructor(string memory name_, string memory symbol_)
-        ERC721(name_, symbol_)
-        Ownable(msg.sender)
-    {}
+    constructor(string memory name_, string memory symbol_) ERC721(name_, symbol_) Ownable(msg.sender) {}
 
     function mint(address to) external onlyOwner returns (uint256) {
         return _mintToken(to);

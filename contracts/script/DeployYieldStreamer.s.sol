@@ -7,12 +7,9 @@ import "../src/YieldRewardToken.sol";
 import "../src/FractionalizerVault.sol";
 
 contract DeployYieldStreamer is Script {
-    address constant GOLD_FRACTION_TOKEN =
-        0x6511204b20e1cbeCEC46673Ac602F97C72388Ff1;
-    address constant GOLD_VAULT =
-        0x1dBBfCCe0095847548dD21dCCEbfe8eB9C7cdb4a;
-    address constant AREAL_TOKEN =
-        0xaa1fbec3F43a6dE2E2791052d593C2b9b7A57Ed4;
+    address constant GOLD_FRACTION_TOKEN = 0x6511204b20e1cbeCEC46673Ac602F97C72388Ff1;
+    address constant GOLD_VAULT = 0x1dBBfCCe0095847548dD21dCCEbfe8eB9C7cdb4a;
+    address constant AREAL_TOKEN = 0xaa1fbec3F43a6dE2E2791052d593C2b9b7A57Ed4;
 
     function run() external {
         uint256 privateKey = vm.envUint("PRIVATE_KEY");
@@ -24,10 +21,7 @@ contract DeployYieldStreamer is Script {
 
         vm.startBroadcast(privateKey);
 
-        MicroYieldStreamer streamer = new MicroYieldStreamer(
-            GOLD_FRACTION_TOKEN,
-            AREAL_TOKEN
-        );
+        MicroYieldStreamer streamer = new MicroYieldStreamer(GOLD_FRACTION_TOKEN, AREAL_TOKEN);
         console.log("MicroYieldStreamer:", address(streamer));
 
         YieldRewardToken(AREAL_TOKEN).setStreamer(address(streamer));

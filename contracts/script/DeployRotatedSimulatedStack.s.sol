@@ -14,8 +14,7 @@ contract DeployRotatedSimulatedStack is Script {
 
         vm.startBroadcast(privateKey);
         SimulatedMarketplace marketplace = new SimulatedMarketplace(AREAL);
-        SimulatedAssetFactory factory =
-            new SimulatedAssetFactory(address(marketplace), oracle);
+        SimulatedAssetFactory factory = new SimulatedAssetFactory(address(marketplace), oracle);
         vm.stopBroadcast();
 
         console.log("SimulatedMarketplace:", address(marketplace));
