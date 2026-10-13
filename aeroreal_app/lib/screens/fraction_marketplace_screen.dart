@@ -193,6 +193,7 @@ class _FractionMarketplaceScreenState extends State<FractionMarketplaceScreen>
         bottom: TabBar(
           controller: _tabController,
           indicatorColor: const Color.fromARGB(255, 74, 24, 199),
+          indicatorPadding: const EdgeInsets.symmetric(horizontal: -16),
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white54,
           tabs: const [

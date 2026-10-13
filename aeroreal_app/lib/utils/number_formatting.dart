@@ -1,3 +1,6 @@
+// Flutter source file: contracts/aeroreal_app/lib/utils/number_formatting.dart
+// This file contains the app logic, UI, or domain behavior for the Aeroreal experience.
+// 
 import 'package:intl/intl.dart';
 
 class NumberFormatting {

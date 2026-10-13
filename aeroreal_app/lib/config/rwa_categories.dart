@@ -1,3 +1,6 @@
+// Flutter source file: contracts/aeroreal_app/lib/config/rwa_categories.dart
+// This file contains the app logic, UI, or domain behavior for the Aeroreal experience.
+// 
 class RwaCategory {
   final String id;
   final String label;

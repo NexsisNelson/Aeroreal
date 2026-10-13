@@ -62,7 +62,7 @@ contract CommodityVaultTest is Test {
         cert.approve(address(vault), 1);
     }
 
-    function testCommodityMetadata() public {
+    function testCommodityMetadata() public view {
         (
             string memory commodityType,
             uint256 quantity,
@@ -98,7 +98,7 @@ contract CommodityVaultTest is Test {
         fractionToken.addToWhitelist(bob);
 
         vm.prank(alice);
-        fractionToken.transfer(bob, TOTAL_FRACTIONS / 4);
+        assertTrue(fractionToken.transfer(bob, TOTAL_FRACTIONS / 4));
 
         assertEq(fractionToken.balanceOf(bob), TOTAL_FRACTIONS / 4, "Bob should hold 25% of fractions");
 
@@ -106,7 +106,7 @@ contract CommodityVaultTest is Test {
 
         // ---- Step 3: Alice redeems by re-collecting all fractions. ----
         vm.prank(bob);
-        fractionToken.transfer(alice, TOTAL_FRACTIONS / 4);
+        assertTrue(fractionToken.transfer(alice, TOTAL_FRACTIONS / 4));
 
         vm.prank(alice);
         vault.redeem();

@@ -11,6 +11,21 @@ contract DeploySimulatedAssets is Script {
     function run() external {
         uint256 privateKey = vm.envUint("PRIVATE_KEY");
         address deployer = vm.addr(privateKey);
+        uint256 btcInitialPrice = _initialPrice(
+            "SIMULATED_BTC_INITIAL_PRICE_USD"
+        );
+        uint256 ethInitialPrice = _initialPrice(
+            "SIMULATED_ETH_INITIAL_PRICE_USD"
+        );
+        uint256 goldInitialPrice = _initialPrice(
+            "SIMULATED_GOLD_INITIAL_PRICE_USD"
+        );
+        uint256 coffeeInitialPrice = _initialPrice(
+            "SIMULATED_COFFEE_INITIAL_PRICE_USD"
+        );
+        uint256 solInitialPrice = _initialPrice(
+            "SIMULATED_SOL_INITIAL_PRICE_USD"
+        );
 
         console.log("Deployer:", deployer);
         vm.startBroadcast(privateKey);
@@ -19,19 +34,23 @@ contract DeploySimulatedAssets is Script {
         console.log("SimulatedMarketplace:", address(market));
 
         SimulatedAsset sBTC = new SimulatedAsset(
-            "Simulated Bitcoin", "sBTC", "BTC", deployer, 60_000 * 1e18
+            "Simulated Bitcoin", "sBTC", "BTC", deployer, btcInitialPrice
         );
         SimulatedAsset sETH = new SimulatedAsset(
-            "Simulated Ethereum", "sETH", "ETH", deployer, 3_000 * 1e18
+            "Simulated Ethereum", "sETH", "ETH", deployer, ethInitialPrice
         );
         SimulatedAsset sGOLD = new SimulatedAsset(
-            "Simulated Gold", "sGOLD", "XAU", deployer, 2_100 * 1e18
+            "Simulated Gold", "sGOLD", "XAU", deployer, goldInitialPrice
         );
         SimulatedAsset sCOFFEE = new SimulatedAsset(
-            "Simulated Coffee", "sCOFFEE", "COFFEE", deployer, 200 * 1e18
+            "Simulated Coffee",
+            "sCOFFEE",
+            "COFFEE",
+            deployer,
+            coffeeInitialPrice
         );
         SimulatedAsset sSOL = new SimulatedAsset(
-            "Simulated Solana", "sSOL", "SOL", deployer, 150 * 1e18
+            "Simulated Solana", "sSOL", "SOL", deployer, solInitialPrice
         );
 
         console.log("sBTC:", address(sBTC));
@@ -56,5 +75,18 @@ contract DeploySimulatedAssets is Script {
         console.log("sGOLD:", address(sGOLD));
         console.log("sCOFFEE:", address(sCOFFEE));
         console.log("sSOL:", address(sSOL));
+    }
+
+    function _initialPrice(string memory variableName)
+        private
+        view
+        returns (uint256)
+    {
+        uint256 price = vm.envUint(variableName);
+        require(
+            price > 0,
+            string.concat(variableName, " must be greater than zero")
+        );
+        return price * 1e18;
     }
 }

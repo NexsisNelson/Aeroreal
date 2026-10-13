@@ -26,10 +26,8 @@ contract ArealFaucet is ReentrancyGuard, Ownable {
 
     function claim() external nonReentrant {
         uint256 last = lastClaimAt[msg.sender];
-        require(
-            last == 0 || block.timestamp >= last + CLAIM_COOLDOWN,
-            "Already claimed in the last 24 hours"
-        );
+        // Enforce a single one-time claim per wallet.
+        require(last == 0, "Already claimed");
 
         lastClaimAt[msg.sender] = block.timestamp;
         totalClaims++;
@@ -44,6 +42,11 @@ contract ArealFaucet is ReentrancyGuard, Ownable {
         uint256 next = last + CLAIM_COOLDOWN;
         if (block.timestamp >= next) return 0;
         return next - block.timestamp;
+    }
+
+    /// Returns true if the given wallet has already claimed from this faucet.
+    function hasClaimed(address wallet) external view returns (bool) {
+        return lastClaimAt[wallet] != 0;
     }
 
     function setClaimAmount(uint256 _amount) external onlyOwner {

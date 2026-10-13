@@ -437,7 +437,7 @@ class _WalletOnboardingScreenState extends State<WalletOnboardingScreen> {
                             _showEmailForm = false;
                           }),
                           icon: const Icon(
-                            Icons.navigate_before_ios_new,
+                            Icons.arrow_back_ios_new_rounded,
                             size: 18,
                           ),
                           color: const Color(0xFF9A87FF),
@@ -731,7 +731,7 @@ class _WalletOnboardingScreenState extends State<WalletOnboardingScreen> {
                 alignment: Alignment.centerLeft,
                 child: IconButton(
                   onPressed: () => setState(() => _showEmailForm = false),
-                  icon: const Icon(Icons.navigate_before_ios_new, size: 18),
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18),
                   color: const Color(0xFF9A87FF),
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
@@ -896,7 +896,7 @@ class _WalletOnboardingScreenState extends State<WalletOnboardingScreen> {
                     _showCodeInput = false;
                     _resendTimer?.cancel();
                   }),
-                  icon: const Icon(Icons.navigate_before_ios_new, size: 18),
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 18),
                   color: const Color(0xFF9A87FF),
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),

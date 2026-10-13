@@ -1,3 +1,6 @@
+// Flutter source file: contracts/aeroreal_app/lib/utils/app_icons.dart
+// This file contains the app logic, UI, or domain behavior for the Aeroreal experience.
+// 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 

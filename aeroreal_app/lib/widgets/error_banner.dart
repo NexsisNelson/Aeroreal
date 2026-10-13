@@ -1,3 +1,6 @@
+// Flutter source file: contracts/aeroreal_app/lib/widgets/error_banner.dart
+// This file contains the app logic, UI, or domain behavior for the Aeroreal experience.
+// 
 import 'package:flutter/material.dart';
 
 import '../utils/error_mapper.dart';

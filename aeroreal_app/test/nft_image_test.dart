@@ -1,3 +1,6 @@
+// Flutter source file: contracts/aeroreal_app/test/nft_image_test.dart
+// This file contains the app logic, UI, or domain behavior for the Aeroreal experience.
+// 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:aeroreal_app/utils/nft_image.dart';
 

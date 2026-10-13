@@ -62,14 +62,14 @@ contract Faucet is ReentrancyGuard, Ownable {
             "Already claimed in the last 24 hours"
         );
 
+        lastClaimAt[msg.sender] = block.timestamp;
+        totalClaims++;
+
         musd.mint(msg.sender, musdAmount);
         fGold.faucetMint(msg.sender, fGoldAmount);
         fCoffee.faucetMint(msg.sender, fCoffeeAmount);
 
         uint256 tokenId = demoNft.mint(msg.sender);
-
-        lastClaimAt[msg.sender] = block.timestamp;
-        totalClaims++;
 
         emit Claimed(
             msg.sender,

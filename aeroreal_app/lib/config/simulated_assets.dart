@@ -1,3 +1,6 @@
+// Flutter source file: contracts/aeroreal_app/lib/config/simulated_assets.dart
+// This file contains the app logic, UI, or domain behavior for the Aeroreal experience.
+// 
 import 'constants.dart';
 
 /// Maps underlying asset symbols to their simulated token contracts.

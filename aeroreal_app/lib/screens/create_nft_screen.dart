@@ -1,3 +1,6 @@
+// Flutter source file: contracts/aeroreal_app/lib/screens/create_nft_screen.dart
+// This file contains the app logic, UI, or domain behavior for the Aeroreal experience.
+// 
 import 'dart:convert';
 import 'dart:io';
 

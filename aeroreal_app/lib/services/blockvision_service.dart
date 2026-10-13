@@ -1,3 +1,6 @@
+// Flutter source file: contracts/aeroreal_app/lib/services/blockvision_service.dart
+// This file contains the app logic, UI, or domain behavior for the Aeroreal experience.
+// 
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;

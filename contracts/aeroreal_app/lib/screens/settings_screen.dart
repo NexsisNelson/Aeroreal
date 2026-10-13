@@ -72,7 +72,7 @@ class SettingsScreen extends StatelessWidget {
         backgroundColor: const Color.fromARGB(255, 0, 0, 0),
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.navigate_before_ios_new_rounded),
+          icon: const Icon(Icons.arrow_back_ios_new_rounded),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text('Settings'),

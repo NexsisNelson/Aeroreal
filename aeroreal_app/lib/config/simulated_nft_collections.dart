@@ -1,3 +1,6 @@
+// Flutter source file: contracts/aeroreal_app/lib/config/simulated_nft_collections.dart
+// This file contains the app logic, UI, or domain behavior for the Aeroreal experience.
+// 
 import 'constants.dart';
 
 class SimulatedNftCollections {

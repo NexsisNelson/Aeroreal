@@ -1,3 +1,6 @@
+// Flutter source file: contracts/aeroreal_app/test/kyc_flow_test.dart
+// This file contains the app logic, UI, or domain behavior for the Aeroreal experience.
+// 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 

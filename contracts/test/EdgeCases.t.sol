@@ -113,7 +113,7 @@ contract EdgeCasesTest is Test {
         fractionToken.vaultWhitelist(bob);
 
         vm.startPrank(alice);
-        fractionToken.transfer(bob, TOTAL_FRACTIONS / 2);
+        assertTrue(fractionToken.transfer(bob, TOTAL_FRACTIONS / 2));
         vm.stopPrank();
 
         vm.prank(bob);
@@ -168,7 +168,7 @@ contract EdgeCasesTest is Test {
         fractionToken.vaultWhitelist(bob);
 
         vm.prank(alice);
-        fractionToken.transfer(bob, 2_500);
+        assertTrue(fractionToken.transfer(bob, 2_500));
 
         MicroYieldStreamer streamer = new MicroYieldStreamer(
             address(fractionToken),

@@ -1,3 +1,6 @@
+// Flutter source file: contracts/aeroreal_app/lib/screens/kyc/kyc_intro_screen.dart
+// This file contains the app logic, UI, or domain behavior for the Aeroreal experience.
+// 
 import 'package:flutter/material.dart';
 
 import 'kyc_document_screen.dart';
