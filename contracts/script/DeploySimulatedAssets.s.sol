@@ -11,21 +11,11 @@ contract DeploySimulatedAssets is Script {
     function run() external {
         uint256 privateKey = vm.envUint("PRIVATE_KEY");
         address deployer = vm.addr(privateKey);
-        uint256 btcInitialPrice = _initialPrice(
-            "SIMULATED_BTC_INITIAL_PRICE_USD"
-        );
-        uint256 ethInitialPrice = _initialPrice(
-            "SIMULATED_ETH_INITIAL_PRICE_USD"
-        );
-        uint256 goldInitialPrice = _initialPrice(
-            "SIMULATED_GOLD_INITIAL_PRICE_USD"
-        );
-        uint256 coffeeInitialPrice = _initialPrice(
-            "SIMULATED_COFFEE_INITIAL_PRICE_USD"
-        );
-        uint256 solInitialPrice = _initialPrice(
-            "SIMULATED_SOL_INITIAL_PRICE_USD"
-        );
+        uint256 btcInitialPrice = _initialPrice("SIMULATED_BTC_INITIAL_PRICE_USD");
+        uint256 ethInitialPrice = _initialPrice("SIMULATED_ETH_INITIAL_PRICE_USD");
+        uint256 goldInitialPrice = _initialPrice("SIMULATED_GOLD_INITIAL_PRICE_USD");
+        uint256 coffeeInitialPrice = _initialPrice("SIMULATED_COFFEE_INITIAL_PRICE_USD");
+        uint256 solInitialPrice = _initialPrice("SIMULATED_SOL_INITIAL_PRICE_USD");
 
         console.log("Deployer:", deployer);
         vm.startBroadcast(privateKey);

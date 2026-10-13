@@ -13,17 +13,9 @@ contract DeployArealFaucet is Script {
         YieldRewardToken areal = YieldRewardToken(tokenAddress);
 
         require(areal.owner() == deployer, "Deployer is not AREAL owner");
-        (bool supportsFaucet, bytes memory faucetData) = tokenAddress.staticcall(
-            abi.encodeWithSignature("faucet()")
-        );
-        require(
-            supportsFaucet && faucetData.length == 32,
-            "Token lacks faucet support; deploy updated token first"
-        );
-        require(
-            abi.decode(faucetData, (address)) == address(0),
-            "AREAL faucet already configured"
-        );
+        (bool supportsFaucet, bytes memory faucetData) = tokenAddress.staticcall(abi.encodeWithSignature("faucet()"));
+        require(supportsFaucet && faucetData.length == 32, "Token lacks faucet support; deploy updated token first");
+        require(abi.decode(faucetData, (address)) == address(0), "AREAL faucet already configured");
 
         vm.startBroadcast(privateKey);
         ArealFaucet faucet = new ArealFaucet(tokenAddress);
