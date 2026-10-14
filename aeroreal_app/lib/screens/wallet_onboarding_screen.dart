@@ -363,7 +363,15 @@ class _WalletOnboardingScreenState extends State<WalletOnboardingScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(height: _showSignIn ? 4 : 86),
-                  const _AerorealMark(),
+                  Container(
+                    height: 80,
+                    decoration: const BoxDecoration(
+                      image: DecorationImage(
+                        image: AssetImage('assets/onboard.png'),
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 22),
                   const Text(
                     'Aeroreal',
@@ -1373,29 +1381,6 @@ class _AuthOption extends StatelessWidget {
         ),
       ),
     ),
-  );
-}
-
-class _AerorealMark extends StatelessWidget {
-  const _AerorealMark();
-
-  @override
-  Widget build(BuildContext context) => Container(
-    width: 104,
-    height: 104,
-    alignment: Alignment.center,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      color: const Color.fromARGB(255, 74, 24, 199).withValues(alpha: 0.12),
-      boxShadow: [
-        BoxShadow(
-          color: const Color.fromARGB(255, 74, 24, 199).withValues(alpha: 0.5),
-          blurRadius: 34,
-          spreadRadius: 6,
-        ),
-      ],
-    ),
-    child: const Icon(Icons.water_drop, color: Color(0xFF9A87FF), size: 70),
   );
 }
 
